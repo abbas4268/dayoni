@@ -1,11 +1,12 @@
 {
-  "name": "RepairOS Ultra Premium",
-  "short_name": "RepairOS Pro",
-  "start_url": "./index.html?v=7",
+  "name": "RepairOS Royal Final",
+  "short_name": "RepairOS",
+  "start_url": "./index.html?v=8",
   "display": "standalone",
-  "background_color": "#030306",
-  "theme_color": "#030306",
+  "background_color": "#050507",
+  "theme_color": "#050507",
   "dir": "rtl",
   "lang": "ar",
+  "orientation": "portrait",
   "icons": []
 }
