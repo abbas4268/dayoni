@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#090909" />
+  <title>ديوني عباس</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="lockScreen" class="lock-screen">
+    <div class="lock-card">
+      <div class="logo-mark">د</div>
+      <h1>ديوني عباس</h1>
+      <p>نظام حسابات وديون فاخر</p>
+      <input id="pinInput" type="password" inputmode="numeric" maxlength="12" placeholder="الرمز السري" />
+      <button id="loginBtn" class="gold-btn">دخول</button>
+      <button id="changePinBtn" class="ghost-btn">تغيير الرمز</button>
+      <small>الرمز الافتراضي: 1234</small>
+    </div>
+  </div>
+
+  <main class="app">
+    <header class="hero">
+      <div>
+        <span class="eyebrow">DAYONI PRO</span>
+        <h1>ديوني عباس</h1>
+        <p>إدارة زبائن، ديون، دفعات، وكشوفات حساب من أي جهاز.</p>
+      </div>
+      <button id="logoutBtn" class="icon-btn">خروج</button>
+    </header>
+
+    <section class="stats">
+      <article><small>إجمالي الديون</small><b id="statDebt">0</b></article>
+      <article><small>إجمالي الدفعات</small><b id="statPaid">0</b></article>
+      <article><small>المتبقي</small><b id="statBalance">0</b></article>
+      <article><small>عدد الزبائن</small><b id="statClients">0</b></article>
+    </section>
+
+    <section class="toolbar glass">
+      <input id="searchInput" placeholder="ابحث باسم الزبون أو الرقم..." />
+      <button id="addClientBtn" class="gold-btn">+ زبون</button>
+    </section>
+
+    <section id="clientsList" class="clients"></section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="active" data-action="home">الزبائن</button>
+    <button data-action="summary">ملخص</button>
+    <button data-action="backup">نسخة</button>
+  </nav>
+
+  <div id="modal" class="modal hidden">
+    <div class="sheet">
+      <div class="sheet-head">
+        <h2 id="modalTitle"></h2>
+        <button id="closeModalBtn" class="icon-btn">×</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+  <script src="firebase.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
