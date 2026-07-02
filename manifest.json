@@ -1,10 +1,10 @@
 {
-  "name": "RepairOS X Royal",
+  "name": "RepairOS Clean Pro",
   "short_name": "RepairOS",
-  "start_url": "./index.html?v=5",
+  "start_url": "./index.html?v=6",
   "display": "standalone",
-  "background_color": "#030303",
-  "theme_color": "#050505",
+  "background_color": "#070707",
+  "theme_color": "#070707",
   "dir": "rtl",
   "lang": "ar",
   "icons": []
