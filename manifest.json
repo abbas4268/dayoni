@@ -1,10 +1,10 @@
 {
-  "name": "ديوني عباس",
-  "short_name": "ديوني",
+  "name": "Phone Repair OS",
+  "short_name": "RepairOS",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#070707",
-  "theme_color": "#090909",
+  "background_color": "#030303",
+  "theme_color": "#050505",
   "dir": "rtl",
   "lang": "ar",
   "icons": []

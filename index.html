@@ -3,66 +3,162 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#090909" />
-  <title>ديوني عباس</title>
+  <meta name="theme-color" content="#050505" />
+  <title>Phone Repair OS | صيانة الهواتف المحمولة</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="lockScreen" class="lock-screen">
-    <div class="lock-card">
-      <div class="logo-mark">د</div>
-      <h1>ديوني عباس</h1>
-      <p>نظام حسابات وديون فاخر</p>
-      <input id="pinInput" type="password" inputmode="numeric" maxlength="12" placeholder="الرمز السري" />
-      <button id="loginBtn" class="gold-btn">دخول</button>
-      <button id="changePinBtn" class="ghost-btn">تغيير الرمز</button>
-      <small>الرمز الافتراضي: 1234</small>
-    </div>
+  <div id="splash" class="splash">
+    <div class="orb"></div>
+    <h1>PHONE REPAIR OS</h1>
+    <p>نظام عالمي لإدارة محلات صيانة الهواتف</p>
   </div>
 
-  <main class="app">
-    <header class="hero">
-      <div>
-        <span class="eyebrow">DAYONI PRO</span>
-        <h1>ديوني عباس</h1>
-        <p>إدارة زبائن، ديون، دفعات، وكشوفات حساب من أي جهاز.</p>
+  <main id="authView" class="auth-view hidden">
+    <section class="auth-card">
+      <div class="brand-mark">PR</div>
+      <h1>صيانة الهواتف المحمولة</h1>
+      <p>سجّل دخولك أو أنشئ حساب محل جديد.</p>
+
+      <div class="switcher">
+        <button id="loginTab" class="active">دخول</button>
+        <button id="registerTab">إنشاء حساب</button>
       </div>
-      <button id="logoutBtn" class="icon-btn">خروج</button>
-    </header>
 
-    <section class="stats">
-      <article><small>إجمالي الديون</small><b id="statDebt">0</b></article>
-      <article><small>إجمالي الدفعات</small><b id="statPaid">0</b></article>
-      <article><small>المتبقي</small><b id="statBalance">0</b></article>
-      <article><small>عدد الزبائن</small><b id="statClients">0</b></article>
+      <form id="loginForm" class="form">
+        <input id="loginIdentity" placeholder="الإيميل أو رقم الهاتف" autocomplete="username" />
+        <input id="loginPassword" type="password" placeholder="كلمة المرور" autocomplete="current-password" />
+        <button class="gold-btn" type="submit">دخول للنظام</button>
+        <button type="button" id="forgotBtn" class="ghost-btn">نسيت كلمة المرور؟</button>
+      </form>
+
+      <form id="registerForm" class="form hidden">
+        <input id="ownerName" placeholder="اسم المستخدم / المالك" />
+        <input id="shopName" placeholder="اسم الشركة أو المحل" />
+        <input id="regPhone" placeholder="رقم الهاتف" inputmode="tel" />
+        <input id="regEmail" placeholder="البريد الإلكتروني" type="email" />
+        <input id="regPassword" type="password" placeholder="كلمة المرور" />
+        <input id="regPassword2" type="password" placeholder="تكرار كلمة المرور" />
+        <button class="gold-btn" type="submit">إنشاء الحساب</button>
+      </form>
     </section>
-
-    <section class="toolbar glass">
-      <input id="searchInput" placeholder="ابحث باسم الزبون أو الرقم..." />
-      <button id="addClientBtn" class="gold-btn">+ زبون</button>
-    </section>
-
-    <section id="clientsList" class="clients"></section>
   </main>
 
-  <nav class="bottom-nav">
-    <button class="active" data-action="home">الزبائن</button>
-    <button data-action="summary">ملخص</button>
-    <button data-action="backup">نسخة</button>
-  </nav>
+  <main id="appView" class="app hidden">
+    <aside class="side">
+      <div class="side-logo">PR</div>
+      <button class="nav active" data-page="dashboard">الرئيسية</button>
+      <button class="nav" data-page="repairs">الأجهزة</button>
+      <button class="nav" data-page="customers">الزبائن</button>
+      <button class="nav" data-page="payments">الديون</button>
+      <button class="nav" data-page="settings">الإعدادات</button>
+      <button id="logoutBtn" class="nav danger">خروج</button>
+    </aside>
+
+    <section class="content">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">PHONE REPAIR OS</span>
+          <h1 id="welcomeTitle">أهلاً</h1>
+          <p id="shopSubtitle">لوحة إدارة ذكية لمحلك.</p>
+        </div>
+        <button id="addRepairBtn" class="gold-btn">+ جهاز جديد</button>
+      </header>
+
+      <section id="dashboard" class="page">
+        <div class="stats">
+          <article><small>الأجهزة الكلية</small><b id="statRepairs">0</b></article>
+          <article><small>قيد التصليح</small><b id="statActive">0</b></article>
+          <article><small>جاهزة</small><b id="statReady">0</b></article>
+          <article><small>المتبقي ديون</small><b id="statDebt">0 د.ع</b></article>
+        </div>
+
+        <div class="grid2">
+          <div class="panel">
+            <h2>آخر الأجهزة</h2>
+            <div id="latestRepairs" class="repair-list"></div>
+          </div>
+          <div class="panel ai">
+            <h2>المساعد الذكي</h2>
+            <p>اكتب العطل، وسأعطيك احتمالات الفحص.</p>
+            <textarea id="aiInput" placeholder="مثال: iPhone 13 لا يشحن"></textarea>
+            <button id="aiBtn" class="ghost-btn">تحليل العطل</button>
+            <div id="aiResult"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="repairs" class="page hidden">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>الأجهزة داخل المحل</h2>
+            <input id="repairSearch" placeholder="بحث باسم الزبون أو الهاتف..." />
+          </div>
+          <div id="repairsList" class="repair-list"></div>
+        </div>
+      </section>
+
+      <section id="customers" class="page hidden">
+        <div class="panel">
+          <h2>الزبائن</h2>
+          <div id="customersList" class="repair-list"></div>
+        </div>
+      </section>
+
+      <section id="payments" class="page hidden">
+        <div class="panel">
+          <h2>الديون والمدفوعات</h2>
+          <div id="paymentsList" class="repair-list"></div>
+        </div>
+      </section>
+
+      <section id="settings" class="page hidden">
+        <div class="panel">
+          <h2>إعدادات الحساب</h2>
+          <div id="profileBox"></div>
+        </div>
+      </section>
+    </section>
+  </main>
 
   <div id="modal" class="modal hidden">
     <div class="sheet">
       <div class="sheet-head">
-        <h2 id="modalTitle"></h2>
-        <button id="closeModalBtn" class="icon-btn">×</button>
+        <h2>إضافة جهاز صيانة</h2>
+        <button id="closeModal" class="icon-btn">×</button>
       </div>
-      <div id="modalBody"></div>
+      <form id="repairForm" class="form">
+        <div class="two">
+          <input id="customerName" placeholder="اسم الزبون" />
+          <input id="customerPhone" placeholder="رقم هاتف الزبون" inputmode="tel" />
+        </div>
+        <div class="two">
+          <input id="deviceName" placeholder="اسم الهاتف" />
+          <input id="deviceModel" placeholder="موديل الهاتف" />
+        </div>
+        <textarea id="fault" placeholder="نوع العطل الخاص بالهاتف"></textarea>
+        <div class="two">
+          <input id="repairPrice" placeholder="سعر التصليح" inputmode="numeric" />
+          <input id="paidAmount" placeholder="المبلغ المدفوع" inputmode="numeric" />
+        </div>
+        <select id="status">
+          <option value="inspection">قيد الفحص</option>
+          <option value="repairing">قيد التصليح</option>
+          <option value="ready">جاهز للاستلام</option>
+          <option value="delivered">تم التسليم</option>
+          <option value="cancelled">ملغي</option>
+        </select>
+        <textarea id="notes" placeholder="ملاحظات الفني"></textarea>
+        <button class="gold-btn" type="submit">حفظ الجهاز</button>
+      </form>
     </div>
   </div>
 
+  <div id="toast" class="toast hidden"></div>
+
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
   <script src="firebase.js"></script>
   <script src="app.js"></script>
