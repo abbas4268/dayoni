@@ -1,7 +1,7 @@
 {
-  "name": "Phone Repair OS Enterprise",
-  "short_name": "RepairOS",
-  "start_url": "./index.html?v=2",
+  "name": "RepairOS X Enterprise",
+  "short_name": "RepairOS X",
+  "start_url": "./index.html?v=3",
   "display": "standalone",
   "background_color": "#030303",
   "theme_color": "#050505",
