@@ -1,10 +1,10 @@
 {
-  "name": "RepairOS X Ultra",
-  "short_name": "RepairOS X",
-  "start_url": "./index.html?v=4",
+  "name": "RepairOS X Royal",
+  "short_name": "RepairOS",
+  "start_url": "./index.html?v=5",
   "display": "standalone",
-  "background_color": "#020202",
-  "theme_color": "#030303",
+  "background_color": "#030303",
+  "theme_color": "#050505",
   "dir": "rtl",
   "lang": "ar",
   "icons": []
