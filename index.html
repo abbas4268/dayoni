@@ -1,109 +1,256 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-  <meta name="theme-color" content="#060607">
-  <title>RepairOS Executive</title>
-  <link rel="stylesheet" href="style.css?v=9.0.0">
-  <link rel="manifest" href="manifest.json?v=9">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <meta name="theme-color" content="#070707" />
+  <title>RepairOS Enterprise 2.0</title>
+  <link rel="manifest" href="manifest.json?v=20" />
+  <link rel="stylesheet" href="style.css?v=20" />
 </head>
-<body data-theme="dark" data-accent="gold">
-  <div class="mesh"></div>
-  <div id="splash" class="splash"><div class="mark">R</div><b>REPAIR OS</b><small>EXECUTIVE v9</small></div>
+<body data-theme="titanium" data-accent="gold">
+  <div id="splash" class="splash">
+    <div class="mark">R</div>
+    <b>RepairOS Enterprise</b>
+    <span>Version 2.0</span>
+  </div>
 
-  <main id="trackView" class="center hidden"><section class="authBox"><div class="mark sm">R</div><h1>تتبع الجهاز</h1><div id="trackBox" class="trackBox">تحميل...</div></section></main>
+  <main id="trackView" class="center hidden">
+    <section class="loginCard trackCard">
+      <div class="mark small">R</div>
+      <h1>متابعة الجهاز</h1>
+      <div id="trackBox"></div>
+    </section>
+  </main>
 
   <main id="authView" class="center hidden">
-    <section class="authBox">
-      <div class="mark sm">R</div><h1>Repair OS</h1><p>نظام واضح وفخم بدون سكرول.</p>
-      <div class="tabs"><button id="loginTab" class="active">دخول</button><button id="registerTab">تأسيس مركز</button></div>
+    <section class="loginCard">
+      <div class="mark small">R</div>
+      <h1>RepairOS</h1>
+      <p>نظام صيانة هواتف نظيف، ثابت، وسهل الاستخدام.</p>
+
+      <div class="seg">
+        <button id="loginTab" class="active" type="button">دخول</button>
+        <button id="registerTab" type="button">حساب جديد</button>
+      </div>
+
       <form id="loginForm" class="form">
-        <input id="loginIdentity" placeholder="الإيميل أو رقم الهاتف">
-        <input id="loginPassword" type="password" placeholder="كلمة المرور">
-        <button class="primary">دخول</button>
+        <input id="loginIdentity" placeholder="الإيميل أو رقم الهاتف" />
+        <input id="loginPassword" type="password" placeholder="كلمة المرور" />
+        <button class="primary" type="submit">دخول</button>
       </form>
+
       <form id="registerForm" class="form hidden">
-        <div class="g2"><input id="ownerName" placeholder="اسم المدير"><input id="shopName" placeholder="اسم المركز"></div>
-        <div class="g2"><input id="regEmail" type="email" placeholder="الإيميل"><input id="regPhone" placeholder="رقم الهاتف"></div>
-        <input id="regPassword" type="password" placeholder="كلمة المرور">
-        <button class="primary">إنشاء حساب</button>
+        <div class="g2">
+          <input id="ownerName" placeholder="اسم المالك" />
+          <input id="shopName" placeholder="اسم المركز" />
+        </div>
+        <div class="g2">
+          <input id="regPhone" placeholder="رقم الهاتف" />
+          <input id="regEmail" type="email" placeholder="الإيميل" />
+        </div>
+        <div class="g2">
+          <input id="province" placeholder="المحافظة" />
+          <input id="city" placeholder="المدينة" />
+        </div>
+        <div class="g2">
+          <input id="regPassword" type="password" placeholder="كلمة المرور" />
+          <input id="regPassword2" type="password" placeholder="تكرارها" />
+        </div>
+        <button class="primary" type="submit">إنشاء حساب</button>
       </form>
     </section>
   </main>
 
-  <main id="appShell" class="app hidden">
-    <header class="top">
-      <button id="menuBtn" class="hamb"><i></i><i></i><i></i></button>
-      <div class="headTitle"><small>REPAIR OS EXECUTIVE</small><h1 id="pageTitle">الرئيسية</h1></div>
-      <button onclick="openNewRepair()" class="primary compact">+ جهاز</button>
-    </header>
+  <main id="appView" class="app hidden">
+    <aside class="side">
+      <div class="brand">
+        <div class="mark mini">R</div>
+        <div><b>RepairOS</b><span id="sideShop">Enterprise</span></div>
+      </div>
 
-    <section class="workspace">
-      <nav class="sideRail">
-        <button class="nav active" data-page="dashboard">⌂<span>الرئيسية</span></button>
-        <button class="nav" data-page="repairs">▣<span>الأجهزة</span></button>
-        <button class="nav" data-page="customers">◉<span>العملاء</span></button>
-        <button class="nav" data-page="invoices">▤<span>الفواتير</span></button>
-        <button class="nav" data-page="reports">◎<span>تقارير</span></button>
-      </nav>
+      <button class="sideBtn active" data-page="dashboard">الرئيسية</button>
+      <button class="sideBtn" data-page="devices">الأجهزة</button>
+      <button class="sideBtn" data-page="clients">العملاء</button>
+      <button class="sideBtn" data-page="invoices">الفواتير</button>
+      <button class="sideBtn" data-page="finance">المحاسبة</button>
+      <button class="sideBtn" data-page="settings">الإعدادات</button>
 
-      <section class="view">
-        <section id="dashboard" class="page show">
-          <div class="hero panel">
-            <div><small>WORKSPACE</small><h2 id="welcomeTitle">أهلاً</h2><p id="shopSubtitle">مزيج فخامة وسهولة استخدام.</p></div>
-            <button class="ghost" onclick="goPage('settings')">تعديل بيانات المركز</button>
-          </div>
-          <div class="stats">
-            <article><span>النشطة</span><b id="statActive">0</b></article><article><span>جاهزة</span><b id="statReady">0</b></article><article><span>المقبوض</span><b id="statPaid">0</b></article>
-            <article><span>المتبقي</span><b id="statDebt">0</b></article><article><span>ربح تقريبي</span><b id="statProfit">0</b></article><article><span>اليوم</span><b id="statToday">0</b></article>
-          </div>
-          <div class="dashGrid">
-            <div class="panel"><div class="panelHead"><b>آخر الأجهزة</b><button onclick="goPage('repairs')" class="ghost mini">عرض</button></div><div id="latestList" class="miniCards"></div></div>
-            <div class="panel"><b>مساعد سريع</b><div class="aiLine"><input id="aiInput" placeholder="مثال: لا يشحن"><button id="aiBtn" class="primary mini">تحليل</button></div><div id="aiResult" class="aiResult">اكتب العطل ليقترح خطوات الفحص.</div></div>
-          </div>
-        </section>
+      <div class="sideFooter">
+        <button id="themeQuick" class="soft" type="button">تبديل الثيم</button>
+        <button id="logoutBtn" class="soft danger" type="button">خروج</button>
+      </div>
+    </aside>
 
-        <section id="repairs" class="page">
-          <div class="tools panel"><input id="searchRepair" placeholder="بحث: اسم، رقم، جهاز، عطل، كود"><select id="filterStatus"><option value="all">كل الحالات</option><option value="new">جديد</option><option value="inspection">فحص</option><option value="approval">موافقة</option><option value="waiting_part">قطعة</option><option value="repairing">تصليح</option><option value="completed">مكتمل</option><option value="ready">جاهز</option><option value="delivered">مسلم</option><option value="rejected">مرفوض</option><option value="cancelled">ملغي</option></select><button onclick="openNewRepair()" class="primary">إضافة</button></div>
-          <div id="repairsGrid" class="cardGrid"></div>
-        </section>
-        <section id="customers" class="page"><div id="customersGrid" class="cardGrid"></div></section>
-        <section id="invoices" class="page"><div class="panel pageIntro"><b>الفواتير</b><span>الفاتورة الآن تظهر كاملة على الشاشة، وبالطباعة تطبع كاملة A4.</span></div><div id="invoicesGrid" class="cardGrid"></div></section>
-        <section id="reports" class="page"><div id="reportsGrid" class="cardGrid"></div></section>
-        <section id="settings" class="page">
-          <div class="settingsGrid">
-            <form id="profileForm" class="panel form">
-              <b>بيانات المركز — قابلة للتعديل</b>
-              <div class="g2"><input id="setShopName" placeholder="اسم المركز"><input id="setOwnerName" placeholder="اسم المدير"></div>
-              <div class="g2"><input id="setPhone" placeholder="رقم الهاتف"><input id="setAddress" placeholder="العنوان"></div>
-              <input id="setTerms" placeholder="شروط الفاتورة المختصرة">
-              <button class="primary">حفظ البيانات</button>
-            </form>
-            <div class="panel"><b>الثيمات والألوان</b><div class="themeBtns"><button onclick="setTheme('dark')">داكن</button><button onclick="setTheme('light')">فاتح</button><button onclick="setTheme('blue')">أزرق</button><button onclick="setTheme('green')">زمردي</button><button onclick="setAccent('gold')">ذهبي</button><button onclick="setAccent('purple')">بنفسجي</button></div><button onclick="exportBackup()" class="ghost wide">نسخة احتياطية</button></div>
+    <section class="work">
+      <header class="top">
+        <button id="menuBtn" class="menu" type="button"><i></i><i></i><i></i></button>
+        <div class="title">
+          <small id="subTitle">CONTROL CENTER</small>
+          <h1 id="pageTitle">الرئيسية</h1>
+        </div>
+        <div class="search"><span>⌕</span><input id="globalSearch" placeholder="بحث سريع..." /></div>
+        <button id="newDeviceTop" class="primary compact" type="button">+ جهاز</button>
+      </header>
+
+      <section id="dashboard" class="page show">
+        <div class="hero">
+          <div>
+            <small>WORKSPACE</small>
+            <h2 id="welcomeTitle">أهلاً</h2>
+            <p id="shopSubtitle">لوحة ثابتة بدون سكرول.</p>
           </div>
-        </section>
+          <div class="heroActions">
+            <button class="primary" type="button" onclick="openDevice()">استلام جهاز</button>
+            <button class="soft" type="button" onclick="goPage('settings')">الإعدادات</button>
+          </div>
+        </div>
+
+        <div class="kpis">
+          <article><span>الأجهزة</span><b id="statAll">0</b></article>
+          <article><span>قيد العمل</span><b id="statWork">0</b></article>
+          <article><span>جاهزة</span><b id="statReady">0</b></article>
+          <article><span>المتأخرة</span><b id="statLate">0</b></article>
+          <article><span>الديون</span><b id="statDebt">0</b></article>
+          <article><span>إيراد اليوم</span><b id="statToday">0</b></article>
+        </div>
+
+        <div class="gridHome">
+          <section class="panel">
+            <div class="pHead"><b>آخر الأجهزة</b><button class="soft tiny" onclick="goPage('devices')" type="button">عرض الكل</button></div>
+            <div id="latestList" class="cards compactList"></div>
+          </section>
+          <section class="panel">
+            <div class="pHead"><b>توزيع الحالات</b></div>
+            <div id="statusBoard" class="statusBoard"></div>
+          </section>
+          <section class="panel ai">
+            <b>مساعد التشخيص</b>
+            <input id="aiInput" placeholder="مثال: لا يشحن..." />
+            <button id="aiBtn" class="primary compact" type="button">تحليل</button>
+            <div id="aiResult" class="aiResult"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="devices" class="page">
+        <div class="tools">
+          <input id="deviceSearch" placeholder="بحث بالاسم، الهاتف، الجهاز..." />
+          <select id="statusFilter">
+            <option value="all">كل الحالات</option>
+            <option value="new">جديد</option>
+            <option value="inspection">قيد الفحص</option>
+            <option value="approval">بانتظار موافقة</option>
+            <option value="waiting_part">بانتظار قطعة</option>
+            <option value="repairing">قيد التصليح</option>
+            <option value="testing">تحت الاختبار</option>
+            <option value="ready">جاهز للاستلام</option>
+            <option value="delivered">تم التسليم</option>
+            <option value="rejected">مرفوض</option>
+            <option value="cancelled">ملغي</option>
+          </select>
+          <button class="primary compact" onclick="openDevice()" type="button">+ جهاز</button>
+        </div>
+        <div id="devicesList" class="cards pageCards"></div>
+      </section>
+
+      <section id="clients" class="page"><div id="clientsList" class="cards pageCards"></div></section>
+      <section id="invoices" class="page">
+        <div class="panel invoiceIntro">
+          <h2>الفواتير</h2>
+          <p>الفاتورة تظهر كاملة في نافذة ثابتة، وفي الطباعة تخرج كاملة مع QR للتتبع.</p>
+          <button class="primary" onclick="printLast()" type="button">طباعة آخر فاتورة</button>
+        </div>
+      </section>
+      <section id="finance" class="page"><div id="financeBox" class="cards pageCards"></div></section>
+
+      <section id="settings" class="page">
+        <div class="settingsGrid">
+          <section class="panel">
+            <div class="pHead"><b>بيانات المركز</b><button class="primary compact" onclick="saveProfile()" type="button">حفظ</button></div>
+            <div class="form">
+              <input id="setShopName" placeholder="اسم المركز" />
+              <input id="setOwnerName" placeholder="اسم المالك" />
+              <input id="setPhone" placeholder="هاتف المركز" />
+              <input id="setAddress" placeholder="العنوان" />
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="pHead"><b>شروط الفاتورة</b><button class="primary compact" onclick="addTerm()" type="button">إضافة</button></div>
+            <input id="newTerm" placeholder="اكتب شرط جديد ويبقى الحقل جاهزًا لشرط آخر" />
+            <div id="termsList" class="terms"></div>
+          </section>
+
+          <section class="panel">
+            <b>الثيمات والألوان</b>
+            <div class="themeGrid">
+              <button onclick="setTheme('titanium')" type="button">Titanium</button>
+              <button onclick="setTheme('light')" type="button">Light</button>
+              <button onclick="setTheme('sapphire')" type="button">Sapphire</button>
+              <button onclick="setTheme('emerald')" type="button">Emerald</button>
+              <button onclick="setAccent('gold')" type="button">ذهبي</button>
+              <button onclick="setAccent('blue')" type="button">أزرق</button>
+              <button onclick="setAccent('purple')" type="button">بنفسجي</button>
+              <button onclick="setAccent('green')" type="button">أخضر</button>
+            </div>
+          </section>
+        </div>
       </section>
     </section>
+
+    <nav class="bottom">
+      <button class="mob active" data-page="dashboard">الرئيسية</button>
+      <button class="mob" data-page="devices">الأجهزة</button>
+      <button class="mob" data-page="clients">العملاء</button>
+      <button class="mob" data-page="invoices">الفواتير</button>
+      <button class="mob" data-page="settings">المزيد</button>
+    </nav>
   </main>
 
-  <aside id="drawer" class="drawer hidden"><div class="shade" onclick="closeDrawer()"></div><div class="drawerBox"><div class="drawerTop"><b>RepairOS</b><button onclick="closeDrawer()">×</button></div><button onclick="goPage('dashboard')">الرئيسية</button><button onclick="goPage('repairs')">الأجهزة</button><button onclick="goPage('customers')">العملاء</button><button onclick="goPage('invoices')">الفواتير</button><button onclick="goPage('settings')">الإعدادات والثيمات</button><button onclick="printLast()">آخر فاتورة</button><button onclick="auth.signOut()" class="danger">تسجيل الخروج</button></div></aside>
+  <div id="drawer" class="drawer hidden">
+    <div class="drawerBox">
+      <div class="drawerHead"><b>RepairOS</b><button onclick="closeDrawer()" type="button">×</button></div>
+      <button onclick="goPage('dashboard');closeDrawer()" type="button">الرئيسية</button>
+      <button onclick="goPage('devices');closeDrawer()" type="button">الأجهزة</button>
+      <button onclick="goPage('clients');closeDrawer()" type="button">العملاء</button>
+      <button onclick="goPage('finance');closeDrawer()" type="button">المحاسبة</button>
+      <button onclick="exportBackup()" type="button">نسخة احتياطية</button>
+      <button onclick="goPage('settings');closeDrawer()" type="button">الإعدادات</button>
+      <button onclick="auth.signOut()" class="danger" type="button">تسجيل الخروج</button>
+    </div>
+  </div>
 
-  <div id="repairModal" class="modal hidden"><div class="shade" onclick="closeRepairModal()"></div><form id="repairForm" class="sheet">
-    <div class="sheetTop"><b id="modalTitle">إضافة جهاز</b><button type="button" onclick="closeRepairModal()">×</button></div>
-    <div class="stepTabs"><button type="button" class="step active" data-step="0">العميل</button><button type="button" class="step" data-step="1">الجهاز</button><button type="button" class="step" data-step="2">الحساب</button><button type="button" class="step" data-step="3">الحالة</button></div>
-    <input id="editingId" type="hidden">
-    <section class="formStep active" data-step="0"><div class="g2"><input id="customerName" placeholder="اسم الزبون"><input id="customerPhone" placeholder="رقم الزبون"></div><div class="g2"><input id="customerAddress" placeholder="عنوان/ملاحظة للزبون"><input id="technician" placeholder="الفني المسؤول"></div></section>
-    <section class="formStep" data-step="1"><div class="g3"><input id="deviceModel" placeholder="موديل الجهاز"><input id="imei" placeholder="IMEI"><input id="color" placeholder="اللون"></div><input id="devicePass" placeholder="رمز القفل"><input id="fault" placeholder="العطل كما وصفه الزبون"><input id="diagnosis" placeholder="التشخيص الفني"></section>
-    <section class="formStep" data-step="2"><div class="g3"><input id="repairPrice" placeholder="السعر"><input id="paidAmount" placeholder="المدفوع"><input id="partsCost" placeholder="تكلفة القطع"></div><input id="warranty" placeholder="الضمان مثل: 7 أيام / بدون ضمان"><div id="liveBalance" class="balanceBox">المتبقي: 0 د.ع</div></section>
-    <section class="formStep" data-step="3"><div class="g2"><select id="status"><option value="new">جديد</option><option value="inspection">قيد الفحص</option><option value="approval">بانتظار موافقة</option><option value="waiting_part">بانتظار قطعة</option><option value="repairing">قيد التصليح</option><option value="completed">مكتمل</option><option value="ready">جاهز للاستلام</option><option value="delivered">تم التسليم</option><option value="rejected">مرفوض</option><option value="cancelled">ملغي</option></select><input id="dueDate" type="date"></div><input id="notes" placeholder="الملاحظات التي تظهر بالفاتورة"><input id="internalNotes" placeholder="ملاحظات داخلية لا تظهر للزبون"></section>
-    <div class="sheetActions"><button type="button" id="prevStep" class="ghost">السابق</button><button type="button" id="nextStep" class="ghost">التالي</button><button class="primary">حفظ</button></div>
-  </form></div>
+  <div id="deviceModal" class="modal hidden">
+    <form id="deviceForm" class="sheet">
+      <div class="sheetHead"><b id="modalTitle">استلام جهاز</b><button type="button" onclick="closeDevice()">×</button></div>
+      <input id="editingId" type="hidden" />
+      <div class="g2"><input id="customerName" placeholder="اسم الزبون" /><input id="customerPhone" placeholder="هاتف الزبون" /></div>
+      <div class="g3"><input id="brand" placeholder="الشركة" /><input id="deviceName" placeholder="الجهاز" /><input id="deviceModel" placeholder="الموديل" /></div>
+      <div class="g3"><input id="imei" placeholder="IMEI" /><input id="devicePass" placeholder="كلمة السر" /><input id="technician" placeholder="الفني" /></div>
+      <input id="fault" placeholder="العطل" />
+      <input id="diagnosis" placeholder="التشخيص" />
+      <input id="notes" placeholder="ملاحظات تظهر بالفاتورة" />
+      <div class="g3"><input id="price" placeholder="السعر" /><input id="paid" placeholder="المدفوع" /><input id="partsCost" placeholder="تكلفة القطع" /></div>
+      <div class="g2"><select id="status"><option value="new">جديد</option><option value="inspection">قيد الفحص</option><option value="approval">بانتظار موافقة</option><option value="waiting_part">بانتظار قطعة</option><option value="repairing">قيد التصليح</option><option value="testing">تحت الاختبار</option><option value="ready">جاهز للاستلام</option><option value="delivered">تم التسليم</option><option value="rejected">مرفوض</option><option value="cancelled">ملغي</option></select><input id="dueDate" type="date" /></div>
+      <button class="primary" type="submit">حفظ</button>
+    </form>
+  </div>
+
+  <div id="invoiceModal" class="modal hidden">
+    <div class="invoiceShell">
+      <div class="sheetHead"><b>فاتورة الصيانة</b><button onclick="closeInvoice()" type="button">×</button></div>
+      <div id="invoicePreview"></div>
+      <div class="invoiceActions"><button class="soft" onclick="closeInvoice()" type="button">إغلاق</button><button class="primary" onclick="window.print()" type="button">طباعة</button></div>
+    </div>
+  </div>
 
   <div id="toast" class="toast hidden"></div>
+
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-  <script src="firebase.js?v=9"></script>
-  <script src="app.js?v=9"></script>
-</body></html>
+  <script src="firebase.js?v=20"></script>
+  <script src="app.js?v=20"></script>
+</body>
+</html>
