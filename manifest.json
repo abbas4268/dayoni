@@ -1,10 +1,10 @@
 {
-  "name": "RepairOS Clean Pro",
-  "short_name": "RepairOS",
-  "start_url": "./index.html?v=6",
+  "name": "RepairOS Ultra Premium",
+  "short_name": "RepairOS Pro",
+  "start_url": "./index.html?v=7",
   "display": "standalone",
-  "background_color": "#070707",
-  "theme_color": "#070707",
+  "background_color": "#030306",
+  "theme_color": "#030306",
   "dir": "rtl",
   "lang": "ar",
   "icons": []
