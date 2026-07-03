@@ -1,23 +1,63 @@
-let currentUser=null,profile={},phones={},lastInvoice=null,tracking=false;
+let currentUser=null,profile={},phones={},lastInvoice=null,tracking=false,rawPhones={},rawRepairs={};
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 const num=v=>Number(String(v||"").replace(/[^\d]/g,""))||0, money=n=>`${Number(n||0).toLocaleString("en-US")} د.ع`, clean=p=>String(p||"").replace(/[^\d]/g,"");
 const toast=m=>{$("#toast").textContent=m;$("#toast").classList.remove("hidden");setTimeout(()=>$("#toast").classList.add("hidden"),2000)};
 const uid=()=>currentUser.uid, root=()=>db.ref(`users/${uid()}`), phoneIndex=p=>db.ref(`phoneIndex/${clean(p)}`), newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 const statusText={under:"تحت الصيانة",done:"تم الاكتمال",delivered:"تم التسليم",rejected:"مرفوض"};
+const oldStatusMap={new:"under",inspection:"under",approval:"under",waiting_part:"under",repairing:"under",testing:"under",completed:"done",ready:"done",delivered:"delivered",rejected:"rejected",cancelled:"rejected"};
 setTimeout(()=>$("#splash").classList.add("hidden"),550);
 
 const params=new URLSearchParams(location.search);
 if(params.get("track")){tracking=true;$("#splash").classList.add("hidden");$("#trackView").classList.remove("hidden");loadTrack(params.get("uid"),params.get("id"))}
-async function loadTrack(u,id){try{let s=await db.ref(`users/${u}/phones/${id}`).get(),r=s.val();if(!r)throw Error();$("#trackBox").innerHTML=`<div class="invBox"><h2>${esc(r.deviceName)}</h2><p>الزبون: ${esc(r.clientName)}</p><p>المشكلة: ${esc(r.problem)}</p><p>الحالة: <b>${statusText[r.status]||r.status}</b></p><p>الباقي: ${money(r.remaining)}</p></div>`}catch(e){$("#trackBox").textContent="الرابط غير صالح"}}
+async function loadTrack(u,id){
+  try{
+    let s=await db.ref(`users/${u}/phones/${id}`).get();
+    if(!s.exists()) s=await db.ref(`users/${u}/repairs/${id}`).get();
+    let r=normalizePhone(id,s.val());
+    if(!r)throw Error();
+    $("#trackBox").innerHTML=`<div class="invBox"><h2>${esc(r.deviceName)}</h2><p>الزبون: ${esc(r.clientName)}</p><p>المشكلة: ${esc(r.problem)}</p><p>الحالة: <b>${statusText[r.status]||r.status}</b></p><p>الباقي: ${money(r.remaining)}</p></div>`
+  }catch(e){$("#trackBox").textContent="الرابط غير صالح"}
+}
 
 $("#loginTab").onclick=()=>tabs("login");$("#registerTab").onclick=()=>tabs("register");
 function tabs(t){$("#loginTab").classList.toggle("active",t==="login");$("#registerTab").classList.toggle("active",t==="register");$("#loginForm").classList.toggle("hidden",t!=="login");$("#registerForm").classList.toggle("hidden",t!=="register")}
 $("#registerForm").onsubmit=async e=>{e.preventDefault();let ownerName=$("#ownerName").value.trim(),shopName=$("#shopName").value.trim(),phone=$("#regPhone").value.trim(),email=$("#regEmail").value.trim(),pass=$("#regPassword").value,pass2=$("#regPassword2").value;if(!ownerName||!shopName||!phone||!email||!pass)return toast("أكمل الحقول");if(pass!==pass2)return toast("كلمة المرور غير متطابقة");try{let c=await auth.createUserWithEmailAndPassword(email,pass);await db.ref(`users/${c.user.uid}/profile`).set({ownerName,shopName,phone,email,address:"",logo:"",terms:[],theme:"light"});await phoneIndex(phone).set({uid:c.user.uid,email,phone,shopName})}catch(e){toast("تعذر إنشاء الحساب")}};
 $("#loginForm").onsubmit=async e=>{e.preventDefault();let id=$("#loginIdentity").value.trim(),pass=$("#loginPassword").value;if(!id||!pass)return toast("اكتب البيانات");try{let email=id;if(!id.includes("@")){let s=await phoneIndex(id).get();if(!s.exists())throw Error();email=s.val().email}await auth.signInWithEmailAndPassword(email,pass)}catch(e){toast("بيانات الدخول غير صحيحة")}};
 auth.onAuthStateChanged(u=>{if(tracking)return;currentUser=u;if(u){$("#authView").classList.add("hidden");$("#appView").classList.remove("hidden");listen()}else{$("#authView").classList.remove("hidden");$("#appView").classList.add("hidden")}});
-function listen(){root().child("profile").on("value",s=>{profile=s.val()||{};applyProfile();fillSettings()});root().child("phones").on("value",s=>{phones=s.val()||{};render()})}
+function listen(){
+  root().child("profile").on("value",s=>{profile=s.val()||{};applyProfile();fillSettings()});
+  root().child("phones").on("value",s=>{rawPhones=s.val()||{};mergeAndRender()});
+  root().child("repairs").on("value",s=>{rawRepairs=s.val()||{};mergeAndRender()});
+}
 function applyProfile(){$("#welcomeName").textContent=`أهلاً ${profile.ownerName||""}`;$("#welcomeShop").textContent=profile.shopName||"نظام إدارة الصيانة";document.body.dataset.theme=localStorage.theme||profile.theme||"light"}
+function normalizePhone(id,r){
+  if(!r)return null;
+  let isOld = r.customerName!==undefined || r.deviceModel!==undefined || r.repairPrice!==undefined || r.paidAmount!==undefined;
+  let price = num(r.price ?? r.repairPrice ?? r.repairPrice);
+  let paid = num(r.paid ?? r.paidAmount);
+  let remaining = r.remaining!==undefined ? num(r.remaining) : Math.max(0, price-paid);
+  let created = r.createdAt || Date.now();
+  let createdText = r.createdAtText || (typeof created==="number" ? formatDate(new Date(created)) : String(created).replace("T"," ").slice(0,16));
+  return {
+    _id:id,
+    deviceName: r.deviceName || r.deviceModel || r.brand || "هاتف",
+    clientName: r.clientName || r.customerName || "-",
+    clientPhone: r.clientPhone || r.customerPhone || "",
+    problem: r.problem || r.fault || "-",
+    price, paid, remaining,
+    notes: r.notes || r.diagnosis || "",
+    status: oldStatusMap[r.status] || r.status || "under",
+    createdAt: typeof created==="number" ? created : (Date.parse(created)||Date.now()),
+    createdAtText: createdText
+  }
+}
+function mergeAndRender(){
+  phones={};
+  Object.entries(rawRepairs||{}).forEach(([id,r])=>phones[id]=normalizePhone(id,r));
+  Object.entries(rawPhones||{}).forEach(([id,r])=>phones[id]=normalizePhone(id,r));
+  render();
+}
 function arr(){return Object.entries(phones).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0))}
 function render(){renderPhones();renderStats();renderTerms()}
 function calculate(){let total=num($("#repairPrice").value), paid=num($("#paidPrice").value), remEl=$("#remainPrice");if(total && paid){remEl.value=Math.max(0,total-paid)}else if(!remEl.value){remEl.value=0}}

@@ -14,3 +14,42 @@
 .invoiceWindow{width:min(760px,96vw);height:min(680px,94vh);background:var(--card);border:1px solid var(--line);border-radius:30px;box-shadow:var(--shadow);padding:12px;display:grid;grid-template-rows:44px 1fr 52px;gap:8px;overflow:hidden}.invoiceBtns{display:flex;justify-content:center;gap:8px}.invoice{height:100%;background:#fff;color:#1d1d1f;border:1px solid #e5e5ea;border-radius:22px;padding:14px;display:grid;grid-template-rows:74px 1fr 78px;gap:10px}.invHead{background:#f5f5f7;border-radius:18px;padding:12px;display:flex;justify-content:space-between;align-items:center}.invHead h2{margin:0;font-size:22px}.invBody{display:grid;grid-template-columns:1fr 155px;gap:10px;min-height:0}.invBox{border:1px solid #e5e5ea;border-radius:16px;padding:10px;background:#fff}.row{display:grid;grid-template-columns:105px 1fr;border-bottom:1px solid #f1f1f3;padding:5px 0;font-size:13px}.row b{color:#6e6e73}.qr{text-align:center}.qr img{width:130px;height:130px}.invFoot{border:1px solid #e5e5ea;border-radius:16px;padding:8px;font-size:12px;overflow:hidden}.toast{position:fixed;top:12px;left:12px;right:12px;margin:auto;max-width:430px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center;z-index:90;font-weight:900}
 @media print{body>*:not(#invoiceModal){display:none!important}#invoiceModal{display:block!important;position:static!important;background:white!important;padding:0!important}.invoiceWindow{width:100%!important;height:100vh!important;border:0!important;border-radius:0!important;padding:0!important}.noPrint,.invoiceBtns{display:none!important}.invoice{height:100vh!important;border:0!important;border-radius:0!important}}
 @media(max-width:720px){.top{height:64px;margin:8px 8px 0}.page{height:calc(100vh - 78px);padding:8px}.welcome{height:100px}.welcome h2{font-size:27px}.homeGrid{height:calc(100% - 108px);gap:8px}.homeCard{border-radius:26px}.list,.statsGrid,.settingsGrid{grid-template-columns:1fr}.list{height:calc(100% - 64px)}.tw{grid-template-columns:1fr 1fr}.sheet{height:94vh}.invoice{grid-template-rows:70px 1fr 86px}.invBody{grid-template-columns:1fr 118px}.qr img{width:100px;height:100px}}
+
+/* v23 compact polish */
+body{font-size:13px}
+.authBox{width:min(400px,96vw);height:min(590px,96vh);border-radius:28px;padding:18px;gap:8px}
+.authBox h1{font-size:28px}.authBox p{font-size:12px}
+.logo{width:64px;height:64px;border-radius:21px;font-size:30px}.logo.small{width:50px;height:50px;border-radius:17px;font-size:24px}
+input,select{height:40px;border-radius:14px;font-size:13px;padding:0 11px}
+.blue,.soft{height:40px;border-radius:14px;font-size:13px;padding:0 12px}
+.switch{height:42px;border-radius:16px}.switch button{font-size:13px}
+.top{height:60px;margin:8px 10px 0;border-radius:22px;padding:8px 12px}
+.top h1{font-size:21px}.top small{font-size:11px}
+.page{height:calc(100vh - 74px);padding:10px}
+.welcome{height:96px;border-radius:26px;padding:14px}.welcome h2{font-size:26px}
+.homeGrid{height:calc(100% - 106px);gap:10px}.homeCard{border-radius:28px;gap:8px}
+.homeCard span{width:56px;height:56px;border-radius:20px;font-size:26px}.homeCard b{font-size:17px}
+.toolbar{height:48px;margin-bottom:8px;grid-template-columns:1fr 115px}
+.list{height:calc(100% - 56px);gap:8px}
+.phoneCard,.statCard,.settingCard{border-radius:21px;padding:11px}
+.phoneCard{min-height:120px}.phoneCard h3{font-size:16px}.phoneCard p{font-size:12px;margin:4px 0}
+.badge{font-size:11px;padding:3px 8px}.actions{gap:5px;margin-top:6px}.actions button{height:29px;border-radius:10px;font-size:11px;padding:0 8px}
+.statCard b{font-size:23px}.settingCard b{font-size:17px}.settingCard span{font-size:12px}
+.sheet{width:min(560px,96vw);height:min(590px,94vh);border-radius:28px;padding:13px;gap:7px}
+.smallSheet{height:min(485px,92vh)}
+.sheetHead button{width:36px;height:36px;border-radius:12px}
+.termsList{height:calc(100% - 90px);gap:6px}.term{height:38px;border-radius:13px;font-size:12px}
+.invoiceWindow{width:min(740px,96vw);height:min(650px,94vh);border-radius:26px}
+.invoice{border-radius:20px;padding:12px;grid-template-rows:66px 1fr 70px}
+.invHead{border-radius:16px;padding:10px}.invHead h2{font-size:19px}
+.row{font-size:12px;padding:4px 0;grid-template-columns:92px 1fr}.qr img{width:118px;height:118px}
+.invFoot{font-size:11px}
+@media(max-width:720px){
+  .page{height:calc(100vh - 68px);padding:7px}
+  .top{height:58px;margin:6px 7px 0}.top h1{font-size:19px}
+  .welcome{height:88px;padding:12px}.welcome h2{font-size:23px}
+  .homeGrid{height:calc(100% - 96px);gap:7px}
+  .homeCard span{width:50px;height:50px;border-radius:18px;font-size:23px}.homeCard b{font-size:15px}
+  .list{gap:7px}.phoneCard{min-height:112px}
+  .sheet{height:92vh}.invoiceWindow{height:92vh}
+}

@@ -1,7 +1,7 @@
 {
   "name": "RepairOS Simple Apple",
   "short_name": "RepairOS",
-  "start_url": "./index.html?v=22",
+  "start_url": "./index.html?v=23",
   "display": "standalone",
   "background_color": "#f5f5f7",
   "theme_color": "#f5f5f7",
