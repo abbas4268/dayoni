@@ -86,3 +86,31 @@ async function addTerm(){let v=$("#newTerm").value.trim();if(!v)return;let terms
 function renderTerms(){let box=$("#termsList");if(!box)return;let terms=profile.terms||[];box.innerHTML=terms.map((t,i)=>`<div class="term"><span>${esc(t)}</span><button onclick="delTerm(${i})">حذف</button></div>`).join("")||"<p>لا توجد شروط</p>"}
 async function delTerm(i){let terms=profile.terms||[];terms.splice(i,1);await root().child("profile/terms").set(terms)}
 if("serviceWorker"in navigator)navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister()));
+
+
+/* v24 fixes */
+document.addEventListener("click", function(e){
+  const t=e.target.closest("[onclick]");
+  if(!t) return;
+});
+window.openTerms = function(){
+  renderTerms();
+  const m=document.getElementById("termsModal");
+  if(m) m.classList.remove("hidden");
+};
+window.closeTerms = function(){
+  const m=document.getElementById("termsModal");
+  if(m) m.classList.add("hidden");
+};
+window.openCompany = function(){
+  fillSettings();
+  const m=document.getElementById("companyModal");
+  if(m) m.classList.remove("hidden");
+};
+window.closeCompany = function(){
+  const m=document.getElementById("companyModal");
+  if(m) m.classList.add("hidden");
+};
+window.printInvoiceNow = function(){
+  setTimeout(()=>window.print(),120);
+};

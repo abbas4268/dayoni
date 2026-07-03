@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
   <meta name="theme-color" content="#f5f5f7">
   <title>RepairOS Simple</title>
-  <link rel="manifest" href="manifest.json?v=23">
-  <link rel="stylesheet" href="style.css?v=23">
+  <link rel="manifest" href="manifest.json?v=24">
+  <link rel="stylesheet" href="style.css?v=24">
 </head>
 <body data-theme="light">
   <div id="splash" class="splash"><div class="logo">R</div><b>RepairOS</b><span>Simple Apple Edition</span></div>
@@ -60,10 +60,10 @@
         <p id="welcomeShop">نظام إدارة الصيانة</p>
       </div>
       <div class="homeGrid">
-        <button class="homeCard" onclick="openAdd()" type="button"><span>＋</span><b>إضافة هاتف</b></button>
-        <button class="homeCard" onclick="goPage('phonesPage','قائمة الهواتف')" type="button"><span>▦</span><b>قائمة الهواتف</b></button>
-        <button class="homeCard" onclick="goPage('statsPage','الإحصائيات')" type="button"><span>◎</span><b>الإحصائيات</b></button>
-        <button class="homeCard" onclick="goPage('settingsPage','الإعدادات')" type="button"><span>⚙</span><b>الإعدادات</b></button>
+        <button class="homeCard" onclick="openAdd()" type="button"><span>📱</span><b>إضافة هاتف</b></button>
+        <button class="homeCard" onclick="goPage('phonesPage','قائمة الهواتف')" type="button"><span>🗂️</span><b>قائمة الهواتف</b></button>
+        <button class="homeCard" onclick="goPage('statsPage','الإحصائيات')" type="button"><span>📊</span><b>الإحصائيات</b></button>
+        <button class="homeCard" onclick="goPage('settingsPage','الإعدادات')" type="button"><span>⚙️</span><b>الإعدادات</b></button>
       </div>
     </section>
 
@@ -78,9 +78,9 @@
 
     <section id="settingsPage" class="page">
       <div class="settingsGrid">
-        <button class="settingCard" onclick="openCompany()" type="button"><b>تفاصيل الشركة</b><span>اسم، هاتف، عنوان، لوكو</span></button>
-        <button class="settingCard" onclick="openThemes()" type="button"><b>الثيمات</b><span>ألوان ومظهر</span></button>
-        <button class="settingCard" onclick="openTerms()" type="button"><b>شروط الفاتورة</b><span>إضافة وتعديل الشروط</span></button>
+        <button class="settingCard" onclick="openCompany()" type="button"><b>🏢 تفاصيل الشركة</b><span>اسم، هاتف، عنوان، لوكو</span></button>
+        <button class="settingCard" onclick="openThemes()" type="button"><b>🎨 الثيمات</b><span>ألوان ومظهر</span></button>
+        <button class="settingCard" onclick="openTerms()" type="button"><b>📜 شروط الفاتورة</b><span>إضافة وتعديل الشروط</span></button>
         <button class="settingCard danger" onclick="auth.signOut()" type="button"><b>تسجيل خروج</b><span>الخروج من الحساب</span></button>
       </div>
     </section>
@@ -154,7 +154,7 @@
     <div class="invoiceWindow">
       <div class="sheetHead noPrint"><b>الفاتورة</b><button type="button" onclick="closeInvoice()">×</button></div>
       <div id="invoicePreview"></div>
-      <div class="invoiceBtns noPrint"><button class="soft" onclick="closeInvoice()" type="button">إغلاق</button><button class="blue" onclick="window.print()" type="button">طباعة</button></div>
+      <div class="invoiceBtns noPrint"><button class="soft" onclick="closeInvoice()" type="button">إغلاق</button><button class="blue" onclick="printInvoiceNow()" type="button">طباعة</button></div>
     </div>
   </div>
 
@@ -163,7 +163,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-  <script src="firebase.js?v=23"></script>
-  <script src="app.js?v=23"></script>
+  <script src="firebase.js?v=24"></script>
+  <script src="app.js?v=24"></script>
 </body>
 </html>
