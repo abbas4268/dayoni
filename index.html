@@ -1,77 +1,56 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
   <title>عباس راضي | سجل صيانة الهواتف</title>
-  <meta name="description" content="موقع عباس راضي سجل صيانة الهواتف: إدارة الأجهزة، الزبائن، الفواتير، QR، متابعة واتساب، سجل زمني وإحصائيات." />
-  <meta name="keywords" content="عباس راضي, سجل الصيانة, صيانة الهواتف, الديوانية, فواتير صيانة, عباس راضي لصيانة الهواتف" />
-  <meta name="theme-color" content="#0f7b57" />
-  <meta property="og:title" content="عباس راضي | سجل صيانة الهواتف" />
-  <meta property="og:description" content="نظام احترافي لإدارة صيانة الهواتف والفواتير والمتابعة." />
-  <meta property="og:type" content="website" />
-  <link rel="canonical" href="https://abbas4268.github.io/dayoni/" />
-  <link rel="manifest" href="manifest.json?v=999" />
-  <link rel="stylesheet" href="style.css?v=999" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"عباس راضي | سجل صيانة الهواتف","description":"نظام وموقع لإدارة سجل صيانة الهواتف","areaServed":"الديوانية","url":"https://abbas4268.github.io/dayoni/"}</script>
+  <meta name="description" content="موقع عباس راضي لإدارة سجل صيانة الهواتف، الفواتير، متابعة الزبائن، الديون، والحالات عبر QR وواتساب.">
+  <meta name="keywords" content="عباس راضي, سجل الصيانة, صيانة هواتف, الديوانية, فواتير صيانة, متابعة هاتف">
+  <meta name="theme-color" content="#07140d">
+  <meta property="og:title" content="عباس راضي | سجل صيانة الهواتف">
+  <meta property="og:description" content="نظام احترافي لإدارة صيانة الهواتف والفواتير والمتابعة.">
+  <meta property="og:type" content="website">
+  <link rel="manifest" href="manifest.json?v=1001">
+  <link rel="stylesheet" href="style.css?v=1001">
 </head>
 <body>
-  <div id="splash" class="splash"><div class="brandMark">AR</div><h1>عباس راضي</h1><p>سجل صيانة الهواتف</p></div>
-
-  <main id="trackView" class="authWrap hidden">
-    <section class="authCard trackCard"><div class="brandMark">AR</div><h1>متابعة حالة الجهاز</h1><div id="trackBox"></div></section>
-  </main>
-
+  <div id="splash" class="splash"><div class="brandMark">ع</div><h1>عباس راضي</h1><p>سجل صيانة الهواتف</p></div>
+  <main id="trackView" class="authWrap hidden"><section class="authCard wide"><div class="brandMark small">ع</div><h1>متابعة حالة الجهاز</h1><div id="trackBox" class="trackBox"></div></section></main>
   <main id="authView" class="authWrap hidden">
     <section class="authCard">
-      <div class="brandMark">AR</div>
-      <h1>عباس راضي</h1><h2>سجل صيانة الهواتف</h2><p>نظام إدارة صيانة احترافي، سريع، ومرتب.</p>
-      <div class="seg"><button id="loginTab" class="active" type="button">دخول</button><button id="registerTab" type="button">حساب جديد</button></div>
-      <form id="loginForm" class="form"><input id="loginIdentity" placeholder="الإيميل أو رقم الهاتف"><input id="loginPassword" type="password" placeholder="كلمة المرور"><button class="primary">دخول</button></form>
-      <form id="registerForm" class="form hidden"><input id="ownerName" placeholder="اسم المالك"><input id="shopName" placeholder="اسم المحل"><input id="regPhone" placeholder="رقم الهاتف"><input id="regEmail" type="email" placeholder="الإيميل"><input id="regPassword" type="password" placeholder="كلمة المرور"><input id="regPassword2" type="password" placeholder="تكرار كلمة المرور"><button class="primary">إنشاء حساب</button></form>
+      <div class="brandMark">ع</div><h1>عباس راضي</h1><p>سجل صيانة الهواتف — نظام مرتب وسريع للمحل.</p>
+      <div class="tabs"><button id="loginTab" class="active" type="button">دخول</button><button id="registerTab" type="button">حساب جديد</button></div>
+      <form id="loginForm" class="form"><input id="loginIdentity" placeholder="الإيميل أو رقم الهاتف"><input id="loginPassword" type="password" placeholder="كلمة المرور"><button class="primary" type="submit">دخول</button></form>
+      <form id="registerForm" class="form hidden"><input id="ownerName" placeholder="اسمك"><input id="shopName" placeholder="اسم المحل"><input id="regPhone" placeholder="رقم الهاتف"><input id="regEmail" type="email" placeholder="الإيميل"><input id="regPassword" type="password" placeholder="كلمة المرور"><input id="regPassword2" type="password" placeholder="تكرار كلمة المرور"><button class="primary" type="submit">إنشاء حساب</button></form>
     </section>
   </main>
-
   <main id="appView" class="app hidden">
-    <header class="topbar">
-      <button id="menuBtn" class="iconBtn">☰</button>
-      <div class="titleBlock"><small>موقع عباس راضي</small><h1 id="pageTitle">سجل صيانة الهواتف</h1></div>
-      <button id="addQuick" class="iconBtn plus">＋</button>
-    </header>
-    <aside id="side" class="side">
-      <div class="sideBrand"><div class="brandMark small">AR</div><div><b>عباس راضي</b><span>RepairOS Ultimate</span></div></div>
-      <button data-page="home" class="nav active">🏠 الرئيسية</button><button data-page="devices" class="nav">📱 الأجهزة</button><button data-page="customers" class="nav">👤 الزبائن</button><button data-page="finance" class="nav">💰 الحسابات</button><button data-page="inventory" class="nav">📦 المخزون</button><button data-page="settings" class="nav">⚙️ الإعدادات</button>
-      <button id="logoutBtn" class="nav danger">🚪 تسجيل خروج</button>
-    </aside>
-    <div id="overlay" class="overlay hidden"></div>
-
-    <section id="home" class="page show">
-      <div class="hero"><div><span id="clock"></span><h2>عباس راضي</h2><h3>سجل صيانة الهواتف</h3><p id="welcomeText">لوحة إدارة محلك اليومية.</p></div><button id="newDeviceHero" class="primary">إضافة جهاز جديد</button></div>
-      <div id="alerts" class="alerts"></div>
-      <div id="stats" class="stats"></div>
-      <div class="sectionHead"><h3>آخر الأجهزة</h3><button data-page="devices" class="linkBtn">عرض الكل</button></div>
-      <div id="recentDevices" class="cards"></div>
+    <header class="topbar"><button id="backBtn" class="iconBtn hidden" type="button">‹</button><div class="mainTitle"><span>موقع عباس راضي</span><h1>سجل صيانة الهواتف</h1></div><button id="refreshBtn" class="iconBtn" type="button">↻</button></header>
+    <section id="homePage" class="page active">
+      <div class="hero"><div><span class="pill">لوحة التحكم</span><h2 id="welcomeName">أهلاً عباس</h2><p id="welcomeShop">سجل صيانة الهواتف</p></div><div class="clock" id="liveClock">--:--</div></div>
+      <div id="quickStats" class="quickStats"></div>
+      <div class="gridMenu">
+        <button data-open-phone class="menuCard"><i>📱</i><b>إضافة هاتف</b><span>تسجيل جهاز جديد</span></button>
+        <button data-page="devicesPage" class="menuCard"><i>🗂️</i><b>قائمة الهواتف</b><span>بحث وتعديل وفواتير</span></button>
+        <button data-page="statsPage" class="menuCard"><i>📊</i><b>الإحصائيات</b><span>الأرباح والديون</span></button>
+        <button data-page="settingsPage" class="menuCard"><i>⚙️</i><b>الإعدادات</b><span>الشركة والثيمات</span></button>
+      </div>
+      <div class="sectionTitle"><b>مهام اليوم</b><span id="todayHint">—</span></div><div id="todayTasks" class="taskList"></div>
     </section>
-
-    <section id="devices" class="page"><div class="toolbar"><input id="search" placeholder="بحث: اسم، رقم، IMEI، جهاز، حالة..."><select id="filter"><option value="all">كل الحالات</option></select></div><div id="devicesList" class="cards"></div></section>
-    <section id="customers" class="page"><div id="customersList" class="cards"></div></section>
-    <section id="finance" class="page"><div id="financeBox" class="stats"></div><div id="debtList" class="cards"></div></section>
-    <section id="inventory" class="page"><div class="sectionHead"><h3>قطع الغيار</h3><button id="addPartBtn" class="primary smallBtn">إضافة قطعة</button></div><div id="partsList" class="cards"></div></section>
-    <section id="settings" class="page"><div class="settingsGrid"><button id="companyBtn" class="setting">🏢 تفاصيل المحل</button><button id="termsBtn" class="setting">📜 شروط الفاتورة</button><button id="backupBtn" class="setting">⬇️ نسخ احتياطي JSON</button><button id="themeBtn" class="setting">🌙 تغيير المظهر</button></div></section>
+    <section id="devicesPage" class="page"><div class="tools"><input id="searchInput" placeholder="بحث: اسم، رقم، جهاز، IMEI..."><select id="statusFilter"></select></div><div id="devicesList" class="cards"></div></section>
+    <section id="statsPage" class="page"><div id="statsGrid" class="statsGrid"></div></section>
+    <section id="settingsPage" class="page"><div class="settingsGrid"><button class="settingTile" data-modal="companyModal"><b>🏢 تفاصيل المحل</b><span>الاسم، الهاتف، العنوان</span></button><button class="settingTile" data-modal="termsModal"><b>📜 شروط الفاتورة</b><span>تضاف تلقائياً للفاتورة</span></button><button class="settingTile" id="themeBtn"><b>🌙 تبديل الثيم</b><span>داكن / فاتح</span></button><button class="settingTile danger" id="logoutBtn"><b>🚪 خروج</b><span>تسجيل خروج من الحساب</span></button></div></section>
   </main>
-
-  <div id="deviceModal" class="modal hidden"><form id="deviceForm" class="sheet"><div class="sheetHead"><b id="deviceModalTitle">إضافة جهاز</b><button type="button" data-close>×</button></div><input id="editId" type="hidden"><div class="grid2"><input id="clientName" required placeholder="اسم الزبون"><input id="clientPhone" placeholder="رقم الزبون"></div><div class="grid2"><input id="deviceName" required placeholder="نوع الجهاز"><input id="brand" placeholder="الشركة"></div><div class="grid2"><input id="imei" placeholder="IMEI / Serial"><input id="color" placeholder="اللون"></div><input id="passcode" placeholder="رمز الجهاز اختياري"><textarea id="problem" placeholder="العطل / المشكلة"></textarea><textarea id="diagnosis" placeholder="التشخيص والملاحظات الداخلية"></textarea><input id="accessories" placeholder="الملحقات: شاحن، كفر، شريحة..."><div class="grid3"><input id="price" inputmode="numeric" placeholder="السعر"><input id="paid" inputmode="numeric" placeholder="الواصل"><input id="remaining" inputmode="numeric" placeholder="الباقي"></div><div class="grid2"><select id="status"></select><input id="technician" placeholder="الفني المسؤول"></div><button class="primary">حفظ الجهاز</button></form></div>
-
-  <div id="detailsModal" class="modal hidden"><div class="sheet big"><div class="sheetHead"><b>تفاصيل الجهاز</b><button type="button" data-close>×</button></div><div id="detailsBox"></div></div></div>
-  <div id="invoiceModal" class="modal hidden"><div class="invoiceWindow"><div class="sheetHead noPrint"><b>الفاتورة</b><button type="button" data-close>×</button></div><div id="invoiceBox"></div><div class="invoiceActions noPrint"><button id="printBtn" class="primary">طباعة</button><button id="sendInvoiceBtn" class="ghost">واتساب</button></div></div></div>
-  <div id="companyModal" class="modal hidden"><form id="companyForm" class="sheet"><div class="sheetHead"><b>تفاصيل المحل</b><button type="button" data-close>×</button></div><input id="setShop" placeholder="اسم المحل"><input id="setOwner" placeholder="اسم المالك"><input id="setPhone" placeholder="رقم الهاتف"><input id="setAddress" placeholder="العنوان"><button class="primary">حفظ</button></form></div>
-  <div id="termsModal" class="modal hidden"><div class="sheet"><div class="sheetHead"><b>شروط الفاتورة</b><button type="button" data-close>×</button></div><div class="addRow"><input id="newTerm" placeholder="اكتب شرط"><button id="addTermBtn" class="primary">إضافة</button></div><div id="termsList"></div></div></div>
-  <div id="partModal" class="modal hidden"><form id="partForm" class="sheet"><div class="sheetHead"><b>إضافة قطعة</b><button type="button" data-close>×</button></div><input id="partName" placeholder="اسم القطعة"><input id="partQty" inputmode="numeric" placeholder="العدد"><input id="partCost" inputmode="numeric" placeholder="سعر الشراء"><button class="primary">حفظ</button></form></div>
+  <div id="deviceModal" class="modal hidden"><form id="deviceForm" class="sheet"><div class="sheetHead"><b id="deviceModalTitle">إضافة هاتف</b><button type="button" data-close>×</button></div><input id="editingId" type="hidden"><div class="two"><input id="customerName" placeholder="اسم الزبون"><input id="customerPhone" placeholder="رقم الزبون"></div><div class="two"><input id="deviceName" placeholder="نوع الجهاز"><input id="deviceBrand" placeholder="الشركة / الموديل"></div><div class="two"><input id="deviceColor" placeholder="اللون"><input id="imei" placeholder="IMEI / serial"></div><input id="problem" placeholder="العطل"><input id="accessories" placeholder="الملحقات: شاحن، كفر، ذاكرة..."><div class="two"><input id="price" inputmode="numeric" placeholder="السعر"><input id="paid" inputmode="numeric" placeholder="الواصل"></div><input id="remaining" inputmode="numeric" placeholder="الباقي"><select id="statusSelect"></select><input id="expectedDate" type="date"><textarea id="notes" placeholder="ملاحظات داخلية"></textarea><button class="primary" type="submit">حفظ الجهاز</button></form></div>
+  <div id="statusModal" class="modal hidden"><div class="sheet"><div class="sheetHead"><b>تغيير الحالة</b><button type="button" data-close>×</button></div><input id="statusDeviceId" type="hidden"><div id="statusChoices" class="statusChoices"></div><textarea id="statusNote" placeholder="ملاحظة اختيارية للحالة"></textarea></div></div>
+  <div id="invoiceModal" class="modal hidden"><div class="invoiceWindow"><div class="sheetHead noPrint"><b>الفاتورة</b><button type="button" data-close>×</button></div><div id="invoiceBox"></div><div class="invoiceActions noPrint"><button class="ghost" type="button" data-close>إغلاق</button><button class="primary" type="button" id="printBtn">طباعة</button></div></div></div>
+  <div id="companyModal" class="modal hidden"><form id="companyForm" class="sheet"><div class="sheetHead"><b>تفاصيل المحل</b><button type="button" data-close>×</button></div><input id="setShop" placeholder="اسم المحل"><input id="setOwner" placeholder="اسم المالك"><input id="setPhone" placeholder="هاتف المحل"><input id="setAddress" placeholder="العنوان"><button class="primary" type="submit">حفظ</button></form></div>
+  <div id="termsModal" class="modal hidden"><div class="sheet"><div class="sheetHead"><b>شروط الفاتورة</b><button type="button" data-close>×</button></div><div class="addTerm"><input id="newTerm" placeholder="اكتب شرط جديد"><button id="addTermBtn" class="primary" type="button">إضافة</button></div><div id="termsList" class="termsList"></div></div></div>
   <div id="toast" class="toast hidden"></div>
-
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-  <script src="firebase.js?v=999"></script><script src="app.js?v=999"></script>
+  <script src="firebase.js?v=1001"></script>
+  <script src="app.js?v=1001"></script>
 </body>
 </html>

@@ -1,13 +1,12 @@
 {
-  "name":"عباس راضي | سجل صيانة الهواتف",
-  "short_name":"Abbas RepairOS",
-  "description":"نظام عباس راضي لإدارة سجل صيانة الهواتف والفواتير والمتابعة عبر واتساب.",
-  "start_url":"./index.html?v=999",
-  "scope":"./",
-  "display":"standalone",
-  "background_color":"#07110d",
-  "theme_color":"#0f7b57",
-  "dir":"rtl",
-  "lang":"ar",
-  "icons":[]
+  "name": "عباس راضي - سجل صيانة الهواتف",
+  "short_name": "سجل الصيانة",
+  "start_url": "./index.html?v=1001",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#07140d",
+  "theme_color": "#07140d",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": []
 }
