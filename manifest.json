@@ -1,7 +1,7 @@
 {
   "name": "عباس راضي - سجل صيانة الهواتف",
   "short_name": "سجل الصيانة",
-  "start_url": "./index.html?v=1001",
+  "start_url": "./index.html?v=1002",
   "scope": "./",
   "display": "standalone",
   "background_color": "#07140d",
