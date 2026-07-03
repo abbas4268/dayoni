@@ -174,7 +174,7 @@ function boot() {
   });
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js?v=2001').catch(() => {});
+    navigator.serviceWorker.register('sw.js?v=3001').catch(() => {});
   }
 }
 
@@ -423,6 +423,11 @@ function renderStats() {
     ['debt', 'الديون', money(totals.rem)],
     ['debt', 'متوسط الباقي', totals.count ? money(Math.round(totals.rem / totals.count)) : money(0)]
   ];
+
+
+  const score = Math.max(35, Math.min(100, 100 - (totals.rem > 0 ? 14 : 0) - (filterList('late').length * 7) + (totals.ready ? 4 : 0)));
+  const hs = $('#healthScore');
+  if (hs) hs.innerHTML = `<b>${score}%</b><span>${score >= 85 ? 'ممتاز' : score >= 65 ? 'جيد يحتاج متابعة' : 'يحتاج ترتيب'}</span>`;
 
   $('#statsGrid').innerHTML = cards.map(x =>
     `<button type="button" class="statCard smartCard" onclick="openSmartList('${x[0]}','${x[1]}')">
