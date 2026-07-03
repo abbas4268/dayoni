@@ -3,63 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
-  <meta name="theme-color" content="#0b1020" />
-  <meta name="description" content="موقع عباس راضي سجل الصيانة - نظام احترافي لإدارة صيانة الهواتف والفواتير ومتابعة الزبائن عبر واتساب." />
-  <meta name="keywords" content="موقع عباس راضي, سجل الصيانة, صيانة هواتف, عباس راضي, الديوانية, فواتير صيانة, متابعة صيانة الهاتف" />
-  <meta name="author" content="عباس راضي" />
-  <meta property="og:title" content="موقع عباس راضي - سجل الصيانة" />
-  <meta property="og:description" content="سجل صيانة احترافي للهواتف مع فواتير وباركود ومتابعة زبائن عبر واتساب." />
+  <meta name="theme-color" content="#07110d" />
+  <meta name="description" content="موقع عباس راضي - سجل صيانة الهواتف لإدارة أجهزة الصيانة والفواتير والمتابعة عبر واتساب." />
+  <meta name="keywords" content="عباس راضي, سجل الصيانة, صيانة هواتف, الديوانية, Abbas RepairOS" />
+  <meta property="og:title" content="عباس راضي | سجل صيانة الهواتف" />
+  <meta property="og:description" content="نظام احترافي لإدارة صيانة الهواتف والفواتير والمتابعة." />
   <meta property="og:type" content="website" />
-  <title>موقع عباس راضي - سجل الصيانة</title>
-  <link rel="manifest" href="manifest.json?v=101" />
-  <link rel="stylesheet" href="style.css?v=101" />
+  <title>عباس راضي | سجل صيانة الهواتف</title>
+  <link rel="manifest" href="manifest.json?v=200" />
+  <link rel="stylesheet" href="style.css?v=200" />
 </head>
-<body data-theme="royal">
-  <div id="splash" class="splash">
-    <div class="brandMark">R</div>
-    <b>موقع عباس راضي</b>
-    <span>سجل الصيانة الاحترافي</span>
-  </div>
+<body>
+  <div id="splash" class="splash"><div class="brandMark">AR</div><h1>عباس راضي</h1><p>سجل صيانة الهواتف</p></div>
 
-  <main id="trackView" class="centerScreen hidden">
+  <main id="trackView" class="authScreen hidden">
     <section class="authCard trackCard">
-      <div class="brandMark small">R</div>
-      <h1>متابعة حالة الهاتف</h1>
-      <p>امسح الباركود أو افتح الرابط لمتابعة آخر تحديث.</p>
-      <div id="trackBox" class="trackBox"></div>
+      <div class="brandMark sm">AR</div>
+      <h1>متابعة حالة الجهاز</h1>
+      <div id="trackBox"></div>
     </section>
   </main>
 
-  <main id="authView" class="centerScreen hidden">
+  <main id="authView" class="authScreen hidden">
     <section class="authCard">
-      <div class="brandMark">R</div>
-      <h1>موقع عباس راضي</h1>
-      <p>سجل الصيانة الاحترافي لإدارة الهواتف والفواتير والمتابعة.</p>
-
-      <div class="tabs" role="tablist">
-        <button id="loginTab" class="active" type="button">تسجيل دخول</button>
-        <button id="registerTab" type="button">حساب جديد</button>
-      </div>
-
-      <form id="loginForm" class="form" autocomplete="on">
-        <label>الإيميل أو رقم الهاتف</label>
-        <input id="loginIdentity" autocomplete="username" placeholder="مثال: 0780... أو email@mail.com" />
-        <label>كلمة المرور</label>
-        <input id="loginPassword" type="password" autocomplete="current-password" placeholder="كلمة المرور" />
+      <div class="brandMark">AR</div>
+      <h1>عباس راضي</h1>
+      <h2>سجل صيانة الهواتف</h2>
+      <p>نظام إدارة صيانة نظيف، سريع، وفخم.</p>
+      <div class="tabs"><button id="loginTab" class="active" type="button">دخول</button><button id="registerTab" type="button">حساب جديد</button></div>
+      <form id="loginForm" class="form">
+        <input id="loginIdentity" placeholder="الإيميل أو رقم الهاتف" autocomplete="username" />
+        <input id="loginPassword" type="password" placeholder="كلمة المرور" autocomplete="current-password" />
         <button class="primary" type="submit">دخول</button>
       </form>
-
-      <form id="registerForm" class="form hidden" autocomplete="on">
-        <div class="two">
-          <div><label>اسم المالك</label><input id="ownerName" placeholder="عباس راضي" /></div>
-          <div><label>اسم المحل</label><input id="shopName" placeholder="اسم مركز الصيانة" /></div>
-        </div>
-        <label>رقم الهاتف</label><input id="regPhone" inputmode="tel" placeholder="0780..." />
-        <label>الإيميل</label><input id="regEmail" type="email" autocomplete="email" placeholder="email@mail.com" />
-        <div class="two">
-          <div><label>كلمة المرور</label><input id="regPassword" type="password" autocomplete="new-password" /></div>
-          <div><label>تكرارها</label><input id="regPassword2" type="password" autocomplete="new-password" /></div>
-        </div>
+      <form id="registerForm" class="form hidden">
+        <input id="ownerName" placeholder="اسمك" />
+        <input id="shopName" placeholder="اسم المحل" />
+        <input id="regPhone" placeholder="رقم الهاتف" inputmode="tel" />
+        <input id="regEmail" type="email" placeholder="الإيميل" />
+        <input id="regPassword" type="password" placeholder="كلمة المرور" />
+        <input id="regPassword2" type="password" placeholder="تكرار كلمة المرور" />
         <button class="primary" type="submit">إنشاء حساب</button>
       </form>
     </section>
@@ -67,152 +50,98 @@
 
   <main id="appView" class="app hidden">
     <header class="topBar">
-      <button id="backBtn" class="iconBtn hidden" type="button">‹</button>
-      <div class="titleBox brandTitle">
-        <small id="topSub">موقع عباس راضي</small>
-        <h1 id="topTitle">سجل الصيانة</h1>
-      </div>
-      <button id="quickAddBtn" class="iconBtn" type="button">＋</button>
+      <div class="titleBlock"><strong>عباس راضي</strong><span>سجل صيانة الهواتف</span></div>
+      <div class="topActions"><button id="backBtn" class="soft hidden" type="button">رجوع</button><button id="logoutBtn" class="soft" type="button">خروج</button></div>
     </header>
 
     <section id="homePage" class="page show">
-      <section class="heroCard">
-        <div>
-          <span class="pill">لوحة التحكم</span>
-          <h2 id="welcomeName">أهلاً</h2>
-          <p id="welcomeShop">نظام إدارة الصيانة</p>
-        </div>
-        <div class="heroGlow">PRO</div>
-      </section>
-
-      <section id="miniStats" class="miniStats"></section>
-
-      <section class="homeGrid">
-        <button class="homeTile" data-open-phone type="button"><i>📱</i><b>إضافة هاتف</b><span>تسجيل جهاز جديد</span></button>
-        <button class="homeTile" data-page="phonesPage" data-title="قائمة الهواتف" type="button"><i>🗂️</i><b>قائمة الهواتف</b><span>بحث وتعديل وفواتير</span></button>
-        <button class="homeTile" data-page="statsPage" data-title="الإحصائيات" type="button"><i>📊</i><b>الإحصائيات</b><span>الأرباح والديون</span></button>
-        <button class="homeTile" data-page="settingsPage" data-title="الإعدادات" type="button"><i>⚙️</i><b>الإعدادات</b><span>الشركة والثيمات</span></button>
-      </section>
+      <div class="hero">
+        <div><span id="clockNow">--:--</span><h1>موقع عباس راضي</h1><p id="welcomeShop">سجل الصيانة</p></div>
+        <button class="primary addHero" id="addPhoneBtn" type="button">+ إضافة جهاز</button>
+      </div>
+      <div id="todayTasks" class="alertBox"></div>
+      <div id="dashStats" class="statsGrid"></div>
+      <div class="mainGrid">
+        <button data-page="phonesPage" class="navTile"><i>📱</i><b>الأجهزة</b><span>بحث وتعديل وفاتورة</span></button>
+        <button data-page="customersPage" class="navTile"><i>👥</i><b>الزبائن</b><span>ملف لكل زبون</span></button>
+        <button data-page="statsPage" class="navTile"><i>📊</i><b>الإحصائيات</b><span>أرباح وديون</span></button>
+        <button data-page="settingsPage" class="navTile"><i>⚙️</i><b>الإعدادات</b><span>الشركة والشروط</span></button>
+      </div>
     </section>
 
     <section id="phonesPage" class="page">
-      <div class="toolsBar">
-        <input id="searchPhone" placeholder="بحث باسم الزبون، الهاتف، الرقم، المشكلة..." />
-        <select id="filterStatus">
-          <option value="all">الكل</option>
-          <option value="under">تحت الصيانة</option>
-          <option value="done">تم الاكتمال</option>
-          <option value="delivered">تم التسليم</option>
-          <option value="rejected">مرفوض</option>
-        </select>
-      </div>
+      <div class="sectionHead"><h2>الأجهزة</h2><button class="primary" id="addPhoneBtn2" type="button">إضافة</button></div>
+      <div class="tools"><input id="searchPhone" placeholder="بحث: اسم، رقم، IMEI، جهاز، فاتورة..." /><select id="filterStatus"></select></div>
       <div id="phonesList" class="cardsList"></div>
     </section>
 
-    <section id="statsPage" class="page">
-      <div id="statsBox" class="statsGrid"></div>
-    </section>
-
+    <section id="customersPage" class="page"><div class="sectionHead"><h2>الزبائن</h2></div><div id="customersList" class="cardsList"></div></section>
+    <section id="statsPage" class="page"><div class="sectionHead"><h2>الإحصائيات</h2></div><div id="bigStats" class="statsGrid big"></div></section>
     <section id="settingsPage" class="page">
+      <div class="sectionHead"><h2>الإعدادات</h2></div>
       <div class="settingsGrid">
-        <button class="settingTile" id="companyBtn" type="button"><b>🏢 تفاصيل الشركة</b><span>اسم المحل، الهاتف، العنوان، اللوكو</span></button>
-        <button class="settingTile" id="themesBtn" type="button"><b>🎨 الثيمات</b><span>تغيير المظهر بالكامل</span></button>
-        <button class="settingTile" id="termsBtn" type="button"><b>📜 شروط الفاتورة</b><span>تظهر أسفل كل فاتورة</span></button>
-        <button class="settingTile" id="backupBtn" type="button"><b>⬇️ نسخة احتياطية</b><span>تنزيل بيانات الهواتف JSON</span></button>
-        <button class="settingTile danger" id="logoutBtn" type="button"><b>🚪 تسجيل خروج</b><span>الخروج من الحساب</span></button>
+        <button id="openCompanyBtn" class="settingTile"><b>🏢 تفاصيل المحل</b><span>الاسم، الهاتف، العنوان</span></button>
+        <button id="openTermsBtn" class="settingTile"><b>📜 شروط الفاتورة</b><span>تظهر داخل الفاتورة</span></button>
+        <button id="exportBtn" class="settingTile"><b>💾 نسخة احتياطية</b><span>تصدير JSON</span></button>
+        <button id="installBtn" class="settingTile"><b>📲 تثبيت كتطبيق</b><span>PWA</span></button>
       </div>
     </section>
   </main>
 
-  <div id="phoneModal" class="modal hidden" aria-hidden="true">
-    <form id="phoneForm" class="sheet">
-      <div class="sheetHead"><b id="phoneModalTitle">إضافة هاتف</b><button type="button" data-close="phoneModal">×</button></div>
-      <input id="editingId" type="hidden" />
-      <div class="two">
-        <div><label>اسم الهاتف</label><input id="deviceName" placeholder="iPhone 13 Pro" /></div>
-        <div><label>اسم الزبون</label><input id="clientName" placeholder="اسم الزبون" /></div>
-      </div>
-      <label>رقم الزبون</label><input id="clientPhone" inputmode="tel" placeholder="0780..." />
-      <label>العطل / المشكلة</label><textarea id="problem" placeholder="اكتب المشكلة بوضوح"></textarea>
-      <div class="three">
-        <div><label>السعر</label><input id="repairPrice" inputmode="numeric" placeholder="0" /></div>
-        <div><label>الواصل</label><input id="paidPrice" inputmode="numeric" placeholder="0" /></div>
-        <div><label>الباقي</label><input id="remainPrice" inputmode="numeric" placeholder="0" /></div>
-      </div>
-      <div class="two">
-        <div><label>الحالة</label><select id="status"><option value="under">تحت الصيانة</option><option value="done">تم الاكتمال</option><option value="delivered">تم التسليم</option><option value="rejected">مرفوض</option></select></div>
-        <div><label>التاريخ</label><input id="createdAtText" /></div>
-      </div>
-      <label>ملاحظات</label><textarea id="notes" placeholder="ملاحظات داخلية أو تفاصيل إضافية"></textarea>
-      <button class="primary" type="submit">حفظ الهاتف</button>
-    </form>
-  </div>
+  <div id="phoneModal" class="modal hidden"><form id="phoneForm" class="sheet">
+    <div class="sheetHead"><b id="phoneModalTitle">إضافة جهاز</b><button type="button" data-close="phoneModal">×</button></div>
+    <input id="editingId" type="hidden" />
+    <div class="two"><input id="clientName" placeholder="اسم الزبون" required /><input id="clientPhone" placeholder="رقم الزبون" inputmode="tel" /></div>
+    <div class="two"><input id="deviceName" placeholder="اسم الجهاز" required /><input id="brand" placeholder="الشركة" /></div>
+    <div class="two"><input id="imei" placeholder="IMEI / سيريال" /><input id="color" placeholder="اللون" /></div>
+    <input id="passcode" placeholder="رمز/نمط الجهاز اختياري" />
+    <input id="problem" placeholder="العطل" />
+    <input id="accessories" placeholder="الملحقات: شاحن، كفر، شريحة..." />
+    <div class="two"><input id="repairPrice" inputmode="numeric" placeholder="السعر" /><input id="paidPrice" inputmode="numeric" placeholder="الواصل" /></div>
+    <input id="remainPrice" inputmode="numeric" placeholder="الباقي" />
+    <textarea id="notes" placeholder="ملاحظات داخلية"></textarea>
+    <div class="two"><select id="status"></select><input id="createdAtText" placeholder="تاريخ الاستلام" /></div>
+    <button class="primary" type="submit">حفظ الجهاز</button>
+  </form></div>
 
-  <div id="statusModal" class="modal hidden" aria-hidden="true">
-    <div class="sheet smallSheet">
-      <div class="sheetHead"><b>تغيير الحالة</b><button type="button" data-close="statusModal">×</button></div>
-      <input id="statusEditingId" type="hidden" />
-      <div class="statusChoices">
-        <button class="statusPick under" data-status="under" type="button"><span>🔧</span><b>تحت الصيانة</b></button>
-        <button class="statusPick done" data-status="done" type="button"><span>✅</span><b>تم الاكتمال</b></button>
-        <button class="statusPick delivered" data-status="delivered" type="button"><span>📦</span><b>تم التسليم</b></button>
-        <button class="statusPick rejected" data-status="rejected" type="button"><span>⛔</span><b>مرفوض</b></button>
-      </div>
-    </div>
-  </div>
+  <div id="detailsModal" class="modal hidden"><div class="sheet wideSheet">
+    <div class="sheetHead"><b>تفاصيل الجهاز</b><button type="button" data-close="detailsModal">×</button></div>
+    <div id="detailsBox"></div>
+  </div></div>
 
-  <div id="companyModal" class="modal hidden" aria-hidden="true">
-    <form id="companyForm" class="sheet smallSheet">
-      <div class="sheetHead"><b>تفاصيل الشركة</b><button type="button" data-close="companyModal">×</button></div>
-      <label>اسم الشركة / المحل</label><input id="setCompany" />
-      <label>اسم المالك</label><input id="setOwner" />
-      <label>رقم الهاتف</label><input id="setCompanyPhone" inputmode="tel" />
-      <label>العنوان</label><input id="setAddress" />
-      <label>رابط اللوكو اختياري</label><input id="setLogo" placeholder="https://..." />
-      <button class="primary" type="submit">حفظ التفاصيل</button>
-    </form>
-  </div>
+  <div id="statusModal" class="modal hidden"><div class="sheet">
+    <div class="sheetHead"><b>تغيير الحالة</b><button type="button" data-close="statusModal">×</button></div>
+    <input id="statusEditingId" type="hidden" />
+    <textarea id="statusNote" placeholder="ملاحظة اختيارية مع تغيير الحالة"></textarea>
+    <div id="statusChoices" class="statusChoices"></div>
+  </div></div>
 
-  <div id="themesModal" class="modal hidden" aria-hidden="true">
-    <div class="sheet smallSheet">
-      <div class="sheetHead"><b>الثيمات</b><button type="button" data-close="themesModal">×</button></div>
-      <div class="themeGrid">
-        <button data-theme-pick="royal" type="button">Royal Black</button>
-        <button data-theme-pick="light" type="button">Clean Light</button>
-        <button data-theme-pick="gold" type="button">Gold Luxury</button>
-        <button data-theme-pick="blue" type="button">Blue Tech</button>
-        <button data-theme-pick="green" type="button">Emerald</button>
-        <button data-theme-pick="purple" type="button">Purple Pro</button>
-      </div>
-    </div>
-  </div>
+  <div id="invoiceModal" class="modal hidden"><div class="invoiceWindow">
+    <div class="sheetHead noPrint"><b>الفاتورة</b><button type="button" data-close="invoiceModal">×</button></div>
+    <div id="invoicePreview"></div>
+    <div class="invoiceActions noPrint"><button class="soft" data-close="invoiceModal" type="button">إغلاق</button><button class="primary" id="printBtn" type="button">طباعة</button><button class="primary" id="sendInvoiceWhatsapp" type="button">إرسال واتساب</button></div>
+  </div></div>
 
-  <div id="termsModal" class="modal hidden" aria-hidden="true">
-    <div class="sheet smallSheet">
-      <div class="sheetHead"><b>شروط الفاتورة</b><button type="button" data-close="termsModal">×</button></div>
-      <div class="addTerm"><input id="newTerm" placeholder="مثال: لا يتحمل المحل مسؤولية الأجهزة المتروكة أكثر من 30 يوم" /><button class="primary" id="addTermBtn" type="button">إضافة</button></div>
-      <div id="termsList" class="termsList"></div>
-    </div>
-  </div>
+  <div id="companyModal" class="modal hidden"><form id="companyForm" class="sheet">
+    <div class="sheetHead"><b>تفاصيل المحل</b><button type="button" data-close="companyModal">×</button></div>
+    <input id="setShop" placeholder="اسم المحل" />
+    <input id="setOwner" placeholder="اسم المالك" />
+    <input id="setPhone" placeholder="رقم المحل" />
+    <input id="setAddress" placeholder="العنوان" />
+    <button class="primary" type="submit">حفظ</button>
+  </form></div>
 
-  <div id="invoiceModal" class="modal hidden" aria-hidden="true">
-    <div class="invoiceWindow">
-      <div class="sheetHead noPrint"><b>الفاتورة</b><button type="button" data-close="invoiceModal">×</button></div>
-      <div id="invoicePreview"></div>
-      <div class="invoiceActions noPrint">
-        <button class="ghost" id="copyTrackBtn" type="button">نسخ رابط المتابعة</button>
-        <button class="ghost" id="shareWhatsBtn" type="button">واتساب</button>
-        <button class="primary" id="printInvoiceBtn" type="button">طباعة</button>
-      </div>
-    </div>
-  </div>
+  <div id="termsModal" class="modal hidden"><div class="sheet">
+    <div class="sheetHead"><b>شروط الفاتورة</b><button type="button" data-close="termsModal">×</button></div>
+    <div class="addTerm"><input id="newTerm" placeholder="اكتب شرط جديد" /><button id="addTermBtn" class="primary" type="button">إضافة</button></div>
+    <div id="termsList" class="termsList"></div>
+  </div></div>
 
   <div id="toast" class="toast hidden"></div>
-
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-  <script src="firebase.js?v=101"></script>
-  <script src="app.js?v=101"></script>
+  <script src="firebase.js?v=200"></script>
+  <script src="app.js?v=200"></script>
 </body>
 </html>

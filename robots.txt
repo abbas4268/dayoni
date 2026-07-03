@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://abbas4268.github.io/dayoni/sitemap.xml
