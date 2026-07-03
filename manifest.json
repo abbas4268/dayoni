@@ -1,7 +1,7 @@
 {
-  "name": "RepairOS Pro",
-  "short_name": "RepairOS",
-  "start_url": "./index.html?v=100",
+  "name": "موقع عباس راضي - سجل الصيانة",
+  "short_name": "سجل الصيانة",
+  "start_url": "./index.html?v=101",
   "display": "standalone",
   "background_color": "#0b1020",
   "theme_color": "#0b1020",

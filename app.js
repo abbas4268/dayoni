@@ -20,6 +20,10 @@ function toast(msg){const t=$('#toast'); if(!t)return; t.textContent=msg; t.clas
 function show(id){const el=$('#'+id); if(el){el.classList.remove('hidden');el.setAttribute('aria-hidden','false')}}
 function hide(id){const el=$('#'+id); if(el){el.classList.add('hidden');el.setAttribute('aria-hidden','true')}}
 function formatDate(d=new Date()){const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`}
+function msDate(v){if(!v) return 0; if(typeof v==='number') return v; const t=Date.parse(String(v).replace(' ','T')); return isNaN(t)?0:t}
+function niceDate(v){const t=msDate(v); return t?formatDate(new Date(t)):'-' }
+function daysSince(v){const t=msDate(v); return t?Math.max(0,Math.floor((Date.now()-t)/86400000)):0}
+function waNumber(v){let n=clean(v); if(n.startsWith('0')) n='964'+n.slice(1); return n}
 
 window.addEventListener('load',()=>setTimeout(()=>$('#splash')?.classList.add('hidden'),450));
 
@@ -131,8 +135,8 @@ function listen(){
 
 function applyProfile(){
   $('#welcomeName').textContent=`أهلاً ${profile.ownerName||''}`.trim();
-  $('#welcomeShop').textContent=profile.shopName||'نظام إدارة الصيانة';
-  $('#topSub').textContent=profile.shopName||'RepairOS Pro';
+  $('#welcomeShop').textContent=profile.shopName||'سجل الصيانة';
+  $('#topSub').textContent='موقع عباس راضي';
   document.body.dataset.theme=localStorage.getItem('repair_theme')||profile.theme||'royal';
 }
 
@@ -142,7 +146,17 @@ function normalizePhone(id,r){
   const paid=num(r.paid ?? r.paidAmount ?? r.received);
   const remaining=r.remaining!==undefined?num(r.remaining):Math.max(0,price-paid);
   const created=r.createdAt||Date.now();
-  return {_id:id,deviceName:r.deviceName||r.deviceModel||r.brand||'هاتف',clientName:r.clientName||r.customerName||'-',clientPhone:r.clientPhone||r.customerPhone||'',problem:r.problem||r.fault||'-',price,paid,remaining,notes:r.notes||r.diagnosis||'',status:oldStatusMap[r.status]||r.status||'under',createdAt:typeof created==='number'?created:(Date.parse(created)||Date.now()),createdAtText:r.createdAtText||(typeof created==='number'?formatDate(new Date(created)):String(created).replace('T',' ').slice(0,16)),updatedAt:r.updatedAt||0};
+  const createdMs=typeof created==='number'?created:(Date.parse(String(created).replace(' ','T'))||Date.now());
+  const status=oldStatusMap[r.status]||r.status||'under';
+  const history=Object.assign({}, r.statusHistory||{});
+  if(!history.under) history.under=createdMs;
+  if(status && !history[status]) history[status]=r.updatedAt||createdMs;
+  return {_id:id,deviceName:r.deviceName||r.deviceModel||r.brand||'هاتف',clientName:r.clientName||r.customerName||'-',clientPhone:r.clientPhone||r.customerPhone||'',problem:r.problem||r.fault||'-',price,paid,remaining,notes:r.notes||r.diagnosis||'',status,createdAt:createdMs,createdAtText:r.createdAtText||formatDate(new Date(createdMs)),updatedAt:r.updatedAt||0,statusHistory:history};
+}
+function timelineHtml(r){
+  const h=r.statusHistory||{};
+  const items=[['under','استلام الجهاز',h.under||r.createdAt],['done','اكتمل التصليح',h.done],['delivered','تم التسليم',h.delivered],['rejected','مرفوض',h.rejected]];
+  return `<div class="timeline">${items.filter(x=>x[2]).map(([k,label,t])=>`<div class="timeItem ${k}"><b>${label}</b><span>${niceDate(t)}</span></div>`).join('')}</div>`;
 }
 
 function mergeAndRender(){
@@ -186,11 +200,12 @@ function renderPhones(){
   });
   box.innerHTML=list.map(([id,r])=>`<article class="phoneCard">
     <div class="phoneTop"><div><h3>${esc(r.deviceName)}</h3><p>${esc(r.clientName)} ${r.clientPhone?'- '+esc(r.clientPhone):''}</p><span class="badge ${esc(r.status)}">${statusIcon[r.status]||''} ${statusText[r.status]||esc(r.status)}</span></div><b class="price">${money(r.remaining)}</b></div>
-    <p>${esc(r.problem)}</p><p>📅 ${esc(r.createdAtText||'')}</p>
+    <p>${esc(r.problem)}</p>${timelineHtml(r)}
     <div class="actions">
       <button type="button" onclick="openPhone('${id}')">تعديل</button>
       <button type="button" onclick="quickStatus('${id}')">حالة</button>
       <button type="button" onclick="showInvoice('${id}')">فاتورة</button>
+      <button type="button" onclick="followCustomer('${id}')">متابعة واتساب</button>
       <button type="button" onclick="copyPhoneLink('${id}')">رابط</button>
       <button type="button" class="dangerBtn" onclick="delPhone('${id}')">حذف</button>
     </div>
@@ -218,17 +233,26 @@ window.openPhone=function(id=null){
 async function savePhone(e){
   e.preventDefault(); calculate();
   const id=$('#editingId').value||newId(), old=phones[id]||{}, now=Date.now();
-  const data={deviceName:$('#deviceName').value.trim(),clientName:$('#clientName').value.trim(),clientPhone:$('#clientPhone').value.trim(),problem:$('#problem').value.trim(),price:num($('#repairPrice').value),paid:num($('#paidPrice').value),remaining:num($('#remainPrice').value),notes:$('#notes').value.trim(),status:$('#status').value,createdAt:old.createdAt||now,createdAtText:$('#createdAtText').value.trim()||formatDate(),updatedAt:now};
+  let newStatus=$('#status').value;
+  if(!statusText[newStatus]) newStatus='under';
+  const history=Object.assign({}, old.statusHistory||{});
+  if(!history.under) history.under=old.createdAt||now;
+  if(old.status!==newStatus && !history[newStatus]) history[newStatus]=now;
+  if(!old._id && !history[newStatus]) history[newStatus]=now;
+  const data={deviceName:$('#deviceName').value.trim(),clientName:$('#clientName').value.trim(),clientPhone:$('#clientPhone').value.trim(),problem:$('#problem').value.trim(),price:num($('#repairPrice').value),paid:num($('#paidPrice').value),remaining:num($('#remainPrice').value),notes:$('#notes').value.trim(),status:newStatus,createdAt:old.createdAt||now,createdAtText:$('#createdAtText').value.trim()||formatDate(),updatedAt:now,statusHistory:history};
   if(!data.deviceName||!data.clientName) return toast('اسم الهاتف واسم الزبون مطلوبين');
-  if(!statusText[data.status]) data.status='under';
   try{await root().child('phones').child(id).set(data);hide('phoneModal');goPage('phonesPage','قائمة الهواتف');toast('تم حفظ الهاتف بنجاح')}catch(err){console.error(err);toast('فشل الحفظ، تحقق من الإنترنت')}
 }
 
 window.quickStatus=function(id){if(!phones[id]) return toast('الهاتف غير موجود'); $('#statusEditingId').value=id; show('statusModal')}
 async function setPickedStatus(v){
   const id=$('#statusEditingId').value; if(!id||!statusText[v]) return;
-  try{await root().child('phones').child(id).update({status:v,updatedAt:Date.now()});hide('statusModal');toast('تم تغيير الحالة')}catch(err){console.error(err);toast('تعذر تغيير الحالة')}
+  const r=phones[id]||{}, history=Object.assign({}, r.statusHistory||{}), now=Date.now();
+  if(!history.under) history.under=r.createdAt||now;
+  if(!history[v]) history[v]=now;
+  try{await root().child('phones').child(id).update({status:v,updatedAt:now,statusHistory:history});hide('statusModal');toast('تم تغيير الحالة وتسجيل التاريخ')}catch(err){console.error(err);toast('تعذر تغيير الحالة')}
 }
+
 window.delPhone=function(id){if(!phones[id]) return; if(confirm('هل تريد حذف هذا الهاتف نهائياً؟')) root().child('phones').child(id).remove().then(()=>toast('تم الحذف'))}
 
 window.goPage=function(id,title){
@@ -257,6 +281,7 @@ window.showInvoice=function(id){
           <div class="row"><b>الحالة</b><span>${statusIcon[r.status]||''} ${statusText[r.status]||esc(r.status)}</span></div>
           <div class="row"><b>التاريخ</b><span>${esc(r.createdAtText)}</span></div>
           <div class="row"><b>ملاحظات</b><span>${esc(r.notes||'-')}</span></div>
+          <div class="invTimeline">${timelineHtml(r)}</div>
         </div>
         <div class="invBox qr"><img src="${qr}" alt="QR"><p>باركود متابعة حالة الهاتف</p></div>
       </div>
@@ -270,6 +295,7 @@ function printInvoiceNow(){show('invoiceModal');setTimeout(()=>{window.focus();w
 async function copyTrack(){if(!lastInvoiceId)return toast('افتح فاتورة أولاً');await copyText(trackUrl(lastInvoiceId));toast('تم نسخ رابط المتابعة')}
 window.copyPhoneLink=async function(id){await copyText(trackUrl(id));toast('تم نسخ رابط المتابعة')}
 function shareWhatsApp(){if(!lastInvoiceId)return toast('افتح فاتورة أولاً');const r=phones[lastInvoiceId];const text=`فاتورة صيانة ${r.deviceName}\nالزبون: ${r.clientName}\nالحالة: ${statusText[r.status]||r.status}\nالباقي: ${money(r.remaining)}\nرابط المتابعة: ${trackUrl(lastInvoiceId)}`;location.href=`https://wa.me/?text=${encodeURIComponent(text)}`}
+window.followCustomer=function(id){const r=phones[id]; if(!r) return toast('الهاتف غير موجود'); const n=waNumber(r.clientPhone); if(!n) return toast('رقم الزبون غير موجود'); const h=r.statusHistory||{}; const base=h.delivered||h.done||r.createdAt; const days=daysSince(base); const event=h.delivered?'تسليم جهازك':(h.done?'اكتمال صيانة جهازك':'استلام جهازك للصيانة'); const text=`السلام عليكم ${r.clientName}، وياك ${profile.shopName||'موقع عباس راضي سجل الصيانة'}.\nمر ${days} يوم على ${event}: ${r.deviceName}.\nالحالة الحالية: ${statusText[r.status]||r.status}.\nرابط المتابعة: ${trackUrl(id)}`; location.href=`https://wa.me/${n}?text=${encodeURIComponent(text)}`}
 async function copyText(text){try{await navigator.clipboard.writeText(text)}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}}
 
 async function loadTrack(u,id){
@@ -279,7 +305,7 @@ async function loadTrack(u,id){
     if(!s.exists()) s=await db.ref(`users/${u}/repairs/${id}`).get();
     if(!s.exists()) throw new Error('not-found');
     const r=normalizePhone(id,s.val());
-    $('#trackBox').innerHTML=`<div class="trackStatus"><h2>${esc(r.deviceName)}</h2><p><b>الزبون:</b> ${esc(r.clientName)}</p><p><b>المشكلة:</b> ${esc(r.problem)}</p><p><b>الحالة:</b> <span class="badge ${r.status}">${statusIcon[r.status]||''} ${statusText[r.status]||r.status}</span></p><p><b>الباقي:</b> ${money(r.remaining)}</p><p><b>التاريخ:</b> ${esc(r.createdAtText||'')}</p></div>`;
+    $('#trackBox').innerHTML=`<div class="trackStatus"><h2>${esc(r.deviceName)}</h2><p><b>الزبون:</b> ${esc(r.clientName)}</p><p><b>المشكلة:</b> ${esc(r.problem)}</p><p><b>الحالة:</b> <span class="badge ${r.status}">${statusIcon[r.status]||''} ${statusText[r.status]||r.status}</span></p><p><b>الباقي:</b> ${money(r.remaining)}</p><p><b>التاريخ:</b> ${esc(r.createdAtText||'')}</p>${timelineHtml(r)}</div>`;
   }catch(err){console.error(err);$('#trackBox').innerHTML='<div class="empty">الرابط غير صالح أو تم حذف الفاتورة</div>'}
 }
 

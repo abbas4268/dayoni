@@ -14,3 +14,58 @@
 @media(min-width:780px){.cardsList{grid-template-columns:1fr 1fr}.homeGrid{grid-template-columns:repeat(4,1fr)}.homeTile{min-height:150px}.statsGrid,.settingsGrid{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:480px){body{font-size:12.5px}.two,.three{grid-template-columns:1fr 1fr}.three>div:last-child{grid-column:1/-1}.topBar{min-height:54px;grid-template-columns:40px 1fr 40px}.iconBtn{width:40px;height:38px;min-height:38px}.heroCard{min-height:105px;border-radius:24px;padding:14px}.heroCard h2{font-size:20px}.heroGlow{display:none}.miniStats{grid-template-columns:1fr 1fr 1fr}.miniBox{padding:8px}.miniBox b{font-size:14px}.homeTile{min-height:105px;border-radius:22px;padding:12px}.toolsBar{grid-template-columns:1fr 105px}.statsGrid,.settingsGrid{grid-template-columns:1fr 1fr}.row{grid-template-columns:82px 1fr;font-size:11.5px}.invBody{grid-template-columns:1fr 116px}.qr img{width:94px;height:94px}.moneyBox{grid-template-columns:1fr}.invoice{min-height:640px;padding:10px}.authCard{border-radius:27px}.statusChoices,.themeGrid{grid-template-columns:1fr 1fr}.statusPick,.themeGrid button{min-height:75px}.addTerm{grid-template-columns:1fr 78px}}
 @media print{@page{size:A4;margin:8mm}html,body{background:white!important;overflow:visible!important}body>*:not(#invoiceModal){display:none!important}#invoiceModal{display:block!important;position:static!important;background:white!important;padding:0!important}.invoiceWindow{display:block!important;width:100%!important;max-height:none!important;overflow:visible!important;box-shadow:none!important;border-radius:0!important;padding:0!important;background:white!important}.invoice{border:0!important;border-radius:0!important;min-height:auto!important;padding:0!important}.noPrint,.invoiceActions,.sheetHead{display:none!important}}
+
+/* ===== Abbas Radhi v101 polish ===== */
+.brandTitle{
+  text-align:center;
+  line-height:1.05;
+  padding:2px 0;
+}
+.brandTitle small{
+  font-size:13px!important;
+  color:var(--accent)!important;
+  letter-spacing:.2px;
+}
+.brandTitle h1{
+  font-family:Tajawal, Arial, sans-serif;
+  font-size:24px!important;
+  font-weight:900;
+  background:linear-gradient(135deg,#fff7c8,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 12px 30px color-mix(in srgb,var(--accent) 28%,transparent);
+}
+.topBar{
+  background:
+    radial-gradient(circle at 15% 0%,color-mix(in srgb,var(--accent) 20%,transparent),transparent 42%),
+    linear-gradient(145deg,color-mix(in srgb,var(--card) 94%,#fff),var(--card));
+}
+.timeline{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  margin-top:8px;
+}
+.timeItem{
+  border:1px solid var(--line);
+  background:var(--soft);
+  border-radius:14px;
+  padding:7px 8px;
+}
+.timeItem b{display:block;font-size:10.5px;color:var(--text)}
+.timeItem span{display:block;font-size:10px;color:var(--muted);margin-top:2px}
+.invTimeline .timeline{grid-template-columns:1fr 1fr;margin-top:10px}
+.invTimeline .timeItem{background:#f8fafc;border-color:#e7ecf4}
+.invTimeline .timeItem b{color:#172033}.invTimeline .timeItem span{color:#667085}
+.actions button:nth-child(4){
+  color:#eafff1;
+  background:linear-gradient(135deg,#128c7e,#25d366);
+  border-color:rgba(37,211,102,.35);
+}
+@media(max-width:480px){
+  .brandTitle small{font-size:11.5px!important}
+  .brandTitle h1{font-size:20px!important}
+  .timeline{grid-template-columns:1fr}
+  .actions button{flex:1 1 calc(33% - 5px)}
+}
