@@ -1,337 +1,86 @@
 'use strict';
-
-let currentUser=null, profile={}, phones={}, rawPhones={}, rawRepairs={}, lastInvoiceId=null, trackingMode=false;
-const $=s=>document.querySelector(s);
-const $$=s=>Array.from(document.querySelectorAll(s));
+let currentUser=null, profile={}, phones={}, lastInvoiceId=null, deferredInstall=null, tracking=false;
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-const num=v=>Number(String(v??'').replace(/[^\d.]/g,''))||0;
-const clean=v=>String(v??'').replace(/[^\d]/g,'');
+const num=v=>Number(String(v||'').replace(/[^\d]/g,''))||0;
 const money=n=>`${Number(n||0).toLocaleString('en-US')} د.ع`;
-const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const clean=p=>String(p||'').replace(/[^\d]/g,'');
+const now=()=>Date.now();
 const uid=()=>currentUser?.uid;
 const root=()=>db.ref(`users/${uid()}`);
 const phoneIndex=p=>db.ref(`phoneIndex/${clean(p)}`);
-const statusText={under:'تحت الصيانة',done:'تم الاكتمال',delivered:'تم التسليم',rejected:'مرفوض'};
-const statusIcon={under:'🔧',done:'✅',delivered:'📦',rejected:'⛔'};
-const oldStatusMap={new:'under',inspection:'under',approval:'under',waiting_part:'under',repairing:'under',testing:'under',ready:'done',completed:'done',delivered:'delivered',rejected:'rejected',cancelled:'rejected'};
+const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const invoiceNo=(id,created)=>`AR-${new Date(created||now()).getFullYear().toString().slice(2)}${String(id||'').slice(-5).toUpperCase()}`;
+const STATUSES={
+  received:{text:'تم الاستلام',emoji:'📥',progress:10,cls:'s-received'},
+  waiting_check:{text:'بانتظار الفحص',emoji:'⏳',progress:18,cls:'s-checking'},
+  checking:{text:'جاري الفحص',emoji:'🔍',progress:28,cls:'s-checking'},
+  waiting_customer:{text:'بانتظار موافقة الزبون',emoji:'📞',progress:38,cls:'s-waiting'},
+  waiting_part:{text:'بانتظار قطعة',emoji:'📦',progress:48,cls:'s-part'},
+  repairing:{text:'جاري الإصلاح',emoji:'🔧',progress:64,cls:'s-repairing'},
+  testing:{text:'الاختبار',emoji:'🧪',progress:82,cls:'s-testing'},
+  ready:{text:'جاهز للاستلام',emoji:'✅',progress:95,cls:'s-ready'},
+  delivered:{text:'تم التسليم',emoji:'🤝',progress:100,cls:'s-delivered'},
+  cancelled:{text:'ملغي',emoji:'❌',progress:0,cls:'s-cancelled'}
+};
+const oldStatusMap={under:'repairing',done:'ready',delivered:'delivered',rejected:'cancelled',new:'received',inspection:'checking',approval:'waiting_customer',repairing:'repairing',testing:'testing',ready:'ready',completed:'ready',cancelled:'cancelled'};
+function toast(m){$('#toast').textContent=m;$('#toast').classList.remove('hidden');setTimeout(()=>$('#toast').classList.add('hidden'),2200)}
+function fmt(t){let d=new Date(t||now()),p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`}
+function daysSince(t){return Math.max(0,Math.floor((now()-(Number(t)||now()))/86400000));}
+function statusText(k){return STATUSES[k]?.text||k||'-'}
+function buildTimeline(r){let tl=Array.isArray(r.timeline)?r.timeline.slice():[]; if(!tl.length){tl.push({status:r.status||'received',text:statusText(r.status||'received'),at:r.createdAt||now(),note:'تم إنشاء السجل'});} return tl.sort((a,b)=>(a.at||0)-(b.at||0));}
+function normalize(id,r){if(!r)return null;let created=typeof r.createdAt==='number'?r.createdAt:(Date.parse(r.createdAt)||now());let price=num(r.price??r.repairPrice),paid=num(r.paid??r.paidAmount),remaining=r.remaining!==undefined?num(r.remaining):Math.max(0,price-paid);let status=oldStatusMap[r.status]||r.status||'received';let timeline=buildTimeline({...r,status,createdAt:created});return{_id:id,clientName:r.clientName||r.customerName||'-',clientPhone:r.clientPhone||r.customerPhone||'',deviceName:r.deviceName||r.deviceModel||r.brand||'هاتف',brand:r.brand||'',imei:r.imei||r.serial||'',color:r.color||'',passcode:r.passcode||'',problem:r.problem||r.fault||'-',diagnosis:r.diagnosis||'',accessories:r.accessories||'',technician:r.technician||'',notes:r.notes||'',price,paid,remaining,status,createdAt:created,createdAtText:r.createdAtText||fmt(created),updatedAt:r.updatedAt||created,timeline};}
+function statusOptions(){let html=Object.entries(STATUSES).map(([k,v])=>`<option value="${k}">${v.emoji} ${v.text}</option>`).join('');$('#status').innerHTML=html;$('#filterStatus').innerHTML='<option value="all">كل الحالات</option>'+html;$('#statusChoices').innerHTML=Object.entries(STATUSES).map(([k,v])=>`<button type="button" data-set-status="${k}">${v.emoji}<br>${v.text}</button>`).join('')}
+statusOptions();
+setInterval(()=>{$('#clockNow')&&($('#clockNow').textContent=new Date().toLocaleString('ar-IQ',{hour:'2-digit',minute:'2-digit',weekday:'long',day:'numeric',month:'long'}))},1000);
+setTimeout(()=>$('#splash')?.classList.add('hidden'),650);
 
-function safe(fn){try{fn()}catch(e){console.error(e);toast('حدث خطأ بسيط، أعد المحاولة')}}
-function toast(msg){const t=$('#toast'); if(!t)return; t.textContent=msg; t.classList.remove('hidden'); clearTimeout(t._timer); t._timer=setTimeout(()=>t.classList.add('hidden'),2200)}
-function show(id){const el=$('#'+id); if(el){el.classList.remove('hidden');el.setAttribute('aria-hidden','false')}}
-function hide(id){const el=$('#'+id); if(el){el.classList.add('hidden');el.setAttribute('aria-hidden','true')}}
-function formatDate(d=new Date()){const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`}
-function msDate(v){if(!v) return 0; if(typeof v==='number') return v; const t=Date.parse(String(v).replace(' ','T')); return isNaN(t)?0:t}
-function niceDate(v){const t=msDate(v); return t?formatDate(new Date(t)):'-' }
-function daysSince(v){const t=msDate(v); return t?Math.max(0,Math.floor((Date.now()-t)/86400000)):0}
-function waNumber(v){let n=clean(v); if(n.startsWith('0')) n='964'+n.slice(1); return n}
+const params=new URLSearchParams(location.search); if(params.get('track')){tracking=true;$('#splash').classList.add('hidden');$('#trackView').classList.remove('hidden');loadTrack(params.get('uid'),params.get('id'));}
+async function loadTrack(u,id){try{let s=await db.ref(`users/${u}/phones/${id}`).get(); if(!s.exists())s=await db.ref(`users/${u}/repairs/${id}`).get(); if(!s.exists())throw Error();let r=normalize(id,s.val());let st=STATUSES[r.status]||STATUSES.received;$('#trackBox').innerHTML=`<div class="infoBox"><h2>${esc(r.deviceName)}</h2><p>الزبون: ${esc(r.clientName)}</p><p>العطل: ${esc(r.problem)}</p><p>الحالة: <b class="${st.cls}">${st.emoji} ${st.text}</b></p><div class="progress"><i style="width:${st.progress}%"></i></div><p>الباقي: ${money(r.remaining)}</p></div><div class="timelineBox"><h3>سجل الحالة</h3>${timelineHTML(r)}</div>`}catch(e){$('#trackBox').textContent='رابط المتابعة غير صالح';}}
 
-window.addEventListener('load',()=>setTimeout(()=>$('#splash')?.classList.add('hidden'),450));
-
-document.addEventListener('DOMContentLoaded',()=>{
-  bindEvents();
-  const params=new URLSearchParams(location.search);
-  if(params.get('track')){
-    trackingMode=true;
-    $('#splash')?.classList.add('hidden');
-    show('trackView');
-    loadTrack(params.get('uid'),params.get('id'));
-  }
-});
-
-function bindEvents(){
-  $('#loginTab')?.addEventListener('click',()=>authTab('login'));
-  $('#registerTab')?.addEventListener('click',()=>authTab('register'));
-  $('#loginForm')?.addEventListener('submit',loginSubmit);
-  $('#registerForm')?.addEventListener('submit',registerSubmit);
-  $('#phoneForm')?.addEventListener('submit',savePhone);
-  $('#companyForm')?.addEventListener('submit',saveCompany);
-  $('#repairPrice')?.addEventListener('input',calculate);
-  $('#paidPrice')?.addEventListener('input',calculate);
-  $('#remainPrice')?.addEventListener('input',()=>{});
-  $('#searchPhone')?.addEventListener('input',renderPhones);
-  $('#filterStatus')?.addEventListener('change',renderPhones);
-  $('#backBtn')?.addEventListener('click',()=>goPage('homePage','الرئيسية'));
-  $('#quickAddBtn')?.addEventListener('click',()=>openPhone());
-  $('#companyBtn')?.addEventListener('click',openCompany);
-  $('#themesBtn')?.addEventListener('click',()=>show('themesModal'));
-  $('#termsBtn')?.addEventListener('click',openTerms);
-  $('#backupBtn')?.addEventListener('click',downloadBackup);
-  $('#logoutBtn')?.addEventListener('click',()=>auth.signOut());
-  $('#addTermBtn')?.addEventListener('click',addTerm);
-  $('#newTerm')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addTerm()}});
-  $('#printInvoiceBtn')?.addEventListener('click',printInvoiceNow);
-  $('#copyTrackBtn')?.addEventListener('click',copyTrack);
-  $('#shareWhatsBtn')?.addEventListener('click',shareWhatsApp);
-
-  document.addEventListener('click',e=>{
-    const close=e.target.closest('[data-close]'); if(close) hide(close.dataset.close);
-    const page=e.target.closest('[data-page]'); if(page) goPage(page.dataset.page,page.dataset.title||'');
-    const open=e.target.closest('[data-open-phone]'); if(open) openPhone();
-    const theme=e.target.closest('[data-theme-pick]'); if(theme) setTheme(theme.dataset.themePick);
-    const status=e.target.closest('[data-status]'); if(status) setPickedStatus(status.dataset.status);
-    if(e.target.classList.contains('modal')) e.target.classList.add('hidden');
-  });
-}
-
-function authTab(t){
-  $('#loginTab')?.classList.toggle('active',t==='login');
-  $('#registerTab')?.classList.toggle('active',t==='register');
-  $('#loginForm')?.classList.toggle('hidden',t!=='login');
-  $('#registerForm')?.classList.toggle('hidden',t!=='register');
-}
-
-async function registerSubmit(e){
-  e.preventDefault();
-  const ownerName=$('#ownerName').value.trim(), shopName=$('#shopName').value.trim(), phone=$('#regPhone').value.trim(), email=$('#regEmail').value.trim(), pass=$('#regPassword').value, pass2=$('#regPassword2').value;
-  if(!ownerName||!shopName||!phone||!email||!pass) return toast('أكمل كل الحقول');
-  if(clean(phone).length<10) return toast('رقم الهاتف غير صحيح');
-  if(pass.length<6) return toast('كلمة المرور أقل من 6 أحرف');
-  if(pass!==pass2) return toast('كلمة المرور غير متطابقة');
-  try{
-    const c=await auth.createUserWithEmailAndPassword(email,pass);
-    await db.ref(`users/${c.user.uid}/profile`).set({ownerName,shopName,phone,email,address:'',logo:'',terms:defaultTerms(),theme:'royal',createdAt:Date.now()});
-    await phoneIndex(phone).set({uid:c.user.uid,email,phone:clean(phone),shopName});
-    toast('تم إنشاء الحساب بنجاح');
-  }catch(err){console.error(err);toast(firebaseMessage(err,'تعذر إنشاء الحساب'))}
-}
-
-async function loginSubmit(e){
-  e.preventDefault();
-  const id=$('#loginIdentity').value.trim(), pass=$('#loginPassword').value;
-  if(!id||!pass) return toast('اكتب بيانات الدخول');
-  try{
-    let email=id;
-    if(!id.includes('@')){
-      const s=await phoneIndex(id).get();
-      if(!s.exists()) throw new Error('phone-not-found');
-      email=s.val().email;
-    }
-    await auth.signInWithEmailAndPassword(email,pass);
-  }catch(err){console.error(err);toast('بيانات الدخول غير صحيحة')}
-}
-
-function firebaseMessage(err, fallback){
-  const code=err?.code||'';
-  if(code.includes('email-already-in-use')) return 'هذا الإيميل مسجل سابقاً';
-  if(code.includes('invalid-email')) return 'الإيميل غير صحيح';
-  if(code.includes('weak-password')) return 'كلمة المرور ضعيفة';
-  return fallback;
-}
-
-if(typeof auth!=='undefined'){
-  auth.onAuthStateChanged(user=>{
-    if(trackingMode) return;
-    currentUser=user;
-    if(user){hide('authView');show('appView');listen()}
-    else{show('authView');hide('appView')}
-  });
-}
-
-function listen(){
-  root().child('profile').on('value',s=>{profile=s.val()||{};applyProfile();fillCompany();renderTerms();renderAll()});
-  root().child('phones').on('value',s=>{rawPhones=s.val()||{};mergeAndRender()});
-  root().child('repairs').on('value',s=>{rawRepairs=s.val()||{};mergeAndRender()});
-}
-
-function applyProfile(){
-  $('#welcomeName').textContent=`أهلاً ${profile.ownerName||''}`.trim();
-  $('#welcomeShop').textContent=profile.shopName||'سجل الصيانة';
-  $('#topSub').textContent='موقع عباس راضي';
-  document.body.dataset.theme=localStorage.getItem('repair_theme')||profile.theme||'royal';
-}
-
-function normalizePhone(id,r){
-  if(!r) return null;
-  const price=num(r.price ?? r.repairPrice ?? r.total);
-  const paid=num(r.paid ?? r.paidAmount ?? r.received);
-  const remaining=r.remaining!==undefined?num(r.remaining):Math.max(0,price-paid);
-  const created=r.createdAt||Date.now();
-  const createdMs=typeof created==='number'?created:(Date.parse(String(created).replace(' ','T'))||Date.now());
-  const status=oldStatusMap[r.status]||r.status||'under';
-  const history=Object.assign({}, r.statusHistory||{});
-  if(!history.under) history.under=createdMs;
-  if(status && !history[status]) history[status]=r.updatedAt||createdMs;
-  return {_id:id,deviceName:r.deviceName||r.deviceModel||r.brand||'هاتف',clientName:r.clientName||r.customerName||'-',clientPhone:r.clientPhone||r.customerPhone||'',problem:r.problem||r.fault||'-',price,paid,remaining,notes:r.notes||r.diagnosis||'',status,createdAt:createdMs,createdAtText:r.createdAtText||formatDate(new Date(createdMs)),updatedAt:r.updatedAt||0,statusHistory:history};
-}
-function timelineHtml(r){
-  const h=r.statusHistory||{};
-  const items=[['under','استلام الجهاز',h.under||r.createdAt],['done','اكتمل التصليح',h.done],['delivered','تم التسليم',h.delivered],['rejected','مرفوض',h.rejected]];
-  return `<div class="timeline">${items.filter(x=>x[2]).map(([k,label,t])=>`<div class="timeItem ${k}"><b>${label}</b><span>${niceDate(t)}</span></div>`).join('')}</div>`;
-}
-
-function mergeAndRender(){
-  phones={};
-  Object.entries(rawRepairs||{}).forEach(([id,r])=>{const n=normalizePhone(id,r);if(n)phones[id]=n});
-  Object.entries(rawPhones||{}).forEach(([id,r])=>{const n=normalizePhone(id,r);if(n)phones[id]=n});
-  renderAll();
-}
-function arr(){return Object.entries(phones).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0))}
-function renderAll(){renderMiniStats();renderPhones();renderStats()}
-
-function totals(){
-  const t={count:0,total:0,paid:0,rem:0,under:0,done:0,delivered:0,rejected:0};
-  Object.values(phones).forEach(r=>{t.count++;t.total+=r.price||0;t.paid+=r.paid||0;t.rem+=r.remaining||0;t[r.status]=(t[r.status]||0)+1});
-  return t;
-}
-function renderMiniStats(){
-  const box=$('#miniStats'); if(!box) return; const t=totals();
-  box.innerHTML=`<div class="miniBox"><span>الهواتف</span><b>${t.count}</b></div><div class="miniBox"><span>الواصل</span><b>${money(t.paid)}</b></div><div class="miniBox"><span>الباقي</span><b>${money(t.rem)}</b></div>`;
-}
-function renderStats(){
-  const box=$('#statsBox'); if(!box) return; const t=totals();
-  box.innerHTML=`
-  <div class="statCard"><span>عدد الهواتف</span><b>${t.count}</b></div>
-  <div class="statCard"><span>المبلغ الكلي</span><b>${money(t.total)}</b></div>
-  <div class="statCard"><span>المستلم</span><b>${money(t.paid)}</b></div>
-  <div class="statCard"><span>الباقي دين</span><b>${money(t.rem)}</b></div>
-  <div class="statCard"><span>تحت الصيانة</span><b>${t.under}</b></div>
-  <div class="statCard"><span>تم الاكتمال</span><b>${t.done}</b></div>
-  <div class="statCard"><span>تم التسليم</span><b>${t.delivered}</b></div>
-  <div class="statCard"><span>مرفوض</span><b>${t.rejected}</b></div>`;
-}
-
-function renderPhones(){
-  const box=$('#phonesList'); if(!box) return;
-  const q=($('#searchPhone')?.value||'').trim().toLowerCase();
-  const sf=$('#filterStatus')?.value||'all';
-  const list=arr().filter(([id,r])=>{
-    const hay=`${r.deviceName} ${r.clientName} ${r.clientPhone} ${r.problem} ${r.notes}`.toLowerCase();
-    return (sf==='all'||r.status===sf)&&hay.includes(q);
-  });
-  box.innerHTML=list.map(([id,r])=>`<article class="phoneCard">
-    <div class="phoneTop"><div><h3>${esc(r.deviceName)}</h3><p>${esc(r.clientName)} ${r.clientPhone?'- '+esc(r.clientPhone):''}</p><span class="badge ${esc(r.status)}">${statusIcon[r.status]||''} ${statusText[r.status]||esc(r.status)}</span></div><b class="price">${money(r.remaining)}</b></div>
-    <p>${esc(r.problem)}</p>${timelineHtml(r)}
-    <div class="actions">
-      <button type="button" onclick="openPhone('${id}')">تعديل</button>
-      <button type="button" onclick="quickStatus('${id}')">حالة</button>
-      <button type="button" onclick="showInvoice('${id}')">فاتورة</button>
-      <button type="button" onclick="followCustomer('${id}')">متابعة واتساب</button>
-      <button type="button" onclick="copyPhoneLink('${id}')">رابط</button>
-      <button type="button" class="dangerBtn" onclick="delPhone('${id}')">حذف</button>
-    </div>
-  </article>`).join('')||`<div class="empty">لا توجد هواتف حالياً. اضغط + وأضف أول جهاز… الموقع جاهز، باقي الزبائن 😄</div>`;
-}
-
-function calculate(){
-  const total=num($('#repairPrice')?.value), paid=num($('#paidPrice')?.value), rem=$('#remainPrice');
-  if(rem) rem.value=Math.max(0,total-paid);
-}
-
-window.openPhone=function(id=null){
-  safe(()=>{
-    $('#phoneForm').reset(); $('#editingId').value=''; $('#phoneModalTitle').textContent='إضافة هاتف'; $('#status').value='under'; $('#createdAtText').value=formatDate();
-    if(id){
-      const r=phones[id]; if(!r) return toast('لم أجد الهاتف');
-      $('#phoneModalTitle').textContent='تعديل الهاتف'; $('#editingId').value=id;
-      $('#deviceName').value=r.deviceName||''; $('#clientName').value=r.clientName||''; $('#clientPhone').value=r.clientPhone||''; $('#problem').value=r.problem||'';
-      $('#repairPrice').value=r.price||''; $('#paidPrice').value=r.paid||''; $('#remainPrice').value=r.remaining||''; $('#notes').value=r.notes||''; $('#status').value=r.status||'under'; $('#createdAtText').value=r.createdAtText||formatDate();
-    }
-    show('phoneModal'); setTimeout(()=>$('#deviceName')?.focus(),80);
-  });
-}
-
-async function savePhone(e){
-  e.preventDefault(); calculate();
-  const id=$('#editingId').value||newId(), old=phones[id]||{}, now=Date.now();
-  let newStatus=$('#status').value;
-  if(!statusText[newStatus]) newStatus='under';
-  const history=Object.assign({}, old.statusHistory||{});
-  if(!history.under) history.under=old.createdAt||now;
-  if(old.status!==newStatus && !history[newStatus]) history[newStatus]=now;
-  if(!old._id && !history[newStatus]) history[newStatus]=now;
-  const data={deviceName:$('#deviceName').value.trim(),clientName:$('#clientName').value.trim(),clientPhone:$('#clientPhone').value.trim(),problem:$('#problem').value.trim(),price:num($('#repairPrice').value),paid:num($('#paidPrice').value),remaining:num($('#remainPrice').value),notes:$('#notes').value.trim(),status:newStatus,createdAt:old.createdAt||now,createdAtText:$('#createdAtText').value.trim()||formatDate(),updatedAt:now,statusHistory:history};
-  if(!data.deviceName||!data.clientName) return toast('اسم الهاتف واسم الزبون مطلوبين');
-  try{await root().child('phones').child(id).set(data);hide('phoneModal');goPage('phonesPage','قائمة الهواتف');toast('تم حفظ الهاتف بنجاح')}catch(err){console.error(err);toast('فشل الحفظ، تحقق من الإنترنت')}
-}
-
-window.quickStatus=function(id){if(!phones[id]) return toast('الهاتف غير موجود'); $('#statusEditingId').value=id; show('statusModal')}
-async function setPickedStatus(v){
-  const id=$('#statusEditingId').value; if(!id||!statusText[v]) return;
-  const r=phones[id]||{}, history=Object.assign({}, r.statusHistory||{}), now=Date.now();
-  if(!history.under) history.under=r.createdAt||now;
-  if(!history[v]) history[v]=now;
-  try{await root().child('phones').child(id).update({status:v,updatedAt:now,statusHistory:history});hide('statusModal');toast('تم تغيير الحالة وتسجيل التاريخ')}catch(err){console.error(err);toast('تعذر تغيير الحالة')}
-}
-
-window.delPhone=function(id){if(!phones[id]) return; if(confirm('هل تريد حذف هذا الهاتف نهائياً؟')) root().child('phones').child(id).remove().then(()=>toast('تم الحذف'))}
-
-window.goPage=function(id,title){
-  $$('.page').forEach(p=>p.classList.remove('show'));
-  $('#'+id)?.classList.add('show');
-  $('#topTitle').textContent=title||'RepairOS Pro';
-  $('#backBtn').classList.toggle('hidden',id==='homePage');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function trackUrl(id){return `${location.origin}${location.pathname}?uid=${encodeURIComponent(uid())}&id=${encodeURIComponent(id)}&track=1`}
-function invoiceTerms(){const terms=Array.isArray(profile.terms)?profile.terms:[];return terms.map((t,i)=>`<div>${i+1}. ${esc(t)}</div>`).join('')||'<div>لا توجد شروط مسجلة</div>'}
-window.showInvoice=function(id){
-  const r=phones[id]; if(!r) return toast('الهاتف غير موجود'); lastInvoiceId=id;
-  const qr=`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(trackUrl(id))}`;
-  const logo=profile.logo?`<img class="invLogo" src="${esc(profile.logo)}" alt="logo" onerror="this.style.display='none'">`:'';
-  $('#invoicePreview').innerHTML=`<div class="invoice">
-    <div class="invHead"><div class="invBrand">${logo}<div><h2>${esc(profile.shopName||'RepairOS Pro')}</h2><small>${esc(profile.phone||'')} ${profile.address?' - '+esc(profile.address):''}</small></div></div><div class="invNo"><div>فاتورة صيانة</div><small>#${esc(id.slice(-7).toUpperCase())}</small></div></div>
-    <div>
-      <div class="invBody">
-        <div class="invBox">
-          <div class="row"><b>الزبون</b><span>${esc(r.clientName)}</span></div>
-          <div class="row"><b>رقم الهاتف</b><span>${esc(r.clientPhone||'-')}</span></div>
-          <div class="row"><b>الجهاز</b><span>${esc(r.deviceName)}</span></div>
-          <div class="row"><b>المشكلة</b><span>${esc(r.problem)}</span></div>
-          <div class="row"><b>الحالة</b><span>${statusIcon[r.status]||''} ${statusText[r.status]||esc(r.status)}</span></div>
-          <div class="row"><b>التاريخ</b><span>${esc(r.createdAtText)}</span></div>
-          <div class="row"><b>ملاحظات</b><span>${esc(r.notes||'-')}</span></div>
-          <div class="invTimeline">${timelineHtml(r)}</div>
-        </div>
-        <div class="invBox qr"><img src="${qr}" alt="QR"><p>باركود متابعة حالة الهاتف</p></div>
-      </div>
-      <div class="moneyBox" style="margin-top:10px"><div class="invBox"><span>السعر</span><b>${money(r.price)}</b></div><div class="invBox"><span>الواصل</span><b>${money(r.paid)}</b></div><div class="invBox"><span>الباقي</span><b>${money(r.remaining)}</b></div></div>
-    </div>
-    <div class="invFoot"><b>الشروط:</b>${invoiceTerms()}</div>
-  </div>`;
-  show('invoiceModal');
-}
-function printInvoiceNow(){show('invoiceModal');setTimeout(()=>{window.focus();window.print()},180)}
-async function copyTrack(){if(!lastInvoiceId)return toast('افتح فاتورة أولاً');await copyText(trackUrl(lastInvoiceId));toast('تم نسخ رابط المتابعة')}
-window.copyPhoneLink=async function(id){await copyText(trackUrl(id));toast('تم نسخ رابط المتابعة')}
-function shareWhatsApp(){if(!lastInvoiceId)return toast('افتح فاتورة أولاً');const r=phones[lastInvoiceId];const text=`فاتورة صيانة ${r.deviceName}\nالزبون: ${r.clientName}\nالحالة: ${statusText[r.status]||r.status}\nالباقي: ${money(r.remaining)}\nرابط المتابعة: ${trackUrl(lastInvoiceId)}`;location.href=`https://wa.me/?text=${encodeURIComponent(text)}`}
-window.followCustomer=function(id){const r=phones[id]; if(!r) return toast('الهاتف غير موجود'); const n=waNumber(r.clientPhone); if(!n) return toast('رقم الزبون غير موجود'); const h=r.statusHistory||{}; const base=h.delivered||h.done||r.createdAt; const days=daysSince(base); const event=h.delivered?'تسليم جهازك':(h.done?'اكتمال صيانة جهازك':'استلام جهازك للصيانة'); const text=`السلام عليكم ${r.clientName}، وياك ${profile.shopName||'موقع عباس راضي سجل الصيانة'}.\nمر ${days} يوم على ${event}: ${r.deviceName}.\nالحالة الحالية: ${statusText[r.status]||r.status}.\nرابط المتابعة: ${trackUrl(id)}`; location.href=`https://wa.me/${n}?text=${encodeURIComponent(text)}`}
-async function copyText(text){try{await navigator.clipboard.writeText(text)}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}}
-
-async function loadTrack(u,id){
-  try{
-    if(!u||!id) throw new Error('missing');
-    let s=await db.ref(`users/${u}/phones/${id}`).get();
-    if(!s.exists()) s=await db.ref(`users/${u}/repairs/${id}`).get();
-    if(!s.exists()) throw new Error('not-found');
-    const r=normalizePhone(id,s.val());
-    $('#trackBox').innerHTML=`<div class="trackStatus"><h2>${esc(r.deviceName)}</h2><p><b>الزبون:</b> ${esc(r.clientName)}</p><p><b>المشكلة:</b> ${esc(r.problem)}</p><p><b>الحالة:</b> <span class="badge ${r.status}">${statusIcon[r.status]||''} ${statusText[r.status]||r.status}</span></p><p><b>الباقي:</b> ${money(r.remaining)}</p><p><b>التاريخ:</b> ${esc(r.createdAtText||'')}</p>${timelineHtml(r)}</div>`;
-  }catch(err){console.error(err);$('#trackBox').innerHTML='<div class="empty">الرابط غير صالح أو تم حذف الفاتورة</div>'}
-}
-
-function openCompany(){fillCompany();show('companyModal')}
-function fillCompany(){if(!$('#setCompany')) return; $('#setCompany').value=profile.shopName||'';$('#setOwner').value=profile.ownerName||'';$('#setCompanyPhone').value=profile.phone||'';$('#setAddress').value=profile.address||'';$('#setLogo').value=profile.logo||''}
-async function saveCompany(e){
-  e.preventDefault();
-  try{await root().child('profile').update({shopName:$('#setCompany').value.trim(),ownerName:$('#setOwner').value.trim(),phone:$('#setCompanyPhone').value.trim(),address:$('#setAddress').value.trim(),logo:$('#setLogo').value.trim()});hide('companyModal');toast('تم حفظ تفاصيل الشركة')}catch(err){console.error(err);toast('تعذر حفظ التفاصيل')}
-}
-function setTheme(t){document.body.dataset.theme=t;localStorage.setItem('repair_theme',t);if(currentUser)root().child('profile/theme').set(t);hide('themesModal');toast('تم تغيير الثيم')}
-
-function defaultTerms(){return ['الفاتورة تعتبر وصل استلام وليست ضماناً نهائياً قبل الفحص.','لا يتحمل المركز مسؤولية الأجهزة المتروكة أكثر من 30 يوماً.','الضمان يشمل العطل الذي تم إصلاحه فقط ولا يشمل الكسر أو سوء الاستخدام.']}
-function openTerms(){if(!Array.isArray(profile.terms)) profile.terms=[]; renderTerms();show('termsModal')}
-async function addTerm(){
-  const input=$('#newTerm'); const v=input.value.trim(); if(!v) return toast('اكتب الشرط أولاً');
-  const terms=Array.isArray(profile.terms)?profile.terms.slice():[]; terms.push(v); profile.terms=terms; renderTerms(); input.value='';
-  try{await root().child('profile/terms').set(terms);toast('تمت إضافة الشرط')}catch(err){console.error(err);toast('تعذر حفظ الشرط')}
-}
-function renderTerms(){
-  const box=$('#termsList'); if(!box) return; const terms=Array.isArray(profile.terms)?profile.terms:[];
-  box.innerHTML=terms.map((t,i)=>`<div class="term"><span>${esc(t)}</span><button type="button" onclick="delTerm(${i})">حذف</button></div>`).join('')||'<div class="empty">لا توجد شروط. أضف شروطك وستظهر تلقائياً بالفاتورة.</div>';
-}
-window.delTerm=async function(i){const terms=Array.isArray(profile.terms)?profile.terms.slice():[];terms.splice(i,1);profile.terms=terms;renderTerms();try{await root().child('profile/terms').set(terms);toast('تم حذف الشرط')}catch(e){toast('تعذر حذف الشرط')}}
-
-function downloadBackup(){
-  const data={profile,phones:Object.fromEntries(arr().map(([id,r])=>[id,r])),exportedAt:formatDate()};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`repairos-backup-${Date.now()}.json`;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);toast('تم تنزيل النسخة الاحتياطية')
-}
+$('#loginTab').onclick=()=>authTab('login'); $('#registerTab').onclick=()=>authTab('register');
+function authTab(t){$('#loginTab').classList.toggle('active',t==='login');$('#registerTab').classList.toggle('active',t==='register');$('#loginForm').classList.toggle('hidden',t!=='login');$('#registerForm').classList.toggle('hidden',t!=='register')}
+$('#registerForm').onsubmit=async e=>{e.preventDefault();let ownerName=$('#ownerName').value.trim(),shopName=$('#shopName').value.trim(),phone=$('#regPhone').value.trim(),email=$('#regEmail').value.trim(),pass=$('#regPassword').value,pass2=$('#regPassword2').value;if(!ownerName||!shopName||!phone||!email||!pass)return toast('أكمل الحقول');if(pass!==pass2)return toast('كلمة المرور غير متطابقة');try{let c=await auth.createUserWithEmailAndPassword(email,pass);await db.ref(`users/${c.user.uid}/profile`).set({ownerName,shopName,phone,email,address:'',terms:['المحل غير مسؤول عن الأجهزة المتروكة أكثر من 30 يوم بعد الإبلاغ بالجاهزية.','الضمان يشمل العطل الذي تم إصلاحه فقط ولا يشمل سوء الاستخدام.'],createdAt:now()});await phoneIndex(phone).set({uid:c.user.uid,email,phone,shopName});}catch(err){toast('تعذر إنشاء الحساب: '+(err.message||''))}};
+$('#loginForm').onsubmit=async e=>{e.preventDefault();let id=$('#loginIdentity').value.trim(),pass=$('#loginPassword').value;if(!id||!pass)return toast('اكتب البيانات');try{let email=id;if(!id.includes('@')){let s=await phoneIndex(id).get();if(!s.exists())throw Error('phone');email=s.val().email;}await auth.signInWithEmailAndPassword(email,pass);}catch(err){toast('بيانات الدخول غير صحيحة')}};
+$('#logoutBtn').onclick=()=>auth.signOut();
+auth.onAuthStateChanged(u=>{if(tracking)return;currentUser=u;if(u){$('#authView').classList.add('hidden');$('#appView').classList.remove('hidden');listen();}else{$('#authView').classList.remove('hidden');$('#appView').classList.add('hidden')}});
+function listen(){root().child('profile').on('value',s=>{profile=s.val()||{};applyProfile();fillCompany();renderTerms();});root().child('phones').on('value',s=>{phones={};Object.entries(s.val()||{}).forEach(([id,r])=>phones[id]=normalize(id,r));renderAll();});root().child('repairs').on('value',s=>{Object.entries(s.val()||{}).forEach(([id,r])=>{if(!phones[id])phones[id]=normalize(id,r)});renderAll();});}
+function applyProfile(){$('#welcomeShop').textContent=profile.shopName||'سجل صيانة الهواتف';}
+function arr(){return Object.values(phones).filter(Boolean).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));}
+function renderAll(){renderPhones();renderDash();renderCustomers();renderStats();}
+function renderDash(){let a=arr(),total=a.reduce((s,r)=>s+r.price,0),paid=a.reduce((s,r)=>s+r.paid,0),rem=a.reduce((s,r)=>s+r.remaining,0),ready=a.filter(r=>r.status==='ready').length,late=a.filter(r=>!['delivered','cancelled'].includes(r.status)&&daysSince(r.createdAt)>=7).length;$('#dashStats').innerHTML=statCards([['الأجهزة',a.length],['الجاهزة',ready],['المستلم',money(paid)],['الديون',money(rem)]]);let tasks=[];if(late)tasks.push(`🔴 يوجد ${late} جهاز متأخر أكثر من 7 أيام.`);if(ready)tasks.push(`🟡 يوجد ${ready} جهاز جاهز للاستلام، تابع الزبائن واتساب.`);if(rem)tasks.push(`💰 إجمالي الديون الحالية: ${money(rem)}.`);$('#todayTasks').innerHTML=tasks.map(t=>`<div class="alertItem">${t}</div>`).join('')||'<div class="alertItem">🟢 لا توجد تنبيهات مهمة حالياً. الشغل مرتب مثل الساعة السويسرية.</div>';}
+function statCards(items){return items.map(([l,v])=>`<div class="statCard"><span>${l}</span><b>${v}</b></div>`).join('')}
+function renderPhones(){let q=($('#searchPhone')?.value||'').toLowerCase(),sf=$('#filterStatus')?.value||'all';let list=arr().filter(r=>(sf==='all'||r.status===sf)&&`${r.clientName} ${r.clientPhone} ${r.deviceName} ${r.brand} ${r.imei} ${invoiceNo(r._id,r.createdAt)} ${statusText(r.status)}`.toLowerCase().includes(q));$('#phonesList').innerHTML=list.map(cardHTML).join('')||'<div class="alertItem">لا توجد أجهزة.</div>';}
+function cardHTML(r){let st=STATUSES[r.status]||STATUSES.received;return `<article class="phoneCard"><div class="phoneTop"><div><h3>${esc(r.deviceName)}</h3><p>${esc(r.clientName)} - ${esc(r.clientPhone)}</p><span class="badge ${st.cls}">${st.emoji} ${st.text}</span></div><div class="money">${money(r.remaining)}</div></div><p>العطل: ${esc(r.problem)}</p><p>الاستلام: ${esc(r.createdAtText)} · منذ ${daysSince(r.createdAt)} يوم</p><div class="progress"><i style="width:${st.progress}%"></i></div><div class="actions"><button data-details="${r._id}">تفاصيل</button><button data-edit="${r._id}">تعديل</button><button data-status="${r._id}">حالة</button><button data-invoice="${r._id}">فاتورة</button><button data-whatsapp="${r._id}">متابعة</button><button data-delete="${r._id}">حذف</button></div></article>`}
+function renderCustomers(){let map={};arr().forEach(r=>{let k=clean(r.clientPhone)||r.clientName;if(!map[k])map[k]={name:r.clientName,phone:r.clientPhone,count:0,paid:0,rem:0,last:0};map[k].count++;map[k].paid+=r.paid;map[k].rem+=r.remaining;map[k].last=Math.max(map[k].last,r.createdAt)});$('#customersList').innerHTML=Object.values(map).map(c=>`<article class="customerCard"><h3>${esc(c.name)}</h3><p>${esc(c.phone)}</p><p>عدد الأجهزة: <b>${c.count}</b></p><p>المدفوع: ${money(c.paid)} · الدين: ${money(c.rem)}</p><p>آخر زيارة: ${fmt(c.last)}</p></article>`).join('')||'<div class="alertItem">لا توجد زبائن.</div>'}
+function renderStats(){let a=arr(),paid=a.reduce((s,r)=>s+r.paid,0),rem=a.reduce((s,r)=>s+r.remaining,0),del=a.filter(r=>r.status==='delivered').length,active=a.filter(r=>!['delivered','cancelled'].includes(r.status)).length,avg=a.length?Math.round(a.reduce((s,r)=>s+daysSince(r.createdAt),0)/a.length):0;$('#bigStats').innerHTML=statCards([['كل الأجهزة',a.length],['النشطة',active],['المسلمة',del],['المستلم',money(paid)],['الديون',money(rem)],['متوسط الأيام',avg],['جاهزة',a.filter(r=>r.status==='ready').length],['ملغية',a.filter(r=>r.status==='cancelled').length]])}
+$('#searchPhone').oninput=renderPhones; $('#filterStatus').onchange=renderPhones;
+$$('[data-page]').forEach(b=>b.onclick=()=>goPage(b.dataset.page)); $('#backBtn').onclick=()=>goPage('homePage');
+function goPage(id){$$('.page').forEach(p=>p.classList.remove('show'));$('#'+id).classList.add('show');$('#backBtn').classList.toggle('hidden',id==='homePage');window.scrollTo(0,0)}
+$('#addPhoneBtn').onclick=()=>openPhone(); $('#addPhoneBtn2').onclick=()=>openPhone();
+function calc(){let price=num($('#repairPrice').value),paid=num($('#paidPrice').value);$('#remainPrice').value=Math.max(0,price-paid)} $('#repairPrice').oninput=calc; $('#paidPrice').oninput=calc;
+function openPhone(id=null){$('#phoneForm').reset();$('#editingId').value='';$('#status').value='received';$('#createdAtText').value=fmt(now());$('#phoneModalTitle').textContent='إضافة جهاز';if(id){let r=phones[id];$('#phoneModalTitle').textContent='تعديل جهاز';$('#editingId').value=id;['clientName','clientPhone','deviceName','brand','imei','color','passcode','problem','accessories','notes','createdAtText'].forEach(k=>$('#'+k).value=r[k]||'');$('#repairPrice').value=r.price||'';$('#paidPrice').value=r.paid||'';$('#remainPrice').value=r.remaining||'';$('#status').value=r.status;}$('#phoneModal').classList.remove('hidden')}
+$('#phoneForm').onsubmit=async e=>{e.preventDefault();calc();let id=$('#editingId').value||newId(),old=phones[id],created=old?.createdAt||now(),status=$('#status').value;let tl=old?.timeline?old.timeline.slice():[{status:'received',text:'تم الاستلام',at:created,note:'تم استلام الجهاز'}];if(!old||old.status!==status)tl.push({status,text:statusText(status),at:now(),note:'حفظ من النموذج'});let data={clientName:$('#clientName').value.trim(),clientPhone:$('#clientPhone').value.trim(),deviceName:$('#deviceName').value.trim(),brand:$('#brand').value.trim(),imei:$('#imei').value.trim(),color:$('#color').value.trim(),passcode:$('#passcode').value.trim(),problem:$('#problem').value.trim(),accessories:$('#accessories').value.trim(),price:num($('#repairPrice').value),paid:num($('#paidPrice').value),remaining:num($('#remainPrice').value),notes:$('#notes').value.trim(),status,createdAt:created,createdAtText:$('#createdAtText').value.trim()||fmt(created),updatedAt:now(),timeline:tl};if(!data.clientName||!data.deviceName)return toast('اسم الزبون واسم الجهاز مطلوبان');await root().child('phones').child(id).set(data);$('#phoneModal').classList.add('hidden');toast('تم حفظ الجهاز');goPage('phonesPage')};
+document.addEventListener('click',async e=>{let t=e.target.closest('button');if(!t)return;if(t.dataset.close)$('#'+t.dataset.close).classList.add('hidden');if(t.dataset.edit)openPhone(t.dataset.edit);if(t.dataset.details)showDetails(t.dataset.details);if(t.dataset.status)openStatus(t.dataset.status);if(t.dataset.invoice)showInvoice(t.dataset.invoice);if(t.dataset.whatsapp)whatsappFollow(t.dataset.whatsapp);if(t.dataset.delete)delPhone(t.dataset.delete);if(t.dataset.setStatus)await setStatus(t.dataset.setStatus);});
+function timelineHTML(r){return `<div class="timeline">${buildTimeline(r).map(x=>`<div class="step"><b>${esc(x.text||statusText(x.status))}</b><small>${fmt(x.at)}${x.note?' - '+esc(x.note):''}</small></div>`).join('')}</div>`}
+function showDetails(id){let r=phones[id],st=STATUSES[r.status]||STATUSES.received;$('#detailsBox').innerHTML=`<div class="detailsGrid"><div class="infoBox"><h2>${esc(r.deviceName)}</h2>${row('رقم الفاتورة',invoiceNo(id,r.createdAt))+row('الزبون',r.clientName)+row('رقمه',r.clientPhone)+row('الشركة',r.brand)+row('IMEI',r.imei)+row('اللون',r.color)+row('العطل',r.problem)+row('الملحقات',r.accessories)+row('الحالة',`${st.emoji} ${st.text}`)+row('السعر',money(r.price))+row('الواصل',money(r.paid))+row('الباقي',money(r.remaining))+row('ملاحظات',r.notes)}</div><div class="timelineBox"><h3>السجل الزمني</h3>${timelineHTML(r)}</div></div>`;$('#detailsModal').classList.remove('hidden')}
+function row(k,v){return `<div class="row"><b>${k}</b><span>${esc(v||'-')}</span></div>`}
+function openStatus(id){$('#statusEditingId').value=id;$('#statusNote').value='';$('#statusModal').classList.remove('hidden')}
+async function setStatus(status){let id=$('#statusEditingId').value,r=phones[id];if(!id||!r)return;let tl=buildTimeline(r);tl.push({status,text:statusText(status),at:now(),note:$('#statusNote').value.trim()});await root().child('phones').child(id).update({status,updatedAt:now(),timeline:tl});$('#statusModal').classList.add('hidden');toast('تم تغيير الحالة وتسجيل الوقت')}
+async function delPhone(id){if(confirm('حذف الجهاز نهائياً؟')){await root().child('phones').child(id).remove();toast('تم الحذف')}}
+function trackUrl(id){return `${location.origin}${location.pathname}?track=1&uid=${uid()}&id=${id}`}
+function showInvoice(id){let r=phones[id];lastInvoiceId=id;let qr=`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(trackUrl(id))}`,terms=(profile.terms||[]).map((t,i)=>`<p>${i+1}. ${esc(t)}</p>`).join('')||'<p>لا توجد شروط.</p>';$('#invoicePreview').innerHTML=`<div class="invoice"><div class="invHead"><div><h2>عباس راضي</h2><small>${esc(profile.shopName||'سجل صيانة الهواتف')} · ${esc(profile.phone||'')}</small></div><b>${invoiceNo(id,r.createdAt)}</b></div><div class="invBody"><div class="invBox">${row('الزبون',r.clientName)+row('رقم الهاتف',r.clientPhone)+row('الجهاز',r.deviceName)+row('IMEI',r.imei)+row('العطل',r.problem)+row('الحالة',statusText(r.status))+row('تاريخ الاستلام',r.createdAtText)+row('السعر',money(r.price))+row('الواصل',money(r.paid))+row('الباقي',money(r.remaining))}</div><div class="invBox qr"><img src="${qr}" alt="QR"><p>متابعة حالة الجهاز</p></div></div><div class="invBox invTimeline"><h3>السجل الزمني</h3>${timelineHTML(r)}</div><div class="invBox"><h3>الشروط</h3>${terms}</div></div>`;$('#invoiceModal').classList.remove('hidden')}
+$('#printBtn').onclick=()=>setTimeout(()=>window.print(),150); $('#sendInvoiceWhatsapp').onclick=()=>lastInvoiceId&&whatsappInvoice(lastInvoiceId);
+function waNum(p){let c=clean(p);if(c.startsWith('0'))c='964'+c.slice(1);return c}
+function whatsappFollow(id){let r=phones[id],base=r.status==='ready'?r.timeline.find(x=>x.status==='ready')?.at:r.createdAt,d=daysSince(base);let msg=`السلام عليكم ${r.clientName}\nمعكم عباس راضي - سجل الصيانة.\nجهازكم: ${r.deviceName}\nالحالة الحالية: ${statusText(r.status)}\nمر ${d} يوم على ${r.status==='ready'?'جاهزية الجهاز':'استلام الجهاز'}.\nرقم الفاتورة: ${invoiceNo(id,r.createdAt)}\nرابط المتابعة: ${trackUrl(id)}\nشكراً لكم 🌹`;window.open(`https://wa.me/${waNum(r.clientPhone)}?text=${encodeURIComponent(msg)}`,'_blank')}
+function whatsappInvoice(id){let r=phones[id];let msg=`فاتورة صيانة من عباس راضي\nرقم: ${invoiceNo(id,r.createdAt)}\nالجهاز: ${r.deviceName}\nالحالة: ${statusText(r.status)}\nالباقي: ${money(r.remaining)}\nرابط المتابعة: ${trackUrl(id)}`;window.open(`https://wa.me/${waNum(r.clientPhone)}?text=${encodeURIComponent(msg)}`,'_blank')}
+$('#openCompanyBtn').onclick=()=>$('#companyModal').classList.remove('hidden');
+function fillCompany(){if(!$('#setShop'))return;$('#setShop').value=profile.shopName||'';$('#setOwner').value=profile.ownerName||'';$('#setPhone').value=profile.phone||'';$('#setAddress').value=profile.address||'';}
+$('#companyForm').onsubmit=async e=>{e.preventDefault();await root().child('profile').update({shopName:$('#setShop').value.trim(),ownerName:$('#setOwner').value.trim(),phone:$('#setPhone').value.trim(),address:$('#setAddress').value.trim()});$('#companyModal').classList.add('hidden');toast('تم حفظ تفاصيل المحل')};
+$('#openTermsBtn').onclick=()=>{$('#termsModal').classList.remove('hidden');renderTerms()};
+function renderTerms(){let terms=Array.isArray(profile.terms)?profile.terms:[];$('#termsList').innerHTML=terms.map((t,i)=>`<div class="term"><span>${esc(t)}</span><button data-del-term="${i}" type="button">حذف</button></div>`).join('')||'<div class="alertItem">لا توجد شروط.</div>'}
+$('#addTermBtn').onclick=async()=>{let v=$('#newTerm').value.trim();if(!v)return toast('اكتب الشرط');let terms=Array.isArray(profile.terms)?profile.terms.slice():[];terms.push(v);await root().child('profile/terms').set(terms);$('#newTerm').value='';toast('تمت إضافة الشرط')};
+document.addEventListener('click',async e=>{let b=e.target.closest('[data-del-term]');if(!b)return;let terms=(profile.terms||[]).slice();terms.splice(Number(b.dataset.delTerm),1);await root().child('profile/terms').set(terms)});
+$('#exportBtn').onclick=()=>{let data={profile,phones:arr(),exportedAt:fmt(now())},blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='abbas-repairos-backup.json';a.click();URL.revokeObjectURL(a.href)};
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e});$('#installBtn').onclick=async()=>{if(deferredInstall){deferredInstall.prompt();deferredInstall=null}else toast('من المتصفح اختر: إضافة إلى الشاشة الرئيسية')};
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js?v=200').catch(()=>{});
