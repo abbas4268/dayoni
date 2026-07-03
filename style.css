@@ -21,3 +21,157 @@
 @media(min-width:760px){.cardsList{grid-template-columns:1fr 1fr}.homeGrid{max-width:860px;margin-inline:auto}.heroCard{max-width:860px;margin-inline:auto}.page{max-width:980px;margin:auto}.cardsList,.statsGrid,.settingsGrid{grid-template-columns:1fr 1fr}}
 @media(max-width:420px){.two{grid-template-columns:1fr 1fr}.topBar{height:52px}.page{min-height:calc(100vh - 60px);padding:6px}.heroCard{height:76px}.heroCard h2{font-size:20px}.homeGrid{gap:6px;min-height:calc(100vh - 142px)}.homeTile{min-height:112px;border-radius:23px}.homeTile i{width:40px;height:40px;font-size:20px}.homeTile b{font-size:12.5px}.tools{height:36px;grid-template-columns:1fr 96px}.invoice{min-height:600px}.invBody{grid-template-columns:1fr 110px}.qr img{width:94px;height:94px}.row{grid-template-columns:76px 1fr;font-size:10.8px}}
 @media print{html,body{background:white!important;overflow:visible!important}body>*:not(#invoiceModal){display:none!important}#invoiceModal{display:block!important;position:static!important;background:white!important;padding:0!important}.invoiceWindow{width:100%!important;max-height:none!important;height:auto!important;overflow:visible!important;border:0!important;box-shadow:none!important;padding:0!important}.invoice{min-height:100vh!important;height:auto!important;border:0!important;border-radius:0!important;box-shadow:none!important}.noPrint,.invoiceActions,.sheetHead{display:none!important}}
+
+
+/* ===== v26 Compact Luxury Fixes ===== */
+:root{
+  --shine: rgba(255,255,255,.72);
+  --lux1:#8fd8ff;
+  --lux2:#b995ff;
+  --lux3:#ffd66f;
+}
+body{font-size:12px}
+.topBar{height:52px;margin:6px 7px 0;border-radius:21px}
+.topBar h1{font-size:17px}.topBar small{font-size:10px}
+.page{min-height:calc(100vh - 60px);padding:7px}
+.heroCard{
+  height:72px;
+  border-radius:23px;
+  padding:11px 13px;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.88),rgba(255,255,255,.58)) padding-box,
+    linear-gradient(135deg,rgba(143,216,255,.65),rgba(185,149,255,.45),rgba(255,214,111,.55)) border-box;
+  border:1.2px solid transparent;
+}
+.heroCard h2{font-size:19px}
+.heroCard p{font-size:10.5px}
+
+.homeGrid{
+  min-height:auto;
+  height:auto;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin-top:7px;
+}
+.homeTile{
+  min-height:96px;
+  max-height:116px;
+  border-radius:22px;
+  gap:5px;
+  padding:8px;
+  background:
+    radial-gradient(circle at 18% 0%,rgba(255,255,255,.86),transparent 30%) padding-box,
+    linear-gradient(150deg,var(--lux1),var(--lux2),var(--lux3)) border-box;
+  border:1.2px solid transparent;
+  box-shadow:
+    0 13px 28px rgba(0,0,0,.12),
+    0 4px 14px color-mix(in srgb,var(--accent) 16%,transparent),
+    inset 0 1px 0 var(--shine);
+}
+.homeTile i{
+  width:35px;
+  height:35px;
+  border-radius:14px;
+  font-size:17px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 8px 17px rgba(0,0,0,.09);
+}
+.homeTile b{font-size:12px}
+@media(min-width:760px){
+  .homeGrid{max-width:520px}
+  .homeTile{min-height:118px}
+}
+
+input,select{height:34px;border-radius:12px;font-size:11.8px}
+.primary,.ghost{height:34px;border-radius:12px;font-size:11.8px}
+.tools{height:36px;grid-template-columns:1fr 98px}
+.phoneCard,.statCard,.settingTile{border-radius:18px;padding:9px}
+.phoneCard h3{font-size:13.5px}.phoneCard p{font-size:10.8px}
+.actions button{height:26px;border-radius:9px;font-size:10.3px}
+
+.sheet{
+  border-radius:26px;
+  max-height:92vh;
+  padding:11px;
+  gap:6px;
+}
+.smallSheet{max-height:86vh}
+.sheetHead b{font-size:14px}
+.sheetHead button{width:32px;height:32px;border-radius:11px}
+
+.statusSheet{width:min(440px,94vw)}
+.statusChoices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.statusPick{
+  min-height:84px;
+  border:1px solid transparent;
+  border-radius:20px;
+  background:
+    linear-gradient(var(--card),var(--card)) padding-box,
+    linear-gradient(135deg,var(--lux1),var(--lux2),var(--lux3)) border-box;
+  color:var(--text);
+  box-shadow:0 14px 34px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.7);
+  display:grid;
+  place-items:center;
+  align-content:center;
+  gap:5px;
+  font-weight:900;
+}
+.statusPick span{font-size:22px}
+.statusPick b{font-size:12px}
+
+.termsList{
+  min-height:140px;
+  max-height:46vh;
+  overflow:auto;
+}
+.term{
+  height:auto;
+  min-height:34px;
+  padding:7px 9px;
+  align-items:center;
+  gap:8px;
+}
+.term span{line-height:1.35}
+.addTerm{grid-template-columns:1fr 76px}
+
+.invoiceWindow{
+  width:min(790px,96vw);
+  max-height:94vh;
+  border-radius:26px;
+  background:linear-gradient(145deg,var(--solid),color-mix(in srgb,var(--solid) 84%,var(--soft)));
+}
+.invoice{
+  min-height:640px;
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 12% -8%,rgba(0,122,255,.07),transparent 35%),
+    linear-gradient(180deg,#fff,#fbfbfd);
+}
+.invHead{
+  background:
+    radial-gradient(circle at 15% 0%,rgba(255,255,255,.18),transparent 35%),
+    linear-gradient(135deg,#101828,#263244);
+}
+.invBox{
+  box-shadow:0 6px 16px rgba(0,0,0,.035);
+}
+.invoiceActions .primary{min-width:110px}
+
+@media(max-width:420px){
+  .homeTile{min-height:88px;border-radius:20px}
+  .homeTile i{width:32px;height:32px;font-size:16px}
+  .homeTile b{font-size:11.5px}
+  .heroCard{height:68px}
+  .page{padding:6px}
+  .statusChoices{grid-template-columns:1fr 1fr}
+  .statusPick{min-height:76px}
+  .invoice{min-height:620px}
+}
+
+@media print{
+  @page{size:A4;margin:8mm}
+  html,body{width:100%;height:auto;background:white!important;overflow:visible!important}
+  #invoiceModal{display:block!important;position:static!important;background:white!important;padding:0!important}
+  .invoiceWindow{display:block!important;width:100%!important;max-height:none!important;height:auto!important;overflow:visible!important;background:white!important;padding:0!important}
+  #invoicePreview{display:block!important}
+  .invoice{display:grid!important;width:100%!important;min-height:auto!important;height:auto!important;border:0!important;border-radius:0!important;padding:0!important}
+}

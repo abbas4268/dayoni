@@ -164,14 +164,23 @@ function renderPhones(){
   $("#phonesList").innerHTML=list.map(([id,r])=>`<article class="phoneCard">
     <div class="phoneTop"><div><h3>${esc(r.deviceName)}</h3><p>${esc(r.clientName)} - ${esc(r.clientPhone)}</p><span class="badge ${r.status}">${statusText[r.status]||r.status}</span></div><b class="price">${money(r.remaining)}</b></div>
     <p>${esc(r.problem)}</p><p>${esc(r.createdAtText||"")}</p>
-    <div class="actions"><button onclick="openPhone('${id}')">تعديل</button><button onclick="quickStatus('${id}')">حالة</button><button onclick="showInvoice('${id}')">فاتورة</button><button onclick="delPhone('${id}')">حذف</button></div>
+    <div class="actions"><button type="button" onclick="openPhone('${id}')">تعديل</button><button type="button" onclick="quickStatus('${id}')">حالة</button><button type="button" onclick="showInvoice('${id}')">فاتورة</button><button type="button" onclick="delPhone('${id}')">حذف</button></div>
   </article>`).join("")||"<p>لا توجد هواتف</p>";
 }
 $("#searchPhone").oninput=renderPhones;
 $("#filterStatus").onchange=renderPhones;
 function quickStatus(id){
-  let v=prompt("under=تحت الصيانة\ndone=تم الاكتمال\ndelivered=تم التسليم\nrejected=مرفوض",phones[id].status);
-  if(v&&statusText[v]) root().child("phones").child(id).update({status:v,updatedAt:Date.now()});
+  $("#statusEditingId").value=id;
+  $$(".statusPick").forEach(b=>b.classList.remove("picked"));
+  $("#statusModal").classList.remove("hidden");
+}
+function closeStatus(){$("#statusModal").classList.add("hidden")}
+async function setPickedStatus(v){
+  let id=$("#statusEditingId").value;
+  if(!id||!statusText[v]) return;
+  await root().child("phones").child(id).update({status:v,updatedAt:Date.now()});
+  closeStatus();
+  toast("تم تغيير الحالة");
 }
 function delPhone(id){if(confirm("حذف الهاتف؟")) root().child("phones").child(id).remove()}
 function renderStats(){
@@ -210,7 +219,11 @@ function showInvoice(id){
   $("#invoiceModal").classList.remove("hidden");
 }
 function closeInvoice(){$("#invoiceModal").classList.add("hidden")}
-function printInvoiceNow(){setTimeout(()=>window.print(),120)}
+function printInvoiceNow(){
+  const m=$("#invoiceModal");
+  if(m) m.classList.remove("hidden");
+  setTimeout(()=>{ window.focus(); window.print(); },250);
+}
 function goPage(id,title){$$(".page").forEach(p=>p.classList.remove("show"));$("#"+id).classList.add("show");$("#topTitle").textContent=title;$("#backBtn").classList.toggle("hidden",id==="homePage");window.scrollTo(0,0)}
 $("#backBtn").onclick=()=>goPage("homePage","الرئيسية");
 
@@ -233,14 +246,25 @@ function openThemes(){$("#themesModal").classList.remove("hidden")}
 function closeThemes(){$("#themesModal").classList.add("hidden")}
 function setTheme(t){document.body.dataset.theme=t;localStorage.theme=t;if(currentUser)root().child("profile/theme").set(t);closeThemes()}
 
-function openTerms(){renderTerms();$("#termsModal").classList.remove("hidden")}
+function openTerms(){
+  renderTerms();
+  const m=$("#termsModal");
+  if(m) m.classList.remove("hidden");
+}
 function closeTerms(){$("#termsModal").classList.add("hidden")}
 async function addTerm(){
   let v=$("#newTerm").value.trim();
   if(!v) return toast("اكتب الشرط");
-  let terms=profile.terms||[];
+  let terms=Array.isArray(profile.terms)?profile.terms.slice():[];
   terms.push(v);
-  await root().child("profile/terms").set(terms);
+  profile.terms=terms;
+  renderTerms();
+  try{
+    await root().child("profile/terms").set(terms);
+    toast("تمت إضافة الشرط");
+  }catch(e){
+    toast("لم يتم حفظ الشرط، تحقق من الاتصال");
+  }
   $("#newTerm").value="";
   $("#newTerm").focus();
 }
@@ -251,3 +275,12 @@ function renderTerms(){
 }
 async function delTerm(i){let terms=profile.terms||[];terms.splice(i,1);await root().child("profile/terms").set(terms)}
 if("serviceWorker"in navigator)navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister()));
+
+
+/* v26 safety bindings */
+document.addEventListener("DOMContentLoaded",()=>{
+  const termsBtn=[...document.querySelectorAll(".settingTile")].find(b=>b.textContent.includes("شروط"));
+  if(termsBtn) termsBtn.addEventListener("click",(e)=>{e.preventDefault();openTerms();});
+  const companyBtn=[...document.querySelectorAll(".settingTile")].find(b=>b.textContent.includes("تفاصيل الشركة"));
+  if(companyBtn) companyBtn.addEventListener("click",(e)=>{e.preventDefault();openCompany();});
+});

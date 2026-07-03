@@ -1,7 +1,7 @@
 {
-  "name": "RepairOS Apple Rebuild",
+  "name": "RepairOS Apple v26",
   "short_name": "RepairOS",
-  "start_url": "./index.html?v=25",
+  "start_url": "./index.html?v=26",
   "display": "standalone",
   "background_color": "#f5f5f7",
   "theme_color": "#f5f5f7",
