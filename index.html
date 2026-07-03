@@ -1,75 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-  <meta name="theme-color" content="#f5f5f7">
-  <title>RepairOS Simple</title>
-  <link rel="manifest" href="manifest.json?v=24">
-  <link rel="stylesheet" href="style.css?v=24">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f5f7" />
+  <title>RepairOS Apple Rebuild</title>
+  <link rel="manifest" href="manifest.json?v=25" />
+  <link rel="stylesheet" href="style.css?v=25" />
 </head>
 <body data-theme="light">
-  <div id="splash" class="splash"><div class="logo">R</div><b>RepairOS</b><span>Simple Apple Edition</span></div>
+  <div id="splash" class="splash">
+    <div class="appIcon">R</div>
+    <b>RepairOS</b>
+    <span>Apple Rebuild</span>
+  </div>
 
-  <main id="trackView" class="center hidden">
-    <section class="authBox">
-      <div class="logo small">R</div>
+  <main id="trackView" class="authScreen hidden">
+    <section class="authCard">
+      <div class="appIcon mini">R</div>
       <h1>متابعة الهاتف</h1>
-      <div id="trackBox"></div>
+      <div id="trackBox" class="trackBox"></div>
     </section>
   </main>
 
-  <main id="authView" class="center hidden">
-    <section class="authBox">
-      <div class="logo">R</div>
+  <main id="authView" class="authScreen hidden">
+    <section class="authCard">
+      <div class="appIcon">R</div>
       <h1>RepairOS</h1>
-      <p>نظام صيانة هواتف بسيط وناعم.</p>
-      <div class="switch">
+      <p>نظام صيانة هواتف بسيط، فخم، وسريع.</p>
+
+      <div class="segmented">
         <button id="loginTab" class="active" type="button">دخول</button>
-        <button id="registerTab" type="button">إنشاء حساب</button>
+        <button id="registerTab" type="button">حساب جديد</button>
       </div>
+
       <form id="loginForm" class="form">
-        <input id="loginIdentity" placeholder="الإيميل أو رقم الهاتف">
-        <input id="loginPassword" type="password" placeholder="كلمة المرور">
-        <button class="blue" type="submit">دخول</button>
+        <input id="loginIdentity" placeholder="الإيميل أو رقم الهاتف" autocomplete="username" />
+        <input id="loginPassword" type="password" placeholder="كلمة المرور" autocomplete="current-password" />
+        <button class="primary" type="submit">دخول</button>
       </form>
+
       <form id="registerForm" class="form hidden">
-        <input id="ownerName" placeholder="اسمك">
-        <input id="shopName" placeholder="اسم المحل / الشركة">
-        <input id="regPhone" placeholder="رقم الهاتف">
-        <input id="regEmail" type="email" placeholder="الإيميل">
-        <input id="regPassword" type="password" placeholder="كلمة المرور">
-        <input id="regPassword2" type="password" placeholder="تكرار كلمة المرور">
-        <button class="blue" type="submit">إنشاء حساب</button>
+        <input id="ownerName" placeholder="اسمك" />
+        <input id="shopName" placeholder="اسم المحل / الشركة" />
+        <input id="regPhone" placeholder="رقم الهاتف" />
+        <input id="regEmail" type="email" placeholder="الإيميل" />
+        <input id="regPassword" type="password" placeholder="كلمة المرور" />
+        <input id="regPassword2" type="password" placeholder="تكرار كلمة المرور" />
+        <button class="primary" type="submit">إنشاء حساب</button>
       </form>
     </section>
   </main>
 
   <main id="appView" class="app hidden">
-    <header class="top">
+    <header class="topBar">
       <div>
         <small id="topSub">RepairOS</small>
         <h1 id="topTitle">الرئيسية</h1>
       </div>
-      <button id="backBtn" class="soft hidden" type="button">رجوع</button>
+      <button id="backBtn" class="ghost hidden" type="button">رجوع</button>
     </header>
 
     <section id="homePage" class="page show">
-      <div class="welcome">
-        <h2 id="welcomeName">أهلاً</h2>
-        <p id="welcomeShop">نظام إدارة الصيانة</p>
-      </div>
-      <div class="homeGrid">
-        <button class="homeCard" onclick="openAdd()" type="button"><span>📱</span><b>إضافة هاتف</b></button>
-        <button class="homeCard" onclick="goPage('phonesPage','قائمة الهواتف')" type="button"><span>🗂️</span><b>قائمة الهواتف</b></button>
-        <button class="homeCard" onclick="goPage('statsPage','الإحصائيات')" type="button"><span>📊</span><b>الإحصائيات</b></button>
-        <button class="homeCard" onclick="goPage('settingsPage','الإعدادات')" type="button"><span>⚙️</span><b>الإعدادات</b></button>
-      </div>
+      <section class="heroCard">
+        <div>
+          <h2 id="welcomeName">أهلاً</h2>
+          <p id="welcomeShop">نظام إدارة الصيانة</p>
+        </div>
+      </section>
+
+      <section class="homeGrid">
+        <button class="homeTile add" onclick="openPhone()" type="button"><i>📱</i><b>إضافة هاتف</b></button>
+        <button class="homeTile listIcon" onclick="goPage('phonesPage','قائمة الهواتف')" type="button"><i>🗂️</i><b>قائمة الهواتف</b></button>
+        <button class="homeTile statsIcon" onclick="goPage('statsPage','الإحصائيات')" type="button"><i>📊</i><b>الإحصائيات</b></button>
+        <button class="homeTile settingsIcon" onclick="goPage('settingsPage','الإعدادات')" type="button"><i>⚙️</i><b>الإعدادات</b></button>
+      </section>
     </section>
 
     <section id="phonesPage" class="page">
-      <div class="toolbar"><input id="searchPhone" placeholder="بحث بالزبون أو الهاتف..."><select id="filterStatus"><option value="all">الكل</option><option value="under">تحت الصيانة</option><option value="done">تم الاكتمال</option><option value="delivered">تم التسليم</option><option value="rejected">مرفوض</option></select></div>
-      <div id="phonesList" class="list"></div>
+      <div class="tools">
+        <input id="searchPhone" placeholder="بحث باسم الزبون أو الهاتف..." />
+        <select id="filterStatus">
+          <option value="all">الكل</option>
+          <option value="under">تحت الصيانة</option>
+          <option value="done">تم الاكتمال</option>
+          <option value="delivered">تم التسليم</option>
+          <option value="rejected">مرفوض</option>
+        </select>
+      </div>
+      <div id="phonesList" class="cardsList"></div>
     </section>
 
     <section id="statsPage" class="page">
@@ -78,56 +97,65 @@
 
     <section id="settingsPage" class="page">
       <div class="settingsGrid">
-        <button class="settingCard" onclick="openCompany()" type="button"><b>🏢 تفاصيل الشركة</b><span>اسم، هاتف، عنوان، لوكو</span></button>
-        <button class="settingCard" onclick="openThemes()" type="button"><b>🎨 الثيمات</b><span>ألوان ومظهر</span></button>
-        <button class="settingCard" onclick="openTerms()" type="button"><b>📜 شروط الفاتورة</b><span>إضافة وتعديل الشروط</span></button>
-        <button class="settingCard danger" onclick="auth.signOut()" type="button"><b>تسجيل خروج</b><span>الخروج من الحساب</span></button>
+        <button class="settingTile" onclick="openCompany()" type="button"><b>🏢 تفاصيل الشركة</b><span>الاسم، الهاتف، العنوان، اللوكو</span></button>
+        <button class="settingTile" onclick="openThemes()" type="button"><b>🎨 الثيمات</b><span>ألوان ومظهر</span></button>
+        <button class="settingTile" onclick="openTerms()" type="button"><b>📜 شروط الفاتورة</b><span>إضافة عدة شروط</span></button>
+        <button class="settingTile danger" onclick="auth.signOut()" type="button"><b>🚪 تسجيل خروج</b><span>الخروج من الحساب</span></button>
       </div>
     </section>
   </main>
 
   <div id="phoneModal" class="modal hidden">
     <form id="phoneForm" class="sheet">
-      <div class="sheetHead"><b id="phoneModalTitle">إضافة هاتف</b><button type="button" onclick="closePhoneModal()">×</button></div>
-      <input id="editingId" type="hidden">
-      <input id="deviceName" placeholder="اسم الهاتف">
-      <input id="clientName" placeholder="اسم الزبون">
-      <input id="clientPhone" placeholder="رقم الزبون">
-      <input id="problem" placeholder="مشكلة الهاتف">
-      <div class="tw">
-        <input id="repairPrice" inputmode="numeric" placeholder="سعر التصليح">
-        <input id="paidPrice" inputmode="numeric" placeholder="السعر الواصل">
+      <div class="sheetHead">
+        <b id="phoneModalTitle">إضافة هاتف</b>
+        <button type="button" onclick="closePhoneModal()">×</button>
       </div>
-      <input id="remainPrice" inputmode="numeric" placeholder="السعر الباقي">
-      <input id="notes" placeholder="ملاحظات">
-      <div class="tw editOnly">
+      <input id="editingId" type="hidden" />
+      <input id="deviceName" placeholder="اسم الهاتف" />
+      <input id="clientName" placeholder="اسم الزبون" />
+      <input id="clientPhone" placeholder="رقم الزبون" />
+      <input id="problem" placeholder="مشكلة الهاتف" />
+      <div class="two">
+        <input id="repairPrice" inputmode="numeric" placeholder="سعر التصليح" />
+        <input id="paidPrice" inputmode="numeric" placeholder="السعر الواصل" />
+      </div>
+      <input id="remainPrice" inputmode="numeric" placeholder="السعر الباقي" />
+      <input id="notes" placeholder="ملاحظات" />
+      <div class="two">
         <select id="status">
           <option value="under">تحت الصيانة</option>
           <option value="done">تم الاكتمال</option>
           <option value="delivered">تم التسليم</option>
           <option value="rejected">مرفوض</option>
         </select>
-        <input id="createdAtText" placeholder="التاريخ والوقت">
+        <input id="createdAtText" placeholder="التاريخ والوقت" />
       </div>
-      <button class="blue" type="submit">حفظ</button>
+      <button class="primary" type="submit">حفظ</button>
     </form>
   </div>
 
   <div id="companyModal" class="modal hidden">
     <form id="companyForm" class="sheet smallSheet">
-      <div class="sheetHead"><b>تفاصيل الشركة</b><button type="button" onclick="closeCompany()">×</button></div>
-      <input id="setCompany" placeholder="اسم الشركة / المحل">
-      <input id="setOwner" placeholder="اسم المالك">
-      <input id="setCompanyPhone" placeholder="رقم الهاتف">
-      <input id="setAddress" placeholder="العنوان">
-      <input id="setLogo" placeholder="رابط اللوكو اختياري">
-      <button class="blue" type="submit">حفظ</button>
+      <div class="sheetHead">
+        <b>تفاصيل الشركة</b>
+        <button type="button" onclick="closeCompany()">×</button>
+      </div>
+      <input id="setCompany" placeholder="اسم الشركة / المحل" />
+      <input id="setOwner" placeholder="اسم المالك" />
+      <input id="setCompanyPhone" placeholder="رقم الهاتف" />
+      <input id="setAddress" placeholder="العنوان" />
+      <input id="setLogo" placeholder="رابط اللوكو اختياري" />
+      <button class="primary" type="submit">حفظ</button>
     </form>
   </div>
 
   <div id="themesModal" class="modal hidden">
     <div class="sheet smallSheet">
-      <div class="sheetHead"><b>الثيمات</b><button type="button" onclick="closeThemes()">×</button></div>
+      <div class="sheetHead">
+        <b>الثيمات</b>
+        <button type="button" onclick="closeThemes()">×</button>
+      </div>
       <div class="themeGrid">
         <button onclick="setTheme('light')" type="button">Apple Light</button>
         <button onclick="setTheme('dark')" type="button">Apple Dark</button>
@@ -141,10 +169,13 @@
 
   <div id="termsModal" class="modal hidden">
     <div class="sheet smallSheet">
-      <div class="sheetHead"><b>شروط الفاتورة</b><button type="button" onclick="closeTerms()">×</button></div>
+      <div class="sheetHead">
+        <b>شروط الفاتورة</b>
+        <button type="button" onclick="closeTerms()">×</button>
+      </div>
       <div class="addTerm">
-        <input id="newTerm" placeholder="أضف شرط جديد">
-        <button class="blue" onclick="addTerm()" type="button">إضافة</button>
+        <input id="newTerm" placeholder="اكتب شرط جديد" />
+        <button class="primary" onclick="addTerm()" type="button">إضافة</button>
       </div>
       <div id="termsList" class="termsList"></div>
     </div>
@@ -152,9 +183,15 @@
 
   <div id="invoiceModal" class="modal hidden">
     <div class="invoiceWindow">
-      <div class="sheetHead noPrint"><b>الفاتورة</b><button type="button" onclick="closeInvoice()">×</button></div>
+      <div class="sheetHead noPrint">
+        <b>الفاتورة</b>
+        <button type="button" onclick="closeInvoice()">×</button>
+      </div>
       <div id="invoicePreview"></div>
-      <div class="invoiceBtns noPrint"><button class="soft" onclick="closeInvoice()" type="button">إغلاق</button><button class="blue" onclick="printInvoiceNow()" type="button">طباعة</button></div>
+      <div class="invoiceActions noPrint">
+        <button class="ghost" onclick="closeInvoice()" type="button">إغلاق</button>
+        <button class="primary" onclick="printInvoiceNow()" type="button">طباعة</button>
+      </div>
     </div>
   </div>
 
@@ -163,7 +200,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-  <script src="firebase.js?v=24"></script>
-  <script src="app.js?v=24"></script>
+  <script src="firebase.js?v=25"></script>
+  <script src="app.js?v=25"></script>
 </body>
 </html>
