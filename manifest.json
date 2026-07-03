@@ -1,11 +1,11 @@
 {
-  "name": "عباس راضي - سجل صيانة الهواتف",
+  "name": "عباس راضي - سجل الصيانة الذكي",
   "short_name": "سجل الصيانة",
-  "start_url": "./index.html?v=1002",
+  "start_url": "./index.html?v=1003",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#07140d",
-  "theme_color": "#07140d",
+  "background_color": "#0a0f0a",
+  "theme_color": "#0a0f0a",
   "dir": "rtl",
   "lang": "ar",
   "icons": []
