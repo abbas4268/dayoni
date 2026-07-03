@@ -1,10 +1,10 @@
 {
-  "name": "RepairOS Apple v26",
+  "name": "RepairOS Pro",
   "short_name": "RepairOS",
-  "start_url": "./index.html?v=26",
+  "start_url": "./index.html?v=100",
   "display": "standalone",
-  "background_color": "#f5f5f7",
-  "theme_color": "#f5f5f7",
+  "background_color": "#0b1020",
+  "theme_color": "#0b1020",
   "dir": "rtl",
   "lang": "ar",
   "icons": []
