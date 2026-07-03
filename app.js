@@ -139,7 +139,7 @@ async function loadTrack() {
         <h2>${esc(r.deviceName)}</h2>
         <p>الزبون: ${esc(r.customerName)}</p>
         <p>العطل: ${esc(r.problem)}</p>
-        <span class="badge">${st.icon} ${st.label}</span>
+        <span class="badge">${st.icon} ${st.label}</span> <span class="agePill">${daysSince(r.createdAt)} يوم</span>
         <div class="progress"><i style="width:${st.progress}%"></i></div>
         <p>نسبة الإنجاز: ${st.progress}%</p>
         <p>الباقي: <b class="money">${money(r.remaining)}</b></p>
@@ -174,7 +174,7 @@ function boot() {
   });
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js?v=1003').catch(() => {});
+    navigator.serviceWorker.register('sw.js?v=2001').catch(() => {});
   }
 }
 
@@ -349,6 +349,34 @@ function filterList(kind) {
   }
 }
 
+
+function renderSmartInsights(totals, list) {
+  const safeCount = totals.count || 1;
+  const debtRatio = Math.round((list.filter(r => r.remaining > 0).length / safeCount) * 100);
+  const ready = list.filter(r => r.status === 'ready').length;
+  const open = list.filter(r => !['delivered', 'cancelled'].includes(r.status)).length;
+  const late = filterList('late').length;
+  const today = filterList('today').length;
+  const collectionPower = totals.price ? Math.round((totals.paid / totals.price) * 100) : 0;
+  const message = late > 0 ? `عندك ${late} جهاز متأخر؛ لا تخليها تصير آثار سومرية بالمحل.` : ready > 0 ? `عندك ${ready} جهاز جاهز للاستلام؛ فرصة ممتازة لتحصيل الباقي.` : open > 0 ? 'الشغل تحت السيطرة، تابع الحالات حتى تبقى اللوحة نظيفة.' : 'لا توجد أجهزة مفتوحة حالياً. وقت قهوة أو حملة تسويق صغيرة.';
+  const el = $('#smartInsights');
+  if (!el) return;
+  el.innerHTML = `
+    <button class="insightCard heroInsight" onclick="openSmartList('late','الأجهزة المتأخرة')">
+      <span>تنبيه ذكي</span><b>${esc(message)}</b><em>اضغط لعرض المتأخر</em>
+    </button>
+    <button class="insightCard" onclick="openSmartList('debt','تحصيل الديون')">
+      <span>نسبة الديون</span><b>${debtRatio}%</b><em>${money(totals.rem)} باقي</em>
+    </button>
+    <button class="insightCard" onclick="openSmartList('paid','التحصيل')">
+      <span>قوة التحصيل</span><b>${collectionPower}%</b><em>${money(totals.paid)} واصل</em>
+    </button>
+    <button class="insightCard" onclick="openSmartList('today','إضافات اليوم')">
+      <span>اليوم</span><b>${today}</b><em>أجهزة جديدة</em>
+    </button>
+  `;
+}
+
 // إحصاءات سريعة
 function renderStats() {
   const a = arr();
@@ -365,15 +393,25 @@ function renderStats() {
 
   $('#quickStats').innerHTML = `
     <button class="miniStat" onclick="openSmartList('all','كل الهواتف')">
-      <span>📱 الهواتف</span><b>${totals.count}</b>
+      <span>📱 الهواتف</span><b>${totals.count}</b><em>كل السجلات</em>
+    </button>
+    <button class="miniStat" onclick="openSmartList('open','الأجهزة المفتوحة')">
+      <span>🧰 المفتوحة</span><b>${totals.open}</b><em>قيد العمل</em>
+    </button>
+    <button class="miniStat" onclick="openSmartList('ready','جاهز للاستلام')">
+      <span>✅ جاهز</span><b>${totals.ready}</b><em>اتصل بالزبون</em>
     </button>
     <button class="miniStat" onclick="openSmartList('paid','الأجهزة التي بها واصل')">
-      <span>💰 الواصل</span><b>${money(totals.paid)}</b>
+      <span>💰 الواصل</span><b>${money(totals.paid)}</b><em>تحصيل</em>
     </button>
-    <button class="miniStat" onclick="openSmartList('debt','الأجهزة التي عليها باقي')">
-      <span>📉 الباقي</span><b>${money(totals.rem)}</b>
+    <button class="miniStat dangerStat" onclick="openSmartList('debt','الأجهزة التي عليها باقي')">
+      <span>📉 الباقي</span><b>${money(totals.rem)}</b><em>ديون</em>
+    </button>
+    <button class="miniStat" onclick="openSmartList('today','أجهزة مضافة اليوم')">
+      <span>📅 اليوم</span><b>${filterList('today').length}</b><em>مضاف حديثاً</em>
     </button>
   `;
+  renderSmartInsights(totals, a);
 
   const cards = [
     ['all', 'عدد الهواتف', totals.count],
@@ -462,7 +500,7 @@ function cardHtml(r) {
         <div>
           <h3>${esc(r.deviceName)}</h3>
           <p>${esc(r.customerName)} - ${esc(r.customerPhone)}</p>
-          <span class="badge">${st.icon} ${st.label}</span>
+          <span class="badge">${st.icon} ${st.label}</span> <span class="agePill">${daysSince(r.createdAt)} يوم</span>
         </div>
         <b class="money">${money(r.remaining)}</b>
       </div>

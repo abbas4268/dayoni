@@ -1,11 +1,11 @@
 {
   "name": "عباس راضي - سجل الصيانة الذكي",
   "short_name": "سجل الصيانة",
-  "start_url": "./index.html?v=1003",
+  "start_url": "./index.html?v=2001",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0a0f0a",
-  "theme_color": "#0a0f0a",
+  "background_color": "#050607",
+  "theme_color": "#050607",
   "dir": "rtl",
   "lang": "ar",
   "icons": []

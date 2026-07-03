@@ -628,3 +628,258 @@ input[type="date"] { color-scheme: dark; }
   .noPrint, .invoiceActions, .sheetHead { display: none !important; }
   .invoice { border: 0 !important; border-radius: 0 !important; }
 }
+/* =====================================================
+   Abbas Repair OS v2001 — Premium Executive Layer
+   ===================================================== */
+:root {
+  --bg: #050607;
+  --bg2: #0b1110;
+  --card: rgba(13, 20, 18, 0.76);
+  --glass: rgba(255,255,255,.075);
+  --line: rgba(245, 215, 110, .18);
+  --text: #f8fff9;
+  --muted: #9fb0a8;
+  --gold: #ffd86b;
+  --green: #19d87c;
+  --cyan: #69f0ff;
+  --danger: #ff5f6d;
+  --shadow: 0 24px 80px rgba(0,0,0,.62), inset 0 1px 0 rgba(255,255,255,.05);
+  --radius: 26px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 80% 0%, rgba(255, 216, 107, .13), transparent 28%),
+    radial-gradient(circle at 5% 20%, rgba(25, 216, 124, .16), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(105, 240, 255, .07), transparent 32%),
+    linear-gradient(145deg, #040504 0%, #08100d 52%, #10140b 100%);
+}
+body:before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(circle at center, black, transparent 78%);
+}
+
+.glassCard, .deviceCard, .miniStat, .task, .statCard, .settingTile, .topbar, .sheet {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(255,216,107,.18) !important;
+  box-shadow: var(--shadow);
+}
+.glassCard:before, .deviceCard:before, .miniStat:before, .task:before, .statCard:before, .settingTile:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255,255,255,.12), transparent 38%, rgba(255,216,107,.055));
+  opacity: .72;
+}
+
+.splash { background: radial-gradient(circle, rgba(25,216,124,.16), transparent 42%), #050607; }
+.brandMark {
+  background: linear-gradient(145deg, rgba(255,216,107,.36), rgba(25,216,124,.22));
+  border: 1px solid rgba(255,216,107,.36);
+  box-shadow: 0 24px 70px rgba(255,216,107,.16), inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+.topbar {
+  position: sticky;
+  top: 10px;
+  z-index: 50;
+  border-radius: 28px;
+  background: rgba(8, 13, 12, .74);
+  backdrop-filter: blur(24px) saturate(150%);
+}
+.mainTitle .gold, .money { text-shadow: 0 0 24px rgba(255,216,107,.25); }
+
+.hero {
+  min-height: 142px;
+  background: linear-gradient(135deg, rgba(18,35,28,.88), rgba(10,15,14,.76));
+}
+.hero h2 { letter-spacing: -.7px; }
+.clock { border-color: rgba(255,216,107,.23); box-shadow: inset 0 0 24px rgba(255,216,107,.05); }
+
+.quickStats { grid-template-columns: repeat(2, 1fr); }
+.miniStat {
+  text-align: right;
+  min-height: 104px;
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  background: linear-gradient(145deg, rgba(255,255,255,.08), rgba(255,255,255,.035));
+}
+.miniStat b { font-size: clamp(18px, 4vw, 25px); line-height: 1.3; }
+.miniStat em, .statCard em, .insightCard em { color: var(--muted); font-style: normal; font-size: 12px; }
+.dangerStat { border-color: rgba(255,95,109,.28) !important; }
+
+.insightGrid {
+  display: grid;
+  grid-template-columns: 1.25fr .75fr;
+  gap: 10px;
+  margin: 4px 0 18px;
+}
+.insightCard {
+  min-height: 98px;
+  padding: 16px;
+  text-align: right;
+  border-radius: 24px;
+  border: 1px solid rgba(255,216,107,.18);
+  background: linear-gradient(145deg, rgba(255,216,107,.095), rgba(25,216,124,.055));
+  box-shadow: var(--shadow);
+  display: grid;
+  align-content: center;
+  gap: 3px;
+}
+.insightCard span { color: var(--muted); font-weight: 700; }
+.insightCard b { font-size: 19px; }
+.heroInsight { grid-row: span 2; }
+.heroInsight b { font-size: 20px; line-height: 1.7; }
+
+.gridMenu { gap: 10px; }
+.menuCard {
+  min-height: 144px;
+  display: grid;
+  align-content: center;
+  transform: translateZ(0);
+}
+.menuCard:hover, .deviceCard:hover, .statCard:hover, .settingTile:hover, .miniStat:hover { transform: translateY(-2px); }
+.menuCard i { filter: drop-shadow(0 12px 20px rgba(0,0,0,.35)); }
+
+.tools {
+  position: sticky;
+  top: 88px;
+  z-index: 40;
+  padding: 8px;
+  border-radius: 24px;
+  background: rgba(5, 6, 7, .72);
+  backdrop-filter: blur(18px);
+}
+.inputGroup, .glassSelect {
+  min-height: 52px;
+  border-color: rgba(255,216,107,.15);
+  background: rgba(255,255,255,.065);
+}
+.inputGroup:focus-within { border-color: rgba(255,216,107,.55); box-shadow: 0 0 0 4px rgba(255,216,107,.08); }
+
+.deviceCard {
+  border-radius: 28px;
+  background: linear-gradient(145deg, rgba(13,20,18,.82), rgba(255,255,255,.045));
+}
+.deviceTop h3 { font-size: 24px; }
+.badge, .agePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 30px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,216,107,.18);
+  background: rgba(255,255,255,.07);
+  font-weight: 800;
+}
+.agePill { color: var(--muted); font-size: 12px; }
+.cardActions button {
+  flex: 1 1 auto;
+  min-height: 40px;
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,216,107,.16);
+}
+.cardActions button:nth-child(3) { background: linear-gradient(135deg, rgba(255,216,107,.16), rgba(25,216,124,.08)); }
+.progress { height: 10px; background: rgba(0,0,0,.32); }
+.progress i { border-radius: inherit; box-shadow: 0 0 22px rgba(25,216,124,.32); }
+.timeItem { background: rgba(0,0,0,.24); border: 1px solid rgba(255,255,255,.045); }
+
+.smartSummary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 10px 0;
+}
+.smartSummary div {
+  padding: 12px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,216,107,.14);
+}
+.smartSummary span { display:block; color: var(--muted); font-size: 12px; }
+.smartSummary b { color: var(--gold); }
+.smartSheet { width: min(820px, 96vw); }
+
+.task.smartTask {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+}
+.task.smartTask span { color: var(--gold); font-size: 12px; }
+
+.invoiceWindow, .invoice { border-radius: 24px; }
+.invoice { font-family: 'Cairo', sans-serif; }
+.invHead { background: linear-gradient(135deg, #06100c, #203414 52%, #0e1d15); border: 1px solid rgba(255,216,107,.28); }
+.invBox { box-shadow: 0 10px 30px rgba(0,0,0,.04); }
+
+.fab {
+  position: fixed;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 60;
+  width: 62px;
+  height: 62px;
+  border-radius: 24px;
+  color: #08100d;
+  font-size: 34px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold), var(--green));
+  box-shadow: 0 18px 45px rgba(25,216,124,.24), 0 12px 30px rgba(255,216,107,.18);
+}
+
+body.light {
+  --bg: #f6f3ea;
+  --bg2: #ffffff;
+  --card: rgba(255,255,255,.84);
+  --glass: rgba(8, 35, 22, .055);
+  --line: rgba(99, 76, 16, .16);
+  --text: #162118;
+  --muted: #647064;
+  --shadow: 0 24px 70px rgba(61, 67, 47, .14), inset 0 1px 0 rgba(255,255,255,.8);
+}
+body.light .topbar, body.light .tools { background: rgba(255,255,255,.72); }
+body.light .deviceCard { background: linear-gradient(145deg, rgba(255,255,255,.92), rgba(255,250,232,.66)); }
+
+@media (min-width: 740px) {
+  .quickStats { grid-template-columns: repeat(6, 1fr); }
+  .insightGrid { grid-template-columns: 1.5fr repeat(3, 1fr); }
+  .heroInsight { grid-row: auto; }
+}
+@media (max-width: 560px) {
+  .app { padding: 10px 9px 96px; }
+  .hero { align-items: stretch; flex-direction: column; gap: 12px; }
+  .clock { width: fit-content; }
+  .gridMenu { grid-template-columns: 1fr 1fr; }
+  .menuCard { min-height: 126px; padding: 16px 10px; }
+  .menuCard i { font-size: 31px; }
+  .menuCard b { font-size: 17px; }
+  .tools { grid-template-columns: 1fr; top: 78px; }
+  .insightGrid { grid-template-columns: 1fr 1fr; }
+  .heroInsight { grid-column: 1 / -1; grid-row: auto; }
+  .statsGrid, .settingsGrid { grid-template-columns: 1fr; }
+  .quickStats { grid-template-columns: 1fr 1fr; }
+  .deviceTop { align-items: flex-start; }
+  .deviceTop .money { font-size: 16px; white-space: nowrap; }
+  .timeItem { grid-template-columns: 1fr; }
+  .smartSummary { grid-template-columns: 1fr; }
+}
+@media print {
+  body:before, .fab { display: none !important; }
+  .invoice { page-break-inside: avoid; }
+}

@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>عباس راضي | سجل الصيانة الذكي</title>
   <meta name="description" content="نظام عباس راضي لإدارة صيانة الهواتف باحترافية، فواتير، متابعة، تقارير وتحليلات.">
-  <meta name="theme-color" content="#0a0f0a">
-  <link rel="manifest" href="manifest.json?v=1003">
-  <link rel="stylesheet" href="style.css?v=1003">
+  <meta name="theme-color" content="#050607">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json?v=2001">
+  <link rel="stylesheet" href="style.css?v=2001">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
@@ -83,6 +85,8 @@
 
       <div id="quickStats" class="quickStats"></div>
 
+      <div id="smartInsights" class="insightGrid"></div>
+
       <div class="gridMenu">
         <button data-open-phone class="menuCard glassCard">
           <i>📱</i><b>إضافة هاتف</b><span>تسجيل جهاز جديد</span>
@@ -137,6 +141,8 @@
       </div>
     </section>
   </main>
+
+  <button class="fab noPrint" type="button" data-open-phone aria-label="إضافة هاتف">＋</button>
 
   <!-- المودالات (نوافذ منبثقة) -->
   <div id="deviceModal" class="modal hidden">
@@ -247,7 +253,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-  <script src="firebase.js?v=1003"></script>
-  <script src="app.js?v=1003"></script>
+  <script src="firebase.js?v=2001"></script>
+  <script src="app.js?v=2001"></script>
 </body>
 </html>
