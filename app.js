@@ -36,15 +36,15 @@ const id = () => `AR-${Date.now().toString(36).toUpperCase()}${Math.random().toS
 
 // حالات الجهاز مع أيقونات وتقدم
 const statuses = {
-  received: { label: 'تم الاستلام', icon: '📥', progress: 10 },
-  checking: { label: 'جاري الفحص', icon: '🔍', progress: 25 },
-  approval: { label: 'بانتظار موافقة الزبون', icon: '🟠', progress: 35 },
-  part: { label: 'بانتظار قطعة', icon: '🧩', progress: 45 },
-  repairing: { label: 'جاري الإصلاح', icon: '🔧', progress: 65 },
-  testing: { label: 'الاختبار', icon: '🧪', progress: 80 },
-  ready: { label: 'جاهز للاستلام', icon: '✅', progress: 95 },
-  delivered: { label: 'تم التسليم', icon: '📦', progress: 100 },
-  cancelled: { label: 'ملغي', icon: '⛔', progress: 0 }
+  received: { label: 'تم الاستلام', icon: '01', progress: 10 },
+  checking: { label: 'جاري الفحص', icon: '02', progress: 25 },
+  approval: { label: 'بانتظار موافقة الزبون', icon: '03', progress: 35 },
+  part: { label: 'بانتظار قطعة', icon: '04', progress: 45 },
+  repairing: { label: 'جاري الإصلاح', icon: '05', progress: 65 },
+  testing: { label: 'الاختبار', icon: '06', progress: 80 },
+  ready: { label: 'جاهز للاستلام', icon: '07', progress: 95 },
+  delivered: { label: 'تم التسليم', icon: '08', progress: 100 },
+  cancelled: { label: 'ملغي', icon: '00', progress: 0 }
 };
 
 // تعيين الحالات القديمة إلى الجديدة
@@ -210,12 +210,12 @@ function bindUI() {
   $('#refreshBtn').onclick = () => location.reload();
   $('#logoutBtn').onclick = () => auth.signOut();
   $('#themeBtn').onclick = () => {
-    document.body.classList.toggle('light');
-    localStorage.abbasTheme = document.body.classList.contains('light') ? 'light' : 'dark';
-    $('#themeBtn').textContent = document.body.classList.contains('light') ? '☀' : '◐';
+    document.body.classList.toggle('dark');
+    localStorage.abbasTheme = document.body.classList.contains('dark') ? 'dark' : 'light';
+    $('#themeBtn').textContent = document.body.classList.contains('dark') ? '☀' : '◐';
   };
-  if (localStorage.abbasTheme === 'light') {
-    document.body.classList.add('light');
+  if (localStorage.abbasTheme === 'dark') {
+    document.body.classList.add('dark');
     $('#themeBtn').textContent = '☀';
   }
 
@@ -412,22 +412,22 @@ function renderStats() {
 
   $('#quickStats').innerHTML = `
     <button class="miniStat" onclick="openSmartList('all','كل الهواتف')">
-      <span>📱 الهواتف</span><b>${totals.count}</b><em>كل السجلات</em>
+      <span>الهواتف</span><b>${totals.count}</b><em>كل السجلات</em>
     </button>
     <button class="miniStat" onclick="openSmartList('open','الأجهزة المفتوحة')">
-      <span>🧰 المفتوحة</span><b>${totals.open}</b><em>قيد العمل</em>
+      <span>المفتوحة</span><b>${totals.open}</b><em>قيد العمل</em>
     </button>
     <button class="miniStat" onclick="openSmartList('ready','جاهز للاستلام')">
-      <span>✅ جاهز</span><b>${totals.ready}</b><em>اتصل بالزبون</em>
+      <span>جاهز</span><b>${totals.ready}</b><em>اتصل بالزبون</em>
     </button>
     <button class="miniStat" onclick="openSmartList('paid','الأجهزة التي بها واصل')">
-      <span>💰 الواصل</span><b>${money(totals.paid)}</b><em>تحصيل</em>
+      <span>الواصل</span><b>${money(totals.paid)}</b><em>تحصيل</em>
     </button>
     <button class="miniStat dangerStat" onclick="openSmartList('debt','الأجهزة التي عليها باقي')">
-      <span>📉 الباقي</span><b>${money(totals.rem)}</b><em>ديون</em>
+      <span>الباقي</span><b>${money(totals.rem)}</b><em>ديون</em>
     </button>
     <button class="miniStat" onclick="openSmartList('today','أجهزة مضافة اليوم')">
-      <span>📅 اليوم</span><b>${filterList('today').length}</b><em>مضاف حديثاً</em>
+      <span>اليوم</span><b>${filterList('today').length}</b><em>مضاف حديثاً</em>
     </button>
   `;
   renderSmartInsights(totals, a);
@@ -461,16 +461,16 @@ function renderTasks() {
   $('#todayHint').textContent = `${late.length} متأخر`;
   $('#todayTasks').innerHTML = `
     <button class="task smartTask" onclick="openSmartList('ready','أجهزة جاهزة للاستلام')">
-      ✅ أجهزة جاهزة للاستلام: <b>${ready.length}</b><span>عرض الأجهزة</span>
+      أجهزة جاهزة للاستلام: <b>${ready.length}</b><span>عرض الأجهزة</span>
     </button>
     <button class="task smartTask" onclick="openSmartList('late','أجهزة مر عليها أكثر من 7 أيام')">
-      ⏱️ أجهزة مر عليها أكثر من 7 أيام: <b>${late.length}</b><span>عرض المتأخرة</span>
+      أجهزة مر عليها أكثر من 7 أيام: <b>${late.length}</b><span>عرض المتأخرة</span>
     </button>
     <button class="task smartTask" onclick="openSmartList('debt','زبائن عليهم باقي')">
-      💰 زبائن عليهم باقي: <b>${debt.length}</b><span>عرض الديون</span>
+      زبائن عليهم باقي: <b>${debt.length}</b><span>عرض الديون</span>
     </button>
     <button class="task smartTask" onclick="openSmartList('today','أجهزة مضافة اليوم')">
-      📅 أجهزة مضافة اليوم: <b>${today.length}</b><span>عرض اليوم</span>
+      أجهزة مضافة اليوم: <b>${today.length}</b><span>عرض اليوم</span>
     </button>
   `;
 }
@@ -523,20 +523,28 @@ function cardHtml(r) {
       <div class="deviceTop">
         <div>
           <h3>${esc(r.deviceName)}</h3>
-          <p>${esc(r.customerName)} - ${esc(r.customerPhone)}</p>
-          <span class="badge">${st.icon} ${st.label}</span> <span class="agePill">${daysSince(r.createdAt)} يوم</span>
+          <p>${esc(r.customerName)} ${r.customerPhone ? `- ${esc(r.customerPhone)}` : ''}</p>
+          <div class="deviceMeta">
+            <span class="badge">${st.label}</span>
+            <span class="agePill">${daysSince(r.createdAt)} يوم</span>
+          </div>
         </div>
-        <b class="money">${money(r.remaining)}</b>
+        <div class="deviceMoney">
+          <span>الباقي</span>
+          <b class="money">${money(r.remaining)}</b>
+        </div>
       </div>
-      <p>العطل: ${esc(r.problem)}</p>
-      <p>رقم الاستلام: ${esc(r.receiptNo)}</p>
+      <div class="deviceInfo">
+        <span>العطل</span><b>${esc(r.problem)}</b>
+        <span>رقم الاستلام</span><b>${esc(r.receiptNo)}</b>
+      </div>
       <div class="progress"><i style="width:${st.progress}%"></i></div>
       <div class="cardActions">
-        <button onclick="openDevice('${r._id}')">✏️ تعديل</button>
-        <button onclick="openStatus('${r._id}')">🔄 حالة</button>
-        <button onclick="showInvoice('${r._id}')">🧾 فاتورة</button>
-        <button onclick="whatsappFollow('${r._id}')">📱 متابعة</button>
-        <button onclick="removeDevice('${r._id}')">🗑️ حذف</button>
+        <button onclick="openDevice('${r._id}')">تعديل</button>
+        <button onclick="openStatus('${r._id}')">الحالة</button>
+        <button class="strongAction" onclick="showInvoice('${r._id}')">فاتورة</button>
+        <button onclick="whatsappFollow('${r._id}')">متابعة</button>
+        <button class="dangerAction" onclick="removeDevice('${r._id}')">حذف</button>
       </div>
       ${timelineHtml(r, 3)}
     </article>
@@ -550,7 +558,7 @@ function timelineHtml(r, limit = 99) {
       ${items.map(x =>
         `<div class="timeItem">
           <b>${fmt(x.at)}</b>
-          <span>${esc(statuses[x.status]?.icon || '•')} ${esc(x.label || statuses[x.status]?.label || x.status)}${x.note ? ` — ${esc(x.note)}` : ''}</span>
+          <span>${esc(x.label || statuses[x.status]?.label || x.status)}${x.note ? ` - ${esc(x.note)}` : ''}</span>
         </div>`
       ).join('')}
     </div>
@@ -586,13 +594,13 @@ function calcRemain() {
 function openDevice(did) {
   $('#deviceForm').reset();
   $('#editingId').value = '';
-  $('#deviceModalTitle').textContent = '📱 إضافة هاتف';
+  $('#deviceModalTitle').textContent = 'إضافة هاتف';
   $('#statusSelect').value = 'received';
   $('#expectedDate').value = '';
   if (did) {
     const r = devices[did];
     $('#editingId').value = did;
-    $('#deviceModalTitle').textContent = '✏️ تعديل الهاتف';
+    $('#deviceModalTitle').textContent = 'تعديل الهاتف';
     $('#customerName').value = r.customerName;
     $('#customerPhone').value = r.customerPhone;
     $('#deviceName').value = r.deviceName;
@@ -696,42 +704,96 @@ function showInvoice(did) {
   activeInvoiceId = did;
   const st = statuses[r.status] || statuses.received;
   const qr = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(trackUrl(r))}`;
-  const terms = (profile.terms || []).map((t, i) => `<p>${i+1}. ${esc(t)}</p>`).join('') || '<p>لا توجد شروط.</p>';
+  const terms = (profile.terms || []).map((t, i) => `<li><span>${i+1}</span><p>${esc(t)}</p></li>`).join('') || '<li><span>1</span><p>لا توجد شروط مضافة.</p></li>';
+  const deviceTitle = `${r.deviceName || ''} ${r.deviceBrand || ''}`.trim() || 'هاتف';
+  const timeline = (r.timeline || []).slice(-6).reverse().map(x => `
+    <div class="invoiceTimeItem">
+      <time>${fmt(x.at)}</time>
+      <p>${esc(x.label || statuses[x.status]?.label || x.status)}${x.note ? `<small>${esc(x.note)}</small>` : ''}</p>
+    </div>
+  `).join('');
   $('#invoiceBox').innerHTML = `
     <div class="invoice">
-      <div class="invHead">
+      <header class="invoiceHero">
+        <div class="invoiceBrand">
+          <div class="invoiceLogo">${esc((profile.shopName || 'ع').trim().slice(0, 1))}</div>
+          <div>
+            <h2>${esc(profile.shopName || 'عباس راضي')}</h2>
+            <p>${esc(profile.address || 'سجل صيانة الهواتف الذكي')}</p>
+            <small>${esc(profile.phone || '')}</small>
+          </div>
+        </div>
+        <div class="invoiceNumber">
+          <span>وصل صيانة</span>
+          <b>${esc(r.receiptNo)}</b>
+          <em>${fmt(nowISO())}</em>
+        </div>
+      </header>
+
+      <section class="invoiceStatus">
         <div>
-          <h2>${esc(profile.shopName || 'عباس راضي')}</h2>
-          <p>سجل الصيانة الذكي</p>
-          <small>${esc(profile.phone || '')} ${esc(profile.address || '')}</small>
+          <span>الحالة الحالية</span>
+          <b>${esc(st.label)}</b>
         </div>
-        <b>${esc(r.receiptNo)}</b>
-      </div>
-      <div class="invGrid">
-        <div class="invBox">
-          <div class="row"><b>الزبون</b><span>${esc(r.customerName)}</span></div>
-          <div class="row"><b>رقم الهاتف</b><span>${esc(r.customerPhone)}</span></div>
-          <div class="row"><b>الجهاز</b><span>${esc(r.deviceName)} ${esc(r.deviceBrand)}</span></div>
-          <div class="row"><b>IMEI</b><span>${esc(r.imei || '-')}</span></div>
-          <div class="row"><b>العطل</b><span>${esc(r.problem)}</span></div>
-          <div class="row"><b>الحالة</b><span>${st.icon} ${st.label}</span></div>
-          <div class="row"><b>السعر</b><span>${money(r.price)}</span></div>
-          <div class="row"><b>الواصل</b><span>${money(r.paid)}</span></div>
-          <div class="row"><b>الباقي</b><span>${money(r.remaining)}</span></div>
+        <div class="invoiceProgress"><i style="width:${st.progress}%"></i></div>
+        <strong>${st.progress}%</strong>
+      </section>
+
+      <section class="invoiceLayout">
+        <div class="invoicePanel">
+          <h3>بيانات الزبون</h3>
+          <div class="invoiceRows">
+            <div><span>الاسم</span><b>${esc(r.customerName)}</b></div>
+            <div><span>الهاتف</span><b>${esc(r.customerPhone || '-')}</b></div>
+            <div><span>تاريخ الاستلام</span><b>${fmt(r.createdAt)}</b></div>
+            <div><span>الموعد المتوقع</span><b>${esc(r.expectedDate || '-')}</b></div>
+          </div>
         </div>
-        <div class="invBox qr">
+
+        <div class="invoicePanel">
+          <h3>بيانات الجهاز</h3>
+          <div class="invoiceRows">
+            <div><span>الجهاز</span><b>${esc(deviceTitle)}</b></div>
+            <div><span>اللون</span><b>${esc(r.deviceColor || '-')}</b></div>
+            <div><span>IMEI / Serial</span><b>${esc(r.imei || '-')}</b></div>
+            <div><span>الملحقات</span><b>${esc(r.accessories || '-')}</b></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="invoiceProblem">
+        <span>العطل المسجل</span>
+        <p>${esc(r.problem)}</p>
+        ${r.notes ? `<small>ملاحظات داخلية: ${esc(r.notes)}</small>` : ''}
+      </section>
+
+      <section class="invoiceMoney">
+        <div><span>السعر</span><b>${money(r.price)}</b></div>
+        <div><span>الواصل</span><b>${money(r.paid)}</b></div>
+        <div class="due"><span>الباقي</span><b>${money(r.remaining)}</b></div>
+      </section>
+
+      <section class="invoiceFooterGrid">
+        <div class="invoicePanel">
+          <h3>آخر التحديثات</h3>
+          <div class="invoiceTimeline">${timeline || '<p class="emptyInvoice">لا توجد تحديثات بعد.</p>'}</div>
+        </div>
+        <div class="invoiceQR">
           <img src="${qr}" alt="QR">
-          <p>📱 مسح للمتابعة</p>
+          <b>متابعة الحالة</b>
+          <span>امسح الرمز لمتابعة الجهاز</span>
         </div>
-      </div>
-      <div class="invBox" style="margin-top:12px">
-        <b>📋 السجل الزمني</b>
-        ${timelineHtml(r, 99)}
-      </div>
-      <div class="invBox" style="margin-top:12px">
-        <b>📜 الشروط</b>
-        ${terms}
-      </div>
+      </section>
+
+      <section class="invoiceTerms">
+        <h3>الشروط والملاحظات</h3>
+        <ol>${terms}</ol>
+      </section>
+
+      <footer class="invoiceSignatures">
+        <div><span>توقيع المستلم</span></div>
+        <div><span>توقيع الزبون</span></div>
+      </footer>
     </div>
   `;
   openModal('invoiceModal');
@@ -741,7 +803,7 @@ function showInvoice(did) {
 function shareInvoice() {
   const r = devices[activeInvoiceId];
   if (!r) return;
-  const msg = `🧾 فاتورة صيانة\n\nالزبون: ${r.customerName}\nالجهاز: ${r.deviceName}\nالعطل: ${r.problem}\nالسعر: ${money(r.price)}\nالواصل: ${money(r.paid)}\nالباقي: ${money(r.remaining)}\nالحالة: ${statuses[r.status]?.label}\nرقم الاستلام: ${r.receiptNo}\n\nللمتابعة: ${trackUrl(r)}`;
+  const msg = `فاتورة صيانة\n\nالزبون: ${r.customerName}\nالجهاز: ${r.deviceName}\nالعطل: ${r.problem}\nالسعر: ${money(r.price)}\nالواصل: ${money(r.paid)}\nالباقي: ${money(r.remaining)}\nالحالة: ${statuses[r.status]?.label}\nرقم الاستلام: ${r.receiptNo}\n\nللمتابعة: ${trackUrl(r)}`;
   const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
   window.open(url, '_blank');
 }
