@@ -381,17 +381,17 @@ function renderSmartInsights(totals, list) {
   const el = $('#smartInsights');
   if (!el) return;
   el.innerHTML = `
-    <button class="insightCard heroInsight" onclick="openSmartList('late','الأجهزة المتأخرة')">
-      <span>تنبيه ذكي</span><b>${esc(message)}</b><em>اضغط لعرض المتأخر</em>
+    <button class="insightCard heroInsight commandInsight" onclick="openSmartList('late','الأجهزة المتأخرة')">
+      <span>قرار اليوم</span><b>${esc(message)}</b><em>فتح قائمة المتابعة</em>
     </button>
-    <button class="insightCard" onclick="openSmartList('debt','تحصيل الديون')">
-      <span>نسبة الديون</span><b>${debtRatio}%</b><em>${money(totals.rem)} باقي</em>
+    <button class="insightCard metricInsight" onclick="openSmartList('debt','تحصيل الديون')">
+      <span>المخاطر المالية</span><b>${debtRatio}%</b><em>${money(totals.rem)}</em>
     </button>
-    <button class="insightCard" onclick="openSmartList('paid','التحصيل')">
-      <span>قوة التحصيل</span><b>${collectionPower}%</b><em>${money(totals.paid)} واصل</em>
+    <button class="insightCard metricInsight" onclick="openSmartList('paid','التحصيل')">
+      <span>التحصيل</span><b>${collectionPower}%</b><em>${money(totals.paid)}</em>
     </button>
-    <button class="insightCard" onclick="openSmartList('today','إضافات اليوم')">
-      <span>اليوم</span><b>${today}</b><em>أجهزة جديدة</em>
+    <button class="insightCard metricInsight" onclick="openSmartList('today','إضافات اليوم')">
+      <span>حركة اليوم</span><b>${today}</b><em>أجهزة جديدة</em>
     </button>
   `;
 }
@@ -411,16 +411,16 @@ function renderStats() {
   }, { count: 0, price: 0, paid: 0, rem: 0, del: 0, ready: 0, open: 0 });
 
   $('#quickStats').innerHTML = `
-    <button class="miniStat" onclick="openSmartList('all','كل الهواتف')">
+    <button class="miniStat metricPrimary" onclick="openSmartList('all','كل الهواتف')">
       <span>الهواتف</span><b>${totals.count}</b><em>كل السجلات</em>
     </button>
     <button class="miniStat" onclick="openSmartList('open','الأجهزة المفتوحة')">
       <span>المفتوحة</span><b>${totals.open}</b><em>قيد العمل</em>
     </button>
-    <button class="miniStat" onclick="openSmartList('ready','جاهز للاستلام')">
+    <button class="miniStat metricGreen" onclick="openSmartList('ready','جاهز للاستلام')">
       <span>جاهز</span><b>${totals.ready}</b><em>اتصل بالزبون</em>
     </button>
-    <button class="miniStat" onclick="openSmartList('paid','الأجهزة التي بها واصل')">
+    <button class="miniStat metricBlue" onclick="openSmartList('paid','الأجهزة التي بها واصل')">
       <span>الواصل</span><b>${money(totals.paid)}</b><em>تحصيل</em>
     </button>
     <button class="miniStat dangerStat" onclick="openSmartList('debt','الأجهزة التي عليها باقي')">
@@ -519,7 +519,7 @@ function renderDevices() {
 function cardHtml(r) {
   const st = statuses[r.status] || statuses.received;
   return `
-    <article class="deviceCard">
+    <article class="deviceCard deviceRow">
       <div class="deviceTop">
         <div>
           <h3>${esc(r.deviceName)}</h3>
@@ -538,7 +538,7 @@ function cardHtml(r) {
         <span>العطل</span><b>${esc(r.problem)}</b>
         <span>رقم الاستلام</span><b>${esc(r.receiptNo)}</b>
       </div>
-      <div class="progress"><i style="width:${st.progress}%"></i></div>
+      <div class="progress progressInline"><i style="width:${st.progress}%"></i></div>
       <div class="cardActions">
         <button onclick="openDevice('${r._id}')">تعديل</button>
         <button onclick="openStatus('${r._id}')">الحالة</button>

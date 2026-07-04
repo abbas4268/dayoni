@@ -1688,6 +1688,568 @@ body:not(.signedIn) .fab {
   }
 }
 
+/* v3006 final authority - keep after every legacy layer */
+@media (min-width: 900px) {
+  #homePage.active {
+    display: grid !important;
+    grid-template-columns: minmax(320px, .95fr) minmax(320px, 1fr) minmax(300px, .9fr) !important;
+    grid-template-areas:
+      "hero stats insights"
+      "menu stats insights"
+      "health tasks tasks" !important;
+    gap: 12px !important;
+    align-items: start !important;
+  }
+
+  #homePage .hero { grid-area: hero !important; min-height: 112px !important; }
+  #quickStats { grid-area: stats !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  #smartInsights { grid-area: insights !important; grid-template-columns: 1fr !important; margin: 0 !important; }
+  #homePage .gridMenu { grid-area: menu !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  #homePage .executivePanel { grid-area: health !important; margin: 0 !important; }
+  #homePage .sectionTitle { display: none !important; }
+  #todayTasks { grid-area: tasks !important; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+
+  #homePage .miniStat { min-height: 74px !important; padding: 10px !important; }
+  #homePage .insightCard { min-height: 70px !important; padding: 12px !important; }
+  #homePage .heroInsight { min-height: 98px !important; }
+  #homePage .menuCard { min-height: 68px !important; padding: 11px !important; }
+  #homePage .task { min-height: 42px !important; padding: 9px 12px !important; }
+  #homePage .miniStat em,
+  #homePage .insightCard em,
+  #homePage .menuCard span,
+  #homePage .task span { display: none !important; }
+
+  #devicesPage .cards {
+    grid-template-columns: 1fr !important;
+  }
+
+  #devicesPage .deviceRow {
+    display: grid !important;
+    grid-template-columns: minmax(230px, .9fr) minmax(260px, 1fr) 100px minmax(360px, 1.2fr) !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-height: 104px !important;
+    padding: 12px !important;
+  }
+
+  #devicesPage .deviceRow .deviceTop { grid-column: 1 !important; }
+  #devicesPage .deviceRow .deviceInfo { grid-column: 2 !important; }
+  #devicesPage .deviceRow .progressInline { grid-column: 3 !important; }
+  #devicesPage .deviceRow .cardActions { grid-column: 4 !important; }
+
+  #devicesPage .deviceRow .deviceInfo {
+    grid-template-columns: 76px 1fr !important;
+    max-height: 74px !important;
+    overflow: hidden !important;
+  }
+
+  #devicesPage .deviceRow .deviceInfo b {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  #devicesPage .deviceRow .deviceTop {
+    max-height: 86px !important;
+    overflow: hidden !important;
+  }
+
+  #devicesPage .deviceRow .deviceTop h3,
+  #devicesPage .deviceRow .deviceTop p {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  #devicesPage .deviceRow .cardActions {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+
+  #devicesPage .deviceRow .timeline {
+    display: none !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .workspace { padding: 8px 8px 82px !important; }
+  .topbar { min-height: 56px !important; margin-bottom: 8px !important; }
+  #homePage .hero { min-height: 88px !important; padding: 13px !important; }
+  #homePage .hero h2 { font-size: 21px !important; }
+  #homePage .hero p { display: none !important; }
+  #homePage .executivePanel { display: none !important; }
+  #quickStats { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
+  #homePage .miniStat { min-height: 56px !important; padding: 9px !important; }
+  #homePage .miniStat:nth-child(n+5) { display: none !important; }
+  #smartInsights .insightCard:not(.heroInsight) { display: none !important; }
+  #smartInsights { margin: 8px 0 !important; }
+  #homePage .heroInsight { min-height: 70px !important; }
+  #homePage .gridMenu { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 8px !important; }
+  #homePage .menuCard { min-height: 54px !important; grid-template-columns: 1fr !important; place-items: center !important; text-align: center !important; padding: 8px 4px !important; }
+  #homePage .menuCard i { width: 26px !important; height: 26px !important; grid-row: auto !important; font-size: 15px !important; }
+  #homePage .menuCard b { font-size: 10.5px !important; }
+  #homePage .menuCard span,
+  #homePage .sectionTitle,
+  #todayTasks { display: none !important; }
+}
+
+/* =========================================================
+   v3006 - Executive SaaS polish
+   ========================================================= */
+:root {
+  --bg: #eef1f5;
+  --panel: rgba(255,255,255,.78);
+  --panelSolid: #ffffff;
+  --panelSoft: #f6f8fb;
+  --text: #101114;
+  --muted: #70757f;
+  --line: rgba(16,17,20,.09);
+  --ink: #111318;
+  --accent: #0a84ff;
+  --accent2: #30d158;
+  --warn: #ff9f0a;
+  --bad: #ff453a;
+  --shadow: 0 18px 44px rgba(22, 29, 39, .08);
+  --shadowSoft: 0 8px 22px rgba(22, 29, 39, .055);
+}
+
+body {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.9), rgba(238,241,245,.88)),
+    radial-gradient(circle at 12% 8%, rgba(10,132,255,.13), transparent 28%),
+    radial-gradient(circle at 90% 15%, rgba(48,209,88,.08), transparent 28%);
+}
+
+body.dark {
+  --bg: #08090b;
+  --panel: rgba(28,30,34,.78);
+  --panelSolid: #1b1d22;
+  --panelSoft: #24272e;
+  --text: #f4f5f7;
+  --muted: #9da3ad;
+  --line: rgba(255,255,255,.11);
+  --ink: #f4f5f7;
+}
+
+.app {
+  background: transparent;
+}
+
+.workspace {
+  max-width: 1500px;
+  margin-inline: auto;
+}
+
+.glassCard,
+.deviceCard,
+.miniStat,
+.task,
+.statCard,
+.settingTile,
+.sheet,
+.topbar,
+.insightCard {
+  border-radius: 18px;
+  border-color: rgba(16,17,20,.075);
+  box-shadow: var(--shadowSoft);
+}
+
+body.dark .glassCard,
+body.dark .deviceCard,
+body.dark .miniStat,
+body.dark .task,
+body.dark .statCard,
+body.dark .settingTile,
+body.dark .sheet,
+body.dark .topbar,
+body.dark .insightCard {
+  border-color: rgba(255,255,255,.1);
+}
+
+.sideRail {
+  background: rgba(255,255,255,.62);
+  border-left: 1px solid var(--line);
+}
+
+.railBrand .brandMark {
+  background: #101114;
+  box-shadow: 0 14px 32px rgba(0,0,0,.12);
+}
+
+.railNav button {
+  border: 1px solid transparent;
+}
+
+.railNav button.active {
+  background: #101114;
+  color: #fff;
+}
+
+body.dark .railNav button.active {
+  background: #fff;
+  color: #101114;
+}
+
+.railAdd,
+.primary,
+.fab {
+  background: linear-gradient(135deg, #101114, #2a2f3a);
+  box-shadow: 0 14px 30px rgba(16,17,20,.18);
+}
+
+body.dark .railAdd,
+body.dark .primary,
+body.dark .fab {
+  color: #101114;
+  background: #fff;
+}
+
+.topbar {
+  min-height: 58px;
+  border-radius: 20px;
+}
+
+.mainTitle .gold {
+  color: var(--accent);
+}
+
+.hero {
+  color: var(--text);
+  background: var(--panelSolid);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.hero .pill {
+  color: var(--accent);
+  background: rgba(10,132,255,.09);
+  border-color: rgba(10,132,255,.14);
+}
+
+.hero h2 {
+  color: var(--text);
+}
+
+.hero p {
+  color: var(--muted);
+}
+
+.clock {
+  color: #fff;
+  background: #101114;
+  border: 0;
+}
+
+body.dark .clock {
+  color: #101114;
+  background: #fff;
+}
+
+.miniStat {
+  position: relative;
+  overflow: hidden;
+  background: var(--panelSolid);
+}
+
+.miniStat::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: rgba(112,117,127,.28);
+}
+
+.metricPrimary::before { background: var(--ink); }
+.metricGreen::before { background: var(--accent2); }
+.metricBlue::before { background: var(--accent); }
+.dangerStat::before { background: var(--bad); }
+
+.miniStat b,
+.statCard b,
+.money {
+  letter-spacing: 0;
+}
+
+.commandInsight {
+  background: #101114;
+  color: #fff;
+  border: 0;
+  box-shadow: 0 20px 44px rgba(16,17,20,.2);
+}
+
+.commandInsight b {
+  font-size: 18px;
+}
+
+.metricInsight {
+  background: var(--panelSolid);
+}
+
+.menuCard {
+  grid-template-columns: 38px 1fr;
+  align-items: center;
+  align-content: center;
+  text-align: right;
+}
+
+.menuCard i {
+  grid-row: span 2;
+  background: #101114;
+}
+
+body.dark .menuCard i {
+  color: #101114;
+  background: #fff;
+}
+
+.tools {
+  top: 76px;
+  background: rgba(238,241,245,.74);
+  border-radius: 20px;
+}
+
+.cards {
+  align-items: start;
+}
+
+.deviceRow {
+  background: var(--panelSolid);
+}
+
+.deviceInfo {
+  background: var(--panelSoft);
+}
+
+.badge {
+  color: var(--accent);
+  background: rgba(10,132,255,.09);
+  border-color: rgba(10,132,255,.12);
+}
+
+.progressInline {
+  height: 6px;
+}
+
+.cardActions button {
+  min-height: 36px;
+  border-radius: 12px;
+}
+
+.cardActions .strongAction {
+  background: #101114;
+  border-color: #101114;
+}
+
+body.dark .cardActions .strongAction {
+  color: #101114;
+  background: #fff;
+  border-color: #fff;
+}
+
+.bottomNav {
+  border-radius: 28px;
+}
+
+.bottomNav button.active {
+  color: #fff;
+  background: #101114;
+}
+
+body.dark .bottomNav button.active {
+  color: #101114;
+  background: #fff;
+}
+
+.invoiceCompact {
+  max-width: 780px;
+  border-radius: 18px;
+  box-shadow: none;
+  border: 1px solid #e6e8ec;
+}
+
+.invoiceCompact .invoiceHero {
+  padding: 12px;
+  border: 0;
+  border-radius: 16px;
+  color: #fff;
+  background: #101114;
+}
+
+.invoiceCompact .invoiceLogo {
+  color: #101114;
+  background: #fff;
+}
+
+.invoiceCompact .invoiceBrand p,
+.invoiceCompact .invoiceBrand small,
+.invoiceCompact .invoiceNumber span,
+.invoiceCompact .invoiceNumber em {
+  color: rgba(255,255,255,.68);
+}
+
+.invoiceCompact .invoiceStatus {
+  background: #f4f6f9;
+}
+
+.invoiceCompact .invoicePanel,
+.invoiceCompact .invoiceProblem,
+.invoiceCompact .invoiceTerms,
+.invoiceCompact .invoiceQR {
+  border-color: #e7e9ee;
+  background: #fff;
+}
+
+.invoiceCompact .invoiceMoney .due {
+  background: #101114;
+}
+
+@media (min-width: 900px) {
+  .workspace {
+    padding: 18px 22px;
+  }
+
+  #homePage.active {
+    grid-template-columns: minmax(320px, .95fr) minmax(320px, 1fr) minmax(300px, .9fr);
+    grid-template-areas:
+      "hero stats insights"
+      "menu stats insights"
+      "health tasks tasks";
+    gap: 12px;
+  }
+
+  #quickStats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #smartInsights {
+    grid-template-columns: 1fr;
+  }
+
+  #homePage .heroInsight {
+    min-height: 98px;
+  }
+
+  #homePage .miniStat {
+    min-height: 74px;
+  }
+
+  #homePage .menuCard {
+    min-height: 68px;
+  }
+
+  #homePage .executivePanel {
+    grid-template-columns: 1fr 104px;
+  }
+
+  #todayTasks {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .deviceRow {
+    display: grid;
+    grid-template-columns: minmax(230px, 1.1fr) minmax(250px, 1fr) 160px minmax(360px, 1.4fr);
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .deviceRow .deviceTop {
+    min-width: 0;
+  }
+
+  .deviceRow .deviceInfo {
+    grid-template-columns: 82px 1fr;
+  }
+
+  .deviceRow .progressInline {
+    order: 3;
+  }
+
+  .deviceRow .cardActions {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .deviceRow .timeline {
+    display: none !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .topbar {
+    top: 6px;
+    min-height: 58px;
+  }
+
+  .hero {
+    min-height: 88px;
+  }
+
+  .hero h2 {
+    font-size: 21px;
+  }
+
+  .quickStats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .miniStat {
+    min-height: 58px;
+  }
+
+  #homePage .miniStat:nth-child(n+5) {
+    display: none;
+  }
+
+  .gridMenu {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .menuCard {
+    min-height: 58px;
+    grid-template-columns: 1fr;
+    place-items: center;
+    text-align: center;
+    gap: 4px;
+  }
+
+  .menuCard i {
+    width: 28px;
+    height: 28px;
+    grid-row: auto;
+  }
+
+  .menuCard b {
+    font-size: 11px;
+  }
+
+  #todayTasks {
+    display: none;
+  }
+
+  .deviceCard {
+    border-radius: 16px;
+  }
+
+  .invoiceCompact {
+    border-radius: 16px;
+  }
+}
+
+@media print {
+  .invoiceCompact .invoiceHero {
+    background: #101114 !important;
+    color: #fff !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

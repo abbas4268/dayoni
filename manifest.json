@@ -2,7 +2,7 @@
   "name": "عباس راضي - سجل الصيانة الذكي",
   "short_name": "صيانة عباس",
   "id": "./",
-  "start_url": "./index.html?v=3005",
+  "start_url": "./index.html?v=3006",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
