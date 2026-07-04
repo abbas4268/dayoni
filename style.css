@@ -913,3 +913,1058 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;ba
 .app{max-width:1120px;padding:14px 14px 92px}.glassCard,.topbar,.deviceCard,.task,.miniStat,.statCard,.settingTile{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.035));border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(22px);position:relative;overflow:hidden}.glassCard:after,.deviceCard:after,.miniStat:after,.statCard:after,.settingTile:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.12),transparent 36%,rgba(216,180,90,.075));opacity:.75}.topbar{height:64px;border-radius:24px;margin-bottom:14px;padding:8px 12px;position:sticky;top:10px;z-index:20}.mainTitle .gold{font-size:14px;letter-spacing:.4px}.mainTitle h1{font-size:19px}.iconBtn{border-radius:18px;background:rgba(255,255,255,.055);border:1px solid var(--line);min-width:44px;min-height:44px;display:grid;place-items:center}.hero{min-height:150px;border-radius:30px;padding:22px;align-items:flex-start;background:linear-gradient(135deg,rgba(216,180,90,.16),rgba(47,209,122,.075),rgba(255,255,255,.035))}.hero h2{font-size:30px;line-height:1.18;margin-top:10px}.pill,.eyebrow{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(216,180,90,.28);background:rgba(216,180,90,.10);color:var(--gold);padding:6px 12px;border-radius:999px;font-weight:900;font-size:11px}.clock{font-size:24px;border-radius:22px;background:rgba(0,0,0,.22);border-color:rgba(216,180,90,.22);color:var(--gold)}
 .executivePanel{display:grid;grid-template-columns:1fr 112px;gap:12px;align-items:center;margin:0 0 12px;padding:16px;border-radius:26px}.executiveText h3{margin:6px 0 2px;font-size:18px;font-family:var(--fontDisplay)}.executiveText p{margin:0;color:var(--muted);font-size:12px;line-height:1.8}.healthScore{height:96px;border-radius:22px;display:grid;place-items:center;text-align:center;background:radial-gradient(circle at top,rgba(47,209,122,.22),rgba(255,255,255,.045));border:1px solid rgba(47,209,122,.22)}.healthScore b{font-size:28px;color:var(--green);line-height:1}.healthScore span{font-size:11px;color:var(--muted);font-weight:800}.quickStats{grid-template-columns:repeat(3,1fr);gap:10px}.miniStat{padding:14px 10px;border-radius:22px}.miniStat span{font-size:11px}.miniStat b{font-size:19px;color:var(--text)}.gridMenu{gap:10px}.menuCard{min-height:122px;padding:17px 12px;border-radius:26px}.menuCard i{font-size:31px}.menuCard b{font-size:16px}.menuCard span{font-size:11px;line-height:1.5}.sectionTitle{margin-top:18px;padding:0 4px}.taskList{gap:9px}.task{border-radius:20px;padding:14px 16px;color:var(--text);display:flex;justify-content:space-between;align-items:center}.task b{color:var(--gold)}.smartTask span{font-size:11px;color:var(--muted);font-weight:800}.tools{grid-template-columns:1fr 150px;gap:9px;position:sticky;top:84px;z-index:12;background:linear-gradient(to bottom,var(--bg),rgba(5,6,7,.86));padding:4px 0 10px}.inputGroup,.glassSelect{background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:18px;min-height:50px}.inputGroup:focus-within{border-color:rgba(216,180,90,.45);box-shadow:0 0 0 4px rgba(216,180,90,.08)}.inputGroup span{font-size:18px}.cards{gap:11px}.deviceCard{border-radius:26px;padding:16px}.deviceTop{align-items:flex-start}.deviceTop h3{font-size:19px}.deviceTop p{font-size:12px}.badge{font-size:11px;padding:6px 10px;border-color:rgba(216,180,90,.16);background:rgba(216,180,90,.075)}.money{font-size:17px;color:var(--gold);white-space:nowrap}.deviceCard>p{font-size:12px;color:var(--muted);margin:9px 0}.progress{height:7px;background:rgba(255,255,255,.075)}.progress i{background:linear-gradient(90deg,var(--green),var(--gold));box-shadow:0 0 20px rgba(47,209,122,.35)}.cardActions{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.cardActions button{padding:9px 6px;border-radius:14px;font-size:11px;background:rgba(255,255,255,.055)}.timeline{margin-top:10px}.timeItem{grid-template-columns:86px 1fr;border:1px solid rgba(255,255,255,.055);background:rgba(0,0,0,.18);font-size:11px}.statsGrid,.settingsGrid{gap:10px}.statCard,.settingTile{border-radius:24px;padding:17px}.statCard span,.settingTile span{font-size:12px;color:var(--muted)}.statCard b{font-size:23px;color:var(--gold)}.statCard em{font-style:normal;font-size:10px;color:var(--muted);display:block;margin-top:6px}.modal{background:rgba(0,0,0,.72);padding:12px}.sheet,.invoiceWindow{border-radius:28px}.sheet{padding:18px;gap:10px}.sheetHead b{font-size:18px}.primary{border-radius:18px;background:linear-gradient(135deg,#cfa84d,#2fd17a);color:#061007;box-shadow:0 14px 34px rgba(216,180,90,.18);font-weight:900}.ghost{border-radius:18px}.statusChoices{grid-template-columns:repeat(3,1fr)}.statusChoices button{border-radius:18px;font-size:12px}.invoiceWindow{background:#fff;color:#111}.invoice{border:0;border-radius:22px;box-shadow:inset 0 0 0 1px #e9e3d5}.invHead{background:linear-gradient(135deg,#080808,#203019 55%,#b9953d);border-radius:20px}.invHead h2{font-size:25px}.invBox{border-color:#eee4d2;background:#fffdf8}.row{grid-template-columns:115px 1fr}.toast{border-radius:18px;background:rgba(10,12,13,.94);border-color:rgba(216,180,90,.28);top:14px}.bottomNav{position:fixed;left:12px;right:12px;bottom:12px;z-index:50;max-width:620px;margin:auto;height:66px;border-radius:26px;display:grid;grid-template-columns:repeat(4,1fr);padding:6px;background:rgba(8,10,11,.84)}.bottomNav button{display:grid;place-items:center;gap:1px;color:var(--muted);border-radius:20px;font-weight:900}.bottomNav button:active{background:rgba(216,180,90,.12);color:var(--gold);transform:scale(.97)}.bottomNav i{font-style:normal;font-size:20px;line-height:1}.bottomNav span{font-size:10px}@media(min-width:740px){.cards{grid-template-columns:repeat(2,1fr)}.gridMenu{grid-template-columns:repeat(4,1fr)}.quickStats{grid-template-columns:repeat(3,1fr)}.bottomNav{display:none}.app{padding-bottom:24px}.executivePanel{grid-template-columns:1fr 140px}.healthScore{height:110px}.miniStat b{font-size:23px}}@media(max-width:520px){.app{padding:8px 8px 88px}.topbar{height:58px;border-radius:22px}.hero{min-height:132px;padding:18px}.hero h2{font-size:24px}.executivePanel{grid-template-columns:1fr 92px;padding:13px}.healthScore{height:84px}.healthScore b{font-size:23px}.quickStats{gap:7px}.miniStat{padding:12px 6px}.miniStat b{font-size:15px}.gridMenu{grid-template-columns:repeat(2,1fr)}.menuCard{min-height:112px}.tools{grid-template-columns:1fr 118px;top:75px}.cardActions{grid-template-columns:repeat(3,1fr)}.statusChoices{grid-template-columns:repeat(2,1fr)}.statsGrid,.settingsGrid{grid-template-columns:1fr 1fr}.timeItem{grid-template-columns:78px 1fr}.invoiceWindow{width:98vw;padding:12px}.row{grid-template-columns:95px 1fr;font-size:12px}}@media(max-width:370px){.gridMenu,.statsGrid,.settingsGrid{grid-template-columns:1fr}.cardActions{grid-template-columns:repeat(2,1fr)}.quickStats{grid-template-columns:1fr}.executivePanel{grid-template-columns:1fr}.healthScore{height:72px}}
 @media print{.bottomNav{display:none!important}.invoice{box-shadow:none!important}}
+
+/* =========================================================
+   DAYONI EXECUTIVE v3002 — final polish and stability pass
+   ========================================================= */
+:root {
+  color-scheme: dark;
+  --radius: 20px;
+  --surface: rgba(16, 18, 20, .82);
+  --surfaceSoft: rgba(255, 255, 255, .06);
+  --focus: rgba(216, 180, 90, .34);
+}
+
+body.light {
+  color-scheme: light;
+  --surface: rgba(255, 255, 255, .9);
+  --surfaceSoft: rgba(20, 24, 28, .045);
+  --focus: rgba(47, 112, 209, .22);
+}
+
+body {
+  line-height: 1.6;
+  background-attachment: fixed;
+}
+
+body.modalOpen {
+  overflow: hidden;
+}
+
+button,
+select,
+input,
+textarea {
+  line-height: 1.4;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.glassCard,
+.topbar,
+.deviceCard,
+.task,
+.miniStat,
+.statCard,
+.settingTile,
+.sheet {
+  isolation: isolate;
+}
+
+.glassCard > *,
+.deviceCard > *,
+.miniStat > *,
+.statCard > *,
+.settingTile > * {
+  position: relative;
+  z-index: 1;
+}
+
+.topbar {
+  max-width: 1120px;
+  margin-inline: auto;
+}
+
+.headerActions {
+  min-width: 98px;
+  justify-content: flex-end;
+}
+
+.iconBtn {
+  color: var(--text);
+}
+
+.primary,
+.ghost,
+.iconBtn,
+.menuCard,
+.miniStat,
+.statCard,
+.settingTile,
+.cardActions button,
+.statusChoices button,
+.bottomNav button {
+  user-select: none;
+}
+
+.primary:hover,
+.ghost:hover,
+.iconBtn:hover,
+.menuCard:hover,
+.miniStat:hover,
+.statCard:hover,
+.settingTile:hover,
+.cardActions button:hover,
+.statusChoices button:hover {
+  filter: brightness(1.06);
+}
+
+.primary:disabled,
+.ghost:disabled,
+.iconBtn:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
+.authCard {
+  border-radius: 26px;
+}
+
+.authCard.wide {
+  width: min(720px, 94vw);
+}
+
+.hero,
+.executivePanel,
+.quickStats,
+.insightGrid,
+.gridMenu,
+.sectionTitle,
+.taskList,
+.tools,
+.cards,
+.statsGrid,
+.settingsGrid {
+  width: 100%;
+}
+
+.executivePanel {
+  background: linear-gradient(135deg, rgba(216,180,90,.13), rgba(116,168,255,.07), rgba(47,209,122,.055));
+}
+
+.healthScore {
+  overflow: hidden;
+}
+
+.insightCard {
+  border-radius: 22px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.insightCard:hover {
+  transform: translateY(-2px);
+}
+
+.task {
+  min-height: 58px;
+}
+
+.tools {
+  align-items: center;
+}
+
+.inputGroup input::placeholder,
+.inputGroup textarea::placeholder {
+  color: color-mix(in srgb, var(--muted) 82%, transparent);
+}
+
+.glassSelect option {
+  color: #161616;
+  background: #fff;
+}
+
+.deviceCard {
+  display: grid;
+  gap: 8px;
+}
+
+.deviceTop h3,
+.mainTitle h1,
+.hero h2,
+.executiveText h3 {
+  letter-spacing: 0;
+}
+
+.deviceTop p,
+.deviceCard > p {
+  overflow-wrap: anywhere;
+}
+
+.money {
+  font-variant-numeric: tabular-nums;
+}
+
+.cardActions button {
+  min-height: 42px;
+}
+
+.timeline {
+  overflow: hidden;
+}
+
+.timeItem {
+  align-items: start;
+}
+
+.timeItem span {
+  overflow-wrap: anywhere;
+}
+
+.modal {
+  overscroll-behavior: contain;
+}
+
+.sheet,
+.invoiceWindow {
+  scrollbar-width: thin;
+}
+
+.sheetHead {
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  padding-bottom: 4px;
+  background: linear-gradient(to bottom, var(--surface), transparent);
+}
+
+.sheetHead button {
+  flex: 0 0 auto;
+}
+
+.toast {
+  pointer-events: none;
+}
+
+.bottomNav {
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 50px rgba(0,0,0,.4);
+  backdrop-filter: blur(22px) saturate(140%);
+}
+
+body:not(.signedIn) .bottomNav,
+body:not(.signedIn) .fab {
+  display: none !important;
+}
+
+.bottomNav button.active {
+  background: linear-gradient(135deg, rgba(216,180,90,.20), rgba(47,209,122,.10));
+  color: var(--gold);
+}
+
+.fab {
+  display: none;
+}
+
+@media (min-width: 740px) {
+  .fab {
+    display: grid;
+    place-items: center;
+  }
+
+  .quickStats {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1020px) {
+  .statsGrid,
+  .settingsGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .authWrap {
+    padding: 14px;
+  }
+
+  .authCard,
+  .sheet {
+    padding: 18px;
+  }
+
+  .mainTitle {
+    max-width: 46vw;
+  }
+
+  .headerActions {
+    min-width: 92px;
+  }
+
+  .hero {
+    gap: 14px;
+  }
+
+  .executiveText p {
+    display: none;
+  }
+
+  .tools {
+    grid-template-columns: 1fr;
+  }
+
+  .quickStats,
+  .statsGrid,
+  .settingsGrid,
+  .insightGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .heroInsight {
+    grid-column: 1 / -1;
+  }
+
+  .cardActions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .timeItem {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 390px) {
+  .quickStats,
+  .statsGrid,
+  .settingsGrid,
+  .insightGrid,
+  .gridMenu {
+    grid-template-columns: 1fr;
+  }
+
+  .executivePanel {
+    grid-template-columns: 1fr;
+  }
+
+  .mainTitle {
+    max-width: 42vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+/* =========================================================
+   DAYONI v3003 — Command workspace redesign
+   ========================================================= */
+:root {
+  --bg: #eef2f6;
+  --bg2: #f8fafc;
+  --card: #ffffff;
+  --glass: #f1f5f9;
+  --line: #d9e2ec;
+  --text: #0f172a;
+  --muted: #64748b;
+  --gold: #b7791f;
+  --green: #0f9f6e;
+  --danger: #d92d20;
+  --blue: #2563eb;
+  --shadow: 0 16px 44px rgba(15, 23, 42, .08);
+  --radius: 16px;
+  --sidebar: #0f172a;
+  --sidebar2: #162033;
+  --surface: #ffffff;
+  --surfaceSoft: #f8fafc;
+  --focus: rgba(37, 99, 235, .22);
+  color-scheme: light;
+}
+
+body.light {
+  --bg: #eef2f6;
+  --bg2: #f8fafc;
+  --card: #ffffff;
+  --glass: #f1f5f9;
+  --line: #d9e2ec;
+  --text: #0f172a;
+  --muted: #64748b;
+  --shadow: 0 16px 44px rgba(15, 23, 42, .08);
+  color-scheme: light;
+}
+
+html,
+body {
+  background: linear-gradient(180deg, var(--bg2), var(--bg));
+  color: var(--text);
+  letter-spacing: 0;
+}
+
+body::before {
+  display: none;
+}
+
+.splash {
+  background: #0f172a;
+  color: #fff;
+}
+
+.brandMark {
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2563eb, #0f9f6e);
+  border: 0;
+  color: #fff;
+  box-shadow: 0 18px 36px rgba(37, 99, 235, .24);
+}
+
+.authWrap {
+  display: grid;
+  grid-template-columns: minmax(320px, 560px) minmax(320px, 420px);
+  gap: 28px;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  background:
+    linear-gradient(135deg, rgba(15,23,42,.94), rgba(30,41,59,.88)),
+    radial-gradient(circle at 20% 10%, rgba(37,99,235,.26), transparent 38%);
+  color: #fff;
+}
+
+.authShowcase {
+  display: grid;
+  gap: 18px;
+  max-width: 560px;
+}
+
+.authShowcase h2 {
+  margin: 0;
+  font: 900 clamp(34px, 5vw, 62px)/1.18 var(--fontDisplay);
+  letter-spacing: 0;
+}
+
+.authShowcase p {
+  margin: 0;
+  color: rgba(255,255,255,.72);
+  font-size: 17px;
+  line-height: 2;
+}
+
+.showcaseMetrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.showcaseMetrics div {
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.showcaseMetrics b,
+.showcaseMetrics span {
+  display: block;
+}
+
+.showcaseMetrics span {
+  color: rgba(255,255,255,.64);
+  font-size: 12px;
+}
+
+.authCard {
+  color: var(--text);
+  background: #fff;
+  border: 0;
+  box-shadow: 0 30px 80px rgba(0,0,0,.22);
+  text-align: right;
+}
+
+.authCard .brandMark {
+  margin-inline: auto;
+}
+
+.authCard h1,
+.authCard .subtitle {
+  text-align: center;
+}
+
+.tabs {
+  border-radius: 12px;
+  background: #eef2f7;
+  padding: 4px;
+}
+
+.tabs button {
+  border-radius: 10px;
+  color: #475569;
+}
+
+.tabs .active {
+  background: #0f172a;
+  color: #fff;
+  box-shadow: none;
+}
+
+.app {
+  max-width: none;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.workspace {
+  min-width: 0;
+  padding: 22px 24px 32px;
+}
+
+.sideRail {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 24px;
+  padding: 22px;
+  color: #fff;
+  background:
+    linear-gradient(180deg, var(--sidebar), var(--sidebar2)),
+    radial-gradient(circle at top, rgba(37,99,235,.32), transparent 40%);
+  box-shadow: 10px 0 34px rgba(15,23,42,.12);
+}
+
+.railBrand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.railBrand b,
+.railBrand span {
+  display: block;
+}
+
+.railBrand b {
+  font-size: 20px;
+}
+
+.railBrand span {
+  color: rgba(255,255,255,.58);
+  font-size: 12px;
+}
+
+.railNav {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+
+.railNav button,
+.railAdd {
+  min-height: 48px;
+  border-radius: 12px;
+  color: rgba(255,255,255,.74);
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0 14px;
+  font-weight: 800;
+  text-align: right;
+}
+
+.railNav button i {
+  width: 24px;
+  text-align: center;
+  font-style: normal;
+  font-size: 20px;
+}
+
+.railNav button.active,
+.railNav button:hover {
+  color: #fff;
+  background: rgba(255,255,255,.10);
+}
+
+.railAdd {
+  justify-content: center;
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #0f9f6e);
+  box-shadow: 0 18px 38px rgba(37,99,235,.22);
+}
+
+.topbar {
+  position: static;
+  max-width: none;
+  height: auto;
+  min-height: 72px;
+  margin: 0 0 20px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.mainTitle {
+  text-align: right;
+}
+
+.mainTitle .gold {
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.mainTitle h1 {
+  color: var(--text);
+  font-size: 24px;
+}
+
+.iconBtn,
+.ghost {
+  background: #f8fafc;
+  border-color: var(--line);
+  border-radius: 12px;
+  color: var(--text);
+}
+
+.glassCard,
+.deviceCard,
+.miniStat,
+.task,
+.statCard,
+.settingTile,
+.sheet {
+  background: var(--card);
+  border: 1px solid var(--line) !important;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: none;
+}
+
+.glassCard::before,
+.glassCard::after,
+.deviceCard::before,
+.deviceCard::after,
+.miniStat::before,
+.miniStat::after,
+.task::before,
+.task::after,
+.statCard::before,
+.statCard::after,
+.settingTile::before,
+.settingTile::after {
+  display: none;
+}
+
+.hero {
+  min-height: 176px;
+  align-items: center;
+  background:
+    linear-gradient(135deg, #0f172a 0%, #1d4ed8 52%, #0f9f6e 100%);
+  color: #fff;
+  border: 0 !important;
+  box-shadow: 0 24px 60px rgba(37,99,235,.18);
+}
+
+.hero p,
+.hero .pill {
+  color: rgba(255,255,255,.78);
+}
+
+.hero .pill {
+  border-color: rgba(255,255,255,.18);
+  background: rgba(255,255,255,.10);
+}
+
+.hero h2 {
+  color: #fff;
+  font-size: clamp(28px, 4vw, 44px);
+}
+
+.clock {
+  color: #fff;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.executivePanel {
+  grid-template-columns: 1fr 140px;
+  background: #fff;
+}
+
+.eyebrow,
+.pill {
+  color: var(--blue);
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.executiveText h3 {
+  color: var(--text);
+  font-size: 22px;
+}
+
+.healthScore {
+  background: #ecfdf5;
+  border-color: #bbf7d0;
+}
+
+.healthScore b {
+  color: var(--green);
+}
+
+.quickStats,
+.insightGrid,
+.gridMenu {
+  gap: 14px;
+}
+
+.miniStat {
+  min-height: 112px;
+  text-align: right;
+  align-content: space-between;
+  border-radius: 16px;
+}
+
+.miniStat span,
+.miniStat em,
+.insightCard span,
+.insightCard em,
+.statCard span,
+.settingTile span {
+  color: var(--muted);
+}
+
+.miniStat b,
+.statCard b,
+.money {
+  color: var(--text);
+}
+
+.dangerStat {
+  border-color: #fecaca !important;
+  background: #fff7f7;
+}
+
+.insightCard {
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.heroInsight {
+  background: #111827;
+  color: #fff;
+  border-color: #111827;
+}
+
+.heroInsight span,
+.heroInsight em {
+  color: rgba(255,255,255,.66);
+}
+
+.menuCard {
+  min-height: 124px;
+  border-radius: 16px;
+  text-align: right;
+  align-content: start;
+}
+
+.menuCard i {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: #fff;
+  background: #0f172a;
+  font-size: 24px;
+  filter: none;
+}
+
+.menuCard b {
+  font-size: 18px;
+}
+
+.sectionTitle {
+  color: var(--text);
+}
+
+.task {
+  background: #fff;
+  color: var(--text);
+  border-radius: 14px;
+}
+
+.task b {
+  color: var(--blue);
+}
+
+.tools {
+  position: sticky;
+  top: 0;
+  z-index: 12;
+  padding: 12px;
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(248,250,252,.94);
+  backdrop-filter: blur(16px);
+}
+
+.inputGroup,
+.glassSelect {
+  min-height: 50px;
+  background: #f8fafc;
+  border-color: var(--line);
+  border-radius: 12px;
+  color: var(--text);
+}
+
+.inputGroup span {
+  color: var(--muted);
+  font-size: 17px;
+}
+
+.inputGroup:focus-within {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.10);
+}
+
+.cards {
+  gap: 14px;
+}
+
+.deviceCard {
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.deviceTop h3 {
+  color: var(--text);
+}
+
+.badge,
+.agePill {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #334155;
+}
+
+.progress {
+  background: #e2e8f0;
+}
+
+.progress i {
+  background: linear-gradient(90deg, #2563eb, #0f9f6e);
+  box-shadow: none;
+}
+
+.cardActions {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.cardActions button,
+.statusChoices button {
+  background: #f8fafc;
+  border-color: var(--line);
+  color: var(--text);
+}
+
+.timeItem {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: var(--muted);
+}
+
+.statCard,
+.settingTile {
+  min-height: 132px;
+}
+
+.settingTile.danger {
+  background: #fff7f7;
+  border-color: #fecaca !important;
+}
+
+.primary {
+  background: #0f172a;
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 14px 30px rgba(15,23,42,.16);
+}
+
+.sheet {
+  border-radius: 18px;
+  background: #fff;
+}
+
+.sheetHead {
+  background: #fff;
+}
+
+.modal {
+  background: rgba(15,23,42,.62);
+}
+
+.invoiceWindow {
+  border-radius: 18px;
+  box-shadow: 0 30px 80px rgba(15,23,42,.24);
+}
+
+.bottomNav {
+  background: rgba(15,23,42,.92);
+  border-color: rgba(255,255,255,.12);
+  box-shadow: 0 18px 44px rgba(15,23,42,.24);
+}
+
+.bottomNav button {
+  color: rgba(255,255,255,.68);
+}
+
+.bottomNav button.active {
+  background: rgba(255,255,255,.12);
+  color: #fff;
+}
+
+.fab {
+  border-radius: 18px;
+  color: #fff;
+  background: #0f172a;
+  box-shadow: 0 18px 44px rgba(15,23,42,.24);
+}
+
+@media (min-width: 1180px) {
+  .quickStats {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .insightGrid {
+    grid-template-columns: 1.6fr repeat(3, minmax(0, 1fr));
+  }
+
+  .gridMenu {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .authWrap {
+    grid-template-columns: 1fr;
+  }
+
+  .authShowcase {
+    display: none;
+  }
+
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .sideRail {
+    display: none;
+  }
+
+  .workspace {
+    padding: 12px 12px 92px;
+  }
+
+  .topbar {
+    min-height: 62px;
+    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 620px) {
+  .authWrap {
+    padding: 16px;
+  }
+
+  .authCard {
+    width: min(430px, 100%);
+  }
+
+  .mainTitle {
+    max-width: none;
+    min-width: 0;
+  }
+
+  .mainTitle .gold,
+  .mainTitle h1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mainTitle h1 {
+    font-size: 18px;
+  }
+
+  .headerActions {
+    min-width: auto;
+  }
+
+  .iconBtn {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 8px;
+  }
+
+  .hero {
+    min-height: 158px;
+    align-items: flex-start;
+  }
+
+  .executivePanel {
+    grid-template-columns: 1fr;
+  }
+
+  .healthScore {
+    height: 78px;
+  }
+
+  .quickStats,
+  .insightGrid,
+  .gridMenu,
+  .statsGrid,
+  .settingsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cardActions,
+  .statusChoices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 380px) {
+  .quickStats,
+  .insightGrid,
+  .gridMenu,
+  .statsGrid,
+  .settingsGrid {
+    grid-template-columns: 1fr;
+  }
+}

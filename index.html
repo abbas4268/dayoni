@@ -2,14 +2,14 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>عباس راضي | سجل الصيانة الذكي</title>
   <meta name="description" content="نظام عباس راضي لإدارة صيانة الهواتف باحترافية، فواتير، متابعة، تقارير وتحليلات.">
-  <meta name="theme-color" content="#050607">
+  <meta name="theme-color" content="#0f172a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="manifest" href="manifest.json?v=3001">
-  <link rel="stylesheet" href="style.css?v=3001">
+  <link rel="manifest" href="manifest.json?v=3003">
+  <link rel="stylesheet" href="style.css?v=3003">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
@@ -33,6 +33,16 @@
 
   <!-- صفحة الدخول -->
   <main id="authView" class="authWrap hidden">
+    <section class="authShowcase">
+      <span class="pill">DAYONI WORKSPACE</span>
+      <h2>إدارة الصيانة كأنها شركة عالمية، لا دفتر ورقي.</h2>
+      <p>متابعة، تحصيل، فواتير، حالات، وقرارات يومية في شاشة واحدة مرتبة.</p>
+      <div class="showcaseMetrics">
+        <div><b>Realtime</b><span>تحديث مباشر</span></div>
+        <div><b>Smart</b><span>تنبيهات ذكية</span></div>
+        <div><b>PWA</b><span>يعمل كتطبيق</span></div>
+      </div>
+    </section>
     <section class="authCard glassCard">
       <div class="brandMark">ع</div>
       <h1>عباس راضي</h1>
@@ -60,17 +70,32 @@
 
   <!-- التطبيق الرئيسي -->
   <main id="appView" class="app hidden">
-    <header class="topbar">
-      <button id="backBtn" class="iconBtn hidden" type="button">‹</button>
-      <div class="mainTitle">
-        <span class="gold">عباس راضي</span>
-        <h1>سجل الصيانة</h1>
+    <aside class="sideRail noPrint">
+      <div class="railBrand">
+        <div class="brandMark small">ع</div>
+        <div><b>Dayoni</b><span>Repair OS</span></div>
       </div>
-      <div class="headerActions">
-        <button id="themeBtn" class="iconBtn" type="button">🌙</button>
-        <button id="refreshBtn" class="iconBtn" type="button">↻</button>
-      </div>
-    </header>
+      <nav class="railNav" aria-label="التنقل">
+        <button type="button" data-page="homePage" class="active"><i>⌂</i><span>الرئيسية</span></button>
+        <button type="button" data-page="devicesPage"><i>▦</i><span>الهواتف</span></button>
+        <button type="button" data-page="statsPage"><i>◷</i><span>التقارير</span></button>
+        <button type="button" data-page="settingsPage"><i>⚙</i><span>الإعدادات</span></button>
+      </nav>
+      <button class="railAdd" type="button" data-open-phone>+ جهاز جديد</button>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <button id="backBtn" class="iconBtn hidden" type="button">‹</button>
+        <div class="mainTitle">
+          <span class="gold">Repair Command Center</span>
+          <h1>سجل الصيانة الذكي</h1>
+        </div>
+        <div class="headerActions">
+          <button id="themeBtn" class="iconBtn" type="button" aria-label="تبديل المظهر" title="تبديل المظهر">◐</button>
+          <button id="refreshBtn" class="iconBtn" type="button" aria-label="تحديث البيانات" title="تحديث البيانات">↻</button>
+        </div>
+      </header>
 
     <!-- الصفحة الرئيسية -->
     <section id="homePage" class="page active">
@@ -98,16 +123,16 @@
 
       <div class="gridMenu">
         <button data-open-phone class="menuCard glassCard">
-          <i>📱</i><b>إضافة هاتف</b><span>تسجيل جهاز جديد</span>
+          <i>＋</i><b>إضافة هاتف</b><span>تسجيل جهاز جديد</span>
         </button>
         <button data-page="devicesPage" class="menuCard glassCard">
-          <i>🗂️</i><b>قائمة الهواتف</b><span>بحث، تعديل، فواتير</span>
+          <i>▦</i><b>قائمة الهواتف</b><span>بحث، تعديل، فواتير</span>
         </button>
         <button data-page="statsPage" class="menuCard glassCard">
-          <i>📊</i><b>الإحصائيات</b><span>تحليلات وتقارير</span>
+          <i>◷</i><b>الإحصائيات</b><span>تحليلات وتقارير</span>
         </button>
         <button data-page="settingsPage" class="menuCard glassCard">
-          <i>⚙️</i><b>الإعدادات</b><span>الشركة، الثيم، الشروط</span>
+          <i>⚙</i><b>الإعدادات</b><span>الشركة، الثيم، الشروط</span>
         </button>
       </div>
 
@@ -149,9 +174,17 @@
         </button>
       </div>
     </section>
+    </div>
   </main>
 
   <button class="fab noPrint" type="button" data-open-phone aria-label="إضافة هاتف">＋</button>
+
+  <nav class="bottomNav noPrint" aria-label="التنقل الرئيسي">
+    <button type="button" data-page="homePage" class="active"><i>⌂</i><span>الرئيسية</span></button>
+    <button type="button" data-page="devicesPage"><i>▦</i><span>الهواتف</span></button>
+    <button type="button" data-open-phone><i>＋</i><span>إضافة</span></button>
+    <button type="button" data-page="statsPage"><i>◷</i><span>التقارير</span></button>
+  </nav>
 
   <!-- المودالات (نوافذ منبثقة) -->
   <div id="deviceModal" class="modal hidden">
@@ -262,7 +295,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-  <script src="firebase.js?v=3001"></script>
-  <script src="app.js?v=3001"></script>
+  <script src="firebase.js?v=3003"></script>
+  <script src="app.js?v=3003"></script>
 </body>
 </html>

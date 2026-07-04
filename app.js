@@ -8,6 +8,12 @@ const esc = v => String(v ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt
 const num = v => Number(String(v ?? '').replace(/[^0-9.-]/g,'')) || 0;
 const clean = v => String(v ?? '').replace(/[^0-9]/g,'');
 const money = n => `${Number(n || 0).toLocaleString('en-US')} د.ع`;
+const iraqPhone = v => {
+  const p = clean(v);
+  if (!p) return '';
+  if (p.startsWith('964')) return p;
+  return `964${p.replace(/^0+/, '')}`;
+};
 const nowISO = () => new Date().toISOString();
 const pad = n => String(n).padStart(2, '0');
 const fmt = t => {
@@ -18,6 +24,7 @@ const fmt = t => {
 
 const toast = (msg, isError = false) => {
   const t = $('#toast');
+  if (!t) return;
   t.textContent = msg;
   t.style.borderColor = isError ? 'var(--danger)' : 'var(--green)';
   t.classList.remove('hidden');
@@ -119,7 +126,8 @@ function latestByStatus(r, st) {
 }
 
 function trackUrl(r) {
-  return `${location.origin}${location.pathname}?track=1&uid=${encodeURIComponent(uid())}&id=${encodeURIComponent(r._id)}`;
+  const ownerId = uid() || params.get('uid') || '';
+  return `${location.origin}${location.pathname}?track=1&uid=${encodeURIComponent(ownerId)}&id=${encodeURIComponent(r._id)}`;
 }
 
 // تحميل صفحة المتابعة
@@ -158,11 +166,18 @@ function boot() {
   clock();
   setTimeout(() => $('#splash').classList.add('hidden'), 600);
 
+  if (typeof firebase === 'undefined' || typeof auth === 'undefined' || typeof db === 'undefined') {
+    $('#authView')?.classList.remove('hidden');
+    toast('تعذر الاتصال بخدمات Firebase. تأكد من الإنترنت ثم حدّث الصفحة.', true);
+    return;
+  }
+
   if (isTrack) return loadTrack();
 
   bindUI();
   auth.onAuthStateChanged(u => {
     currentUser = u;
+    document.body.classList.toggle('signedIn', !!u);
     if (u) {
       $('#authView').classList.add('hidden');
       $('#appView').classList.remove('hidden');
@@ -197,11 +212,11 @@ function bindUI() {
   $('#themeBtn').onclick = () => {
     document.body.classList.toggle('light');
     localStorage.abbasTheme = document.body.classList.contains('light') ? 'light' : 'dark';
-    $('#themeBtn').textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
+    $('#themeBtn').textContent = document.body.classList.contains('light') ? '☀' : '◐';
   };
   if (localStorage.abbasTheme === 'light') {
     document.body.classList.add('light');
-    $('#themeBtn').textContent = '☀️';
+    $('#themeBtn').textContent = '☀';
   }
 
   $$('[data-page]').forEach(b => b.onclick = () => goPage(b.dataset.page));
@@ -211,8 +226,12 @@ function bindUI() {
   document.addEventListener('click', e => {
     const close = e.target.closest('[data-close]');
     if (close) closeModal(close.closest('.modal')?.id);
+    if (e.target.classList?.contains('modal')) closeModal(e.target.id);
     const st = e.target.closest('[data-set-status]');
     if (st) setStatus(st.dataset.setStatus);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') $$('.modal:not(.hidden)').forEach(m => closeModal(m.id));
   });
 
   $('#deviceForm').onsubmit = saveDevice;
@@ -358,7 +377,7 @@ function renderSmartInsights(totals, list) {
   const late = filterList('late').length;
   const today = filterList('today').length;
   const collectionPower = totals.price ? Math.round((totals.paid / totals.price) * 100) : 0;
-  const message = late > 0 ? `عندك ${late} جهاز متأخر؛ لا تخليها تصير آثار سومرية بالمحل.` : ready > 0 ? `عندك ${ready} جهاز جاهز للاستلام؛ فرصة ممتازة لتحصيل الباقي.` : open > 0 ? 'الشغل تحت السيطرة، تابع الحالات حتى تبقى اللوحة نظيفة.' : 'لا توجد أجهزة مفتوحة حالياً. وقت قهوة أو حملة تسويق صغيرة.';
+  const message = late > 0 ? `يوجد ${late} جهاز متأخر يحتاج متابعة اليوم.` : ready > 0 ? `يوجد ${ready} جهاز جاهز للاستلام؛ فرصة ممتازة لتحصيل الباقي.` : open > 0 ? 'العمل تحت السيطرة، تابع الحالات للحفاظ على لوحة مرتبة.' : 'لا توجد أجهزة مفتوحة حالياً. يمكنك إضافة جهاز جديد أو مراجعة التقارير.';
   const el = $('#smartInsights');
   if (!el) return;
   el.innerHTML = `
@@ -539,14 +558,25 @@ function timelineHtml(r, limit = 99) {
 }
 
 function goPage(page) {
+  const target = $('#' + page);
+  if (!target) return;
   $$('.page').forEach(p => p.classList.remove('active'));
-  $('#' + page).classList.add('active');
+  target.classList.add('active');
   $('#backBtn').classList.toggle('hidden', page === 'homePage');
+  $$('[data-page]').forEach(b => b.classList.toggle('active', b.dataset.page === page));
   scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function openModal(id) { $('#' + id).classList.remove('hidden'); }
-function closeModal(id) { if (id) $('#' + id).classList.add('hidden'); }
+function openModal(id) {
+  const modal = $('#' + id);
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  document.body.classList.add('modalOpen');
+}
+function closeModal(id) {
+  if (id) $('#' + id)?.classList.add('hidden');
+  if (!$('.modal:not(.hidden)')) document.body.classList.remove('modalOpen');
+}
 
 function calcRemain() {
   $('#remaining').value = Math.max(0, num($('#price').value) - num($('#paid').value));
@@ -586,6 +616,8 @@ async function saveDevice(e) {
   const did = $('#editingId').value || id();
   const old = devices[did];
   const st = $('#statusSelect').value;
+  const price = num($('#price').value);
+  const paid = num($('#paid').value);
   const data = {
     receiptNo: old?.receiptNo || did,
     customerName: $('#customerName').value.trim(),
@@ -596,9 +628,9 @@ async function saveDevice(e) {
     imei: $('#imei').value.trim(),
     problem: $('#problem').value.trim(),
     accessories: $('#accessories').value.trim(),
-    price: num($('#price').value),
-    paid: num($('#paid').value),
-    remaining: num($('#remaining').value),
+    price,
+    paid,
+    remaining: Math.max(0, price - paid),
     status: st,
     expectedDate: $('#expectedDate').value,
     notes: $('#notes').value.trim(),
@@ -606,7 +638,8 @@ async function saveDevice(e) {
     updatedAt: nowISO(),
     timeline: old?.timeline || [{ status: st, label: statuses[st].label, at: nowISO(), note: 'تم استلام الجهاز' }]
   };
-  if (!data.customerName || !data.deviceName) return toast('اكتب اسم الزبون ونوع الجهاز');
+  if (!data.customerName || !data.deviceName || !data.problem) return toast('اكتب اسم الزبون ونوع الجهاز والعطل');
+  if (data.paid > data.price && data.price > 0) return toast('الواصل لا يمكن أن يكون أكبر من السعر', true);
   if (old && old.status !== st) {
     data.timeline = [...(old.timeline || []), { status: st, label: statuses[st].label, at: nowISO(), note: 'تغيير من نموذج الجهاز' }];
   }
@@ -717,12 +750,13 @@ function shareInvoice() {
 function whatsappFollow(did) {
   const r = devices[did];
   if (!r) return;
-  if (!clean(r.customerPhone)) return toast('لا يوجد رقم زبون', true);
+  const phone = iraqPhone(r.customerPhone);
+  if (!phone) return toast('لا يوجد رقم زبون', true);
   const deliveredAt = latestByStatus(r, 'delivered') || latestByStatus(r, 'ready') || r.createdAt;
   const d = daysSince(deliveredAt);
   const st = statuses[r.status]?.label || 'تحت المتابعة';
   const msg = `السلام عليكم ${r.customerName}\nمعك محل ${profile.shopName || 'عباس راضي'} لصيانة الهواتف.\nجهازكم: ${r.deviceName}\nالحالة الحالية: ${st}\nمر ${d} يوم على آخر تحديث.\nرقم الاستلام: ${r.receiptNo}\nشكراً لكم 🌹`;
-  window.open(`https://wa.me/964${clean(r.customerPhone).replace(/^0/, '')}?text=${encodeURIComponent(msg)}`, '_blank');
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 // الملف الشخصي
