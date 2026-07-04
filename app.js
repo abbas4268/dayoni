@@ -704,16 +704,16 @@ function showInvoice(did) {
   activeInvoiceId = did;
   const st = statuses[r.status] || statuses.received;
   const qr = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(trackUrl(r))}`;
-  const terms = (profile.terms || []).map((t, i) => `<li><span>${i+1}</span><p>${esc(t)}</p></li>`).join('') || '<li><span>1</span><p>لا توجد شروط مضافة.</p></li>';
+  const terms = (profile.terms || []).slice(0, 3).map((t, i) => `<li><span>${i+1}</span><p>${esc(t)}</p></li>`).join('') || '<li><span>1</span><p>لا توجد شروط مضافة.</p></li>';
   const deviceTitle = `${r.deviceName || ''} ${r.deviceBrand || ''}`.trim() || 'هاتف';
-  const timeline = (r.timeline || []).slice(-6).reverse().map(x => `
+  const timeline = (r.timeline || []).slice(-3).reverse().map(x => `
     <div class="invoiceTimeItem">
       <time>${fmt(x.at)}</time>
       <p>${esc(x.label || statuses[x.status]?.label || x.status)}${x.note ? `<small>${esc(x.note)}</small>` : ''}</p>
     </div>
   `).join('');
   $('#invoiceBox').innerHTML = `
-    <div class="invoice">
+    <div class="invoice invoiceCompact">
       <header class="invoiceHero">
         <div class="invoiceBrand">
           <div class="invoiceLogo">${esc((profile.shopName || 'ع').trim().slice(0, 1))}</div>
@@ -730,9 +730,9 @@ function showInvoice(did) {
         </div>
       </header>
 
-      <section class="invoiceStatus">
+      <section class="invoiceStatus compactStatus">
         <div>
-          <span>الحالة الحالية</span>
+          <span>الحالة</span>
           <b>${esc(st.label)}</b>
         </div>
         <div class="invoiceProgress"><i style="width:${st.progress}%"></i></div>
@@ -745,8 +745,8 @@ function showInvoice(did) {
           <div class="invoiceRows">
             <div><span>الاسم</span><b>${esc(r.customerName)}</b></div>
             <div><span>الهاتف</span><b>${esc(r.customerPhone || '-')}</b></div>
-            <div><span>تاريخ الاستلام</span><b>${fmt(r.createdAt)}</b></div>
-            <div><span>الموعد المتوقع</span><b>${esc(r.expectedDate || '-')}</b></div>
+            <div><span>الاستلام</span><b>${fmt(r.createdAt)}</b></div>
+            <div><span>الموعد</span><b>${esc(r.expectedDate || '-')}</b></div>
           </div>
         </div>
 
@@ -754,8 +754,8 @@ function showInvoice(did) {
           <h3>بيانات الجهاز</h3>
           <div class="invoiceRows">
             <div><span>الجهاز</span><b>${esc(deviceTitle)}</b></div>
+            <div><span>IMEI</span><b>${esc(r.imei || '-')}</b></div>
             <div><span>اللون</span><b>${esc(r.deviceColor || '-')}</b></div>
-            <div><span>IMEI / Serial</span><b>${esc(r.imei || '-')}</b></div>
             <div><span>الملحقات</span><b>${esc(r.accessories || '-')}</b></div>
           </div>
         </div>
@@ -773,7 +773,7 @@ function showInvoice(did) {
         <div class="due"><span>الباقي</span><b>${money(r.remaining)}</b></div>
       </section>
 
-      <section class="invoiceFooterGrid">
+      <section class="invoiceFooterGrid compactFooterGrid">
         <div class="invoicePanel">
           <h3>آخر التحديثات</h3>
           <div class="invoiceTimeline">${timeline || '<p class="emptyInvoice">لا توجد تحديثات بعد.</p>'}</div>
@@ -783,11 +783,10 @@ function showInvoice(did) {
           <b>متابعة الحالة</b>
           <span>امسح الرمز لمتابعة الجهاز</span>
         </div>
-      </section>
-
-      <section class="invoiceTerms">
-        <h3>الشروط والملاحظات</h3>
-        <ol>${terms}</ol>
+        <section class="invoiceTerms">
+          <h3>الشروط</h3>
+          <ol>${terms}</ol>
+        </section>
       </section>
 
       <footer class="invoiceSignatures">

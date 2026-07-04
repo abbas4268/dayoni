@@ -1,11 +1,11 @@
-const CACHE = 'abbas-repair-os-v3004';
+const CACHE = 'abbas-repair-os-v3005';
 const ASSETS = [
   './',
-  './index.html?v=3004',
-  './style.css?v=3004',
-  './app.js?v=3004',
-  './firebase.js?v=3004',
-  './manifest.json?v=3004'
+  './index.html?v=3005',
+  './style.css?v=3005',
+  './app.js?v=3005',
+  './firebase.js?v=3005',
+  './manifest.json?v=3005'
 ];
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -26,7 +26,7 @@ self.addEventListener('fetch', e => {
   if (!e.request.url.startsWith(self.location.origin)) return;
   e.respondWith(
     fetch(e.request, { cache: 'no-store' }).catch(() =>
-      caches.match(e.request).then(r => r || caches.match('./index.html?v=3004'))
+      caches.match(e.request).then(r => r || caches.match('./index.html?v=3005'))
     )
   );
 });
