@@ -1,0 +1,34 @@
+Android org.json compatibility evidence — 2026-11-13T04:14:26Z
+Implementation under test: AOSP libcore org.json extracted from Robolectric android-all jars (Maven Central):
+  android-all-16-robolectric-13921718.jar sha256=8b74a0a137330658d2f33f0dc715d42734f74ba8b2d7014fc2e95aa40d3f682d
+  android-all-8.0.0_r4-robolectric-r1.jar sha256=3707dc100381e3bbcc57b85255fd313ae20875fc65cf3130c47e86f044ad77f0
+Executed on OpenJDK 21 (JVM), NOT on ART/a device. The classes are Android's own org.json bytecode.
+
+=== Android org.json from android-all 16-robolectric-13921718
+FinancialInvariantStressTest: 67728 checks passed (seed=20261112, ops=1500; synthetic data, local engine only)
+FinancialInvariantStressTest: 74956 checks passed (seed=7, ops=1500; synthetic data, local engine only)
+FinancialInvariantStressTest: 60911 checks passed (seed=424242, ops=1500; synthetic data, local engine only)
+FINANCIAL_INVARIANT_SUITE_PASSED
+exit=0
+=== Android org.json from android-all 8.0.0_r4-robolectric-r1
+FinancialInvariantStressTest: 67728 checks passed (seed=20261112, ops=1500; synthetic data, local engine only)
+FinancialInvariantStressTest: 74956 checks passed (seed=7, ops=1500; synthetic data, local engine only)
+FinancialInvariantStressTest: 60911 checks passed (seed=424242, ops=1500; synthetic data, local engine only)
+FINANCIAL_INVARIANT_SUITE_PASSED
+exit=0
+Android 8.0: JsonCopyEquivalenceTest: 31131 checks passed
+Android 16 : JsonCopyEquivalenceTest: 31131 checks passed
+
+Suites on Android 16 org.json:
+  PASS cloud-workspace-codec: CLOUD_WORKSPACE_CODEC_PASSED=13
+  PASS customer-debt-plan: CUSTOMER_DEBT_PLAN_PASSED=648
+  PASS drive-sync-transport: 456 checks passed
+  PASS drive-workspace-client: DRIVE_WORKSPACE_CLIENT_PASSED=578
+  PASS first-local-adoption-client: FIRST_LOCAL_ADOPTION_CLIENT_PASSED=388
+  PASS local-client: DIYONI_LOCAL_CLIENT_PASSED=346
+  PASS local-debt-amendment: LOCAL_DEBT_AMENDMENT_PASSED=147
+  PASS local-first-concurrent-client: LOCAL_FIRST_CONCURRENT_CLIENT_PASSED=140
+  PASS local-first-drive-client: LOCAL_FIRST_DRIVE_CLIENT_PASSED=40
+  PASS local-trash: LOCAL_TRASH_PASSED=87
+  PASS local-workspace-engine: LOCAL_WORKSPACE_ENGINE_PASSED=9789
+  PASS simple-workspace-client: SIMPLE_WORKSPACE_CLIENT_PASSED=200

@@ -1,0 +1,6 @@
+Rebuild from the extracted Diyoni-v3.6.2-code28-source.zip ONLY (fresh directory; only local.properties added) — 2026-11-13 UTC
+Command: gradle --no-daemon :customer:assembleDebug :admin:assembleDebug (Gradle 8.14.3, OpenJDK 21, Android SDK 36)
+EXIT=0
+3773886 admin/build/outputs/apk/debug/admin-debug.apk
+10238033 customer/build/outputs/apk/debug/customer-debug.apk
+Debug APKs only (no signing key involved). Release signing requires the owner's D5 key.
