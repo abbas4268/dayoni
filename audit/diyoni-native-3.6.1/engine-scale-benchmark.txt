@@ -1,0 +1,31 @@
+Diyoni local engine scale benchmark — 2026-11-12/13 (UTC)
+Host: cloud container, OpenJDK 21, 4 vCPU, desktop JVM (a phone is typically 3-10x slower).
+Data: synthetic only. One template customer/installment debt/payment created by the real engine,
+then cloned with distinct ids (N customers + N debts). Repository = in-memory UTF-8 string
+(parse on read, serialize on commit). Excludes the production store's AES-GCM, SQLite and
+its extra verify-reads, so real phone figures are higher. Source: EngineScaleBench.java.txt
+
+Measured: average of 20 post_payment calls; average of 5 ledger() reads.
+
+BEFORE (3.6.0 original Json.copy = text round-trip), -Xmx1g
+  N=   100  book  0.7 MB  post_payment   223.7 ms  ledger_read   208.9 ms  heap ~92 MB
+  N=  1000  book  7.2 MB  post_payment  2238.9 ms  ledger_read  2051.7 ms  heap ~321 MB
+  N=  5000  book 36.0 MB  post_payment 11661.1 ms  ledger_read 10405.9 ms  heap ~864 MB
+  N= 10000  OutOfMemoryError at 1 GB heap (a 2 GB retry was killed by the container OOM killer)
+  JFR profile at N=1000: 82.2% of CPU inside Json.copy.
+
+AFTER (structural Json.copy, proven equivalent by JsonCopyEquivalenceTest)
+  N=   100  book  0.7 MB  post_payment    59.0 ms  ledger_read    33.0 ms  heap ~60 MB   (-Xmx512m)
+  N=  1000  book  7.2 MB  post_payment   525.1 ms  ledger_read   299.3 ms  heap ~228 MB  (-Xmx512m)
+  N=  5000  book 36.0 MB  post_payment  2505.0 ms  ledger_read  1495.1 ms  heap ~1.2 GB (-Xmx2g)
+  N= 10000  book 72.1 MB  post_payment  5657.0 ms  ledger_read  3436.6 ms  heap ~1.2 GB (-Xmx2g)
+  Remaining cost profile at N=1000: ~86% is whole-book parse/serialize in the repository,
+  ~14% engine. This is architectural (one JSON document per book) — see report finding H-1.
+
+CLOUD SNAPSHOT CAP (CloudWorkspaceCodec.toWire / DriveSyncTransport MAX_RAW_BYTES = 16 MB raw)
+  N=  500 local  3.61 MB  wire_raw  3.61 MB
+  N= 1000 local  7.21 MB  wire_raw  7.21 MB
+  N= 2000 local 14.42 MB  wire_raw 14.42 MB
+  N= 3000 toWire throws drive_book_too_large (raw > 16 MB) -> backup stops; local data kept.
+Record growth (real engine): customer 931 B, 6-installment debt 4,025 B, payment 2,224 B average.
+Estimate: 5 installment sales + 10 payments per day ~= 1.3 MB/month -> 16 MB in ~12 months.

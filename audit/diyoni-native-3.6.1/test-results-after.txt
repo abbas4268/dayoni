@@ -1,0 +1,121 @@
+JVM test suites after audit changes — 2026-11-13T00:20:47Z
+Runner: bash, LANG=C.UTF-8, OpenJDK 21, org.json 20240303, android.jar 36
+Skipped (need emulator/device): 30 runtime suites
+
+FAIL run-drive-workspace-client-tests
+PASS run-account-security-tests
+PASS run-admin-drive-receipt-client-tests
+PASS run-branding-policy-tests
+PASS run-business-contact-tests
+PASS run-cloud-workspace-codec-tests
+PASS run-core-tests
+PASS run-customer-backup-documents-tests
+PASS run-customer-business-info-tests
+PASS run-customer-csv-tests
+PASS run-customer-debt-plan-tests
+PASS run-customer-drive-vault-flow-tests
+PASS run-customer-grouping-tests
+PASS run-customer-home-insights-tests
+PASS run-customer-index-tests
+PASS run-customer-invoice-tests
+PASS run-customer-payment-time-tests
+PASS run-customer-preview-context-tests
+PASS run-customer-receipt-tests
+PASS run-customer-refresh-policy-tests
+PASS run-customer-search-tests
+PASS run-customer-view-state-tests
+PASS run-document-image-policy-tests
+PASS run-drive-backup-tests
+PASS run-drive-sync-gc-budget-tests
+PASS run-drive-sync-transport-tests
+PASS run-drive-vault-tests
+PASS run-financial-invariant-tests
+PASS run-first-local-adoption-client-tests
+PASS run-free-control-tests
+PASS run-google-drive-sync-policy-tests
+PASS run-inventory-notification-tests
+PASS run-invoice-label-localization-tests
+PASS run-license-envelope-tests
+PASS run-local-client-tests
+PASS run-local-control-refresh-tests
+PASS run-local-debt-amendment-tests
+PASS run-local-first-concurrent-client-tests
+PASS run-local-first-drive-client-tests
+PASS run-local-preferences-tests
+PASS run-local-trash-tests
+PASS run-local-workspace-engine-tests
+PASS run-native-local-bootstrap-tests
+PASS run-portable-backup-tests
+PASS run-portable-number-pattern-tests
+PASS run-remember-session-tests
+PASS run-search-index-tests
+PASS run-signup-validation-tests
+PASS run-simple-workspace-client-tests
+PASS run-workspace-chunking-tests
+
+Reported check counts:
+ADMIN_DRIVE_RECEIPT_CLIENT_PASSED=222
+BackupSchedulePolicyTest: 41 checks passed
+BrandingPolicyTest: 60 checks passed
+CLOUD_WORKSPACE_CODEC_PASSED=13
+CUSTOMER_DEBT_PLAN_PASSED=648
+CorePolicyTest: 44 checks passed
+CoreReliabilityTest: 96 checks passed
+CrossApplicationContractTest: 16 checks passed
+CustomerBackupDocumentsTest: 138 checks passed
+CustomerBusinessInfoTest: 32 checks passed
+CustomerCsvTest: 52 checks passed
+CustomerDataIndexTest: 65 checks passed
+CustomerDriveVaultFlowTest: 74 checks passed
+CustomerGroupingTest: 95 checks passed
+CustomerHomeInsightsTest: 38 checks passed
+CustomerInvoiceTest: 101 checks passed
+CustomerPaymentTimeTest: 37 checks passed
+CustomerPreviewContextTest: 12 checks passed
+CustomerReceiptTest: 27 checks passed
+CustomerRefreshPolicyTest: 42 checks passed
+CustomerSearchIndexerTest: 16 checks passed
+CustomerViewStateTest: 11 checks passed
+DIYONI_LOCAL_CLIENT_PASSED=346
+DocumentFilesTest: 213 checks passed
+DocumentImagePolicyTest: 637 checks passed
+DriveBackupRetentionTest: 6593 checks passed
+DriveBackupVaultTest: 69 checks passed
+DriveSyncGcBudgetTest: 77017 checks passed
+DriveSyncTransportTest: 456 checks passed
+FIRST_LOCAL_ADOPTION_CLIENT_PASSED=388
+FinancialInvariantStressTest: 60911 checks passed
+FinancialInvariantStressTest: 67728 checks passed
+FinancialInvariantStressTest: 74956 checks passed
+FinancialParityTest: 543 checks passed
+FreeControlPlaneTest: 157 checks passed
+GoogleDriveSyncPolicyTest: 54 checks passed
+InventoryNotificationTest: 44 checks passed
+InvoiceLabelLocalizationTest: 44 checks passed
+InvoiceTextPolicyTest: 46 checks passed
+JsonCopyEquivalenceTest: 31131 checks passed
+LOCAL_CONTROL_REFRESH_PASSED=82
+LOCAL_DEBT_AMENDMENT_PASSED=147
+LOCAL_FIRST_CONCURRENT_CLIENT_PASSED=140
+LOCAL_FIRST_DRIVE_CLIENT_PASSED=40
+LOCAL_TRASH_PASSED=87
+LOCAL_WORKSPACE_ENGINE_PASSED=9789
+LicenseEnvelopeTest: 50 checks passed
+LocalPreferencesBridgeTest: 77 checks passed
+NATIVE_LOCAL_BOOTSTRAP_PASSED=78
+NotificationPlannerTest: 74 checks passed
+PORTABLE_NUMBER_PATTERN_PASSED=68
+PortableBackupTest: 91 checks passed
+REMEMBER_SESSION_PASSED=105
+SIMPLE_WORKSPACE_CLIENT_PASSED=200
+SearchIndexTest: 19 checks passed
+SignupValidationTest: 90 checks passed
+
+Known failure: DriveWorkspaceClientTest asserts the pre-2.8.1 Drive-first protocol (upload before local ack), superseded by the owner's local-first decision; it failed identically on the untouched 3.6.0 baseline.
+
+Backend (16.2.0 snapshot, after proposed dependency update): crosslang 287, readiness 78, optional-sync-backend 219, optional-sync-http 322, registration-email-policy 66 — all pass, network 0, production writes 0.
+(The SHA-256 lines below are AUDIT TEST-KEY builds, CN=AUDIT TEST ONLY - NOT FOR RELEASE; not for distribution. The owner D5 build will have different hashes.)
+4418df57f64eddb0a459cc79cf6cfca44483cc36b4ee4417dea2a4821df9c3c1  admin/build/outputs/apk/release/admin-release.apk
+34d83953cf24022116574a119a0cc4c1f248064e741a3345fd6dedf9e4b5f914  customer/build/outputs/apk/release/customer-release.apk
+a25c351255368e3122a3a01349c2ab3be140886159cac775a39eb5a67eab1bcf  admin/build/outputs/bundle/release/admin-release.aab
+d0e5a35eb6ce510644fb74b67095bf243d552a22865c2cd0e855b16319e60666  customer/build/outputs/bundle/release/customer-release.aab
